@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@100&display=swap');
+
 * {
     margin: 0;
     padding: 0;
-
-    font-size: 16px;
 
     user-select: none;
 }
@@ -19,6 +19,7 @@ body {
     background-color: var(--colMain1);
 }
 body#theme-dark, body:not(#theme-light){
+    --colStrong: #000000;
     --colMain1: #191919;
     --colMain2: #2a2a2a;
     --colMain3: #3a3a3a;
@@ -27,6 +28,7 @@ body#theme-dark, body:not(#theme-light){
     --colAlt1: #13d1f2;
 }
 body#theme-light {
+    --colStrong: #ffffff;
     --colMain1: #ffffff;
     --colMain2: #efefef;
     --colMain3: #dedede;
@@ -39,27 +41,34 @@ body#theme-light {
     #main-container {
         --w: 100vw;
         --h: calc(100vw * 9 / 16);
+        font-size: calc(var(--w) / 70);
     }
 }
 @media only screen and (orientation: landscape) {
     #main-container {
         --w: 100vh;
         --h: calc(100vh * 9 / 16);
+        font-size: calc(var(--h) / 70);
     }
 }
 @media only screen and (min-width: 1600px) and (min-height: 900px) {
     #main-container {
         --w: 1600px;
         --h: 900px;
+        font-size: calc(var(--h) / 70);
     }
 }
 #main-container {
     --min: min(var(--w), var(--h));
 
+    --baseShadow: calc(var(--min) / 250) calc(var(--min) / 250) 0 var(--colStrong);
+
     display: flex;
 
     width: var(--w);
     height: var(--h);
+
+    font-family: 'Azeret Mono', monospace;
 
     border-radius: calc(var(--min) / 50);
 }
@@ -75,17 +84,41 @@ body#theme-light {
     grid-auto-columns: var(--cellSize);
     place-items: center;
 }
-#resource-grid > span {
+.resource-item {
     --margin: calc(var(--cellSize) / 10);
-    --s: calc(var(--cellSize) - var(--margin));
+    --boxRatio: 1.3;
+    --boxSize: calc(var(--cellSize) - var(--margin));
 
     margin: calc(var(--margin) / 2);
 
-    width: calc(var(--s) / 1.3);
-    height: calc(var(--s));
+    width: calc(var(--boxSize) / var(--boxRatio));
+    height: calc(var(--boxSize));
 
     background-color: var(--colMain3);
-    border-radius: calc(var(--s) / 15);
+    border-radius: calc(var(--boxSize) / 15);
+    box-shadow: var(--baseShadow);
+}
+.resource-item > .resource-image {
+    --imageSize: calc(var(--boxSize) / var(--boxRatio) - var(--margin));
+
+    box-sizing: content-box;
+    margin: calc(var(--margin) / 2);
+
+    width: var(--imageSize);
+    height: var(--imageSize);
+
+    background-image: url(./resource/Resources.png);
+    background-repeat: no-repeat;
+    background-size: calc(100% * 9);
+    image-rendering: pixelated;
+    filter: drop-shadow(var(--baseShadow));
+}
+.resource-item > .resource-quantity {
+    padding-right: calc(var(--boxSize) / 20);
+
+    text-align: right;
+    font-weight: bolder;
+    color: var(--colReverse);
 }
 
 #other-contents {
