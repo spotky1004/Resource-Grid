@@ -109,7 +109,7 @@ body#theme-light {
 
     background-image: url(./resource/Resources.png);
     background-repeat: no-repeat;
-    background-size: calc(100% * 9);
+    background-size: calc(100% * 81 / 8);
     image-rendering: pixelated;
     filter: drop-shadow(var(--baseShadow));
 }
