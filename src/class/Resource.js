@@ -1,0 +1,61 @@
+// import { getResourceByName } from "../data/resources.js";
+
+export default class Resource {
+  /**
+   * @typedef ResourceConstructor
+   * @property {string} name - Name of the resource
+   * @property {string} description - Description of the resource
+   * @property {Object.<string, number> | function(number): RescourceEnum.<string, number> } [cost] - {[id]: quantity} | Cost of the resource
+   * @property {number} [craftTime] - Crafting/Generating time (in second)
+   * @property {number} [craftMultiply] - Craft multiply (default: 1)
+   * @property {[number, number]} position - Position on Rescource Grid
+   * @property {[number, string, number][]} [randomGrantOnCraft] - [chance, id, greatThan&sub] | Randomely grants resource on craft
+   * @property {[number, string, number][]} [randomGrantPerSecond] - [chance, id, greatThan&sub] | Randomely grants resource every second
+   * @property {function(number): number} [effectMultiply] - Multiply random chance and 
+   * @property {string[]} [automates] - Automatically craft/generate resource
+   */
+  /** @param {ResourceConstructor} data */
+  constructor(data) {
+    this.name = data.name;
+    this.description = data.description;
+    this._cost = data.cost;
+    this.craftTime = data.craftTime;
+    this.craftMultiply = data.craftMultiply || 1;
+    this._position = data.position;
+    this.randomGrantOnCraft = data.randomGrantOnCraft;
+    this.randomGrantPerSecond = data.randomGrantPerSecond;
+    this._effectMultiply = data.effectMultiply;
+    this.automates = data.automates;
+  }
+
+  get position() {
+    return {
+      x: this._position[0],
+      y: this._position[1]
+    }
+  }
+
+  effectMultiply(have) {
+    if (typeof this._effectMultiply === 'function') {
+      return this._effectMultiply(have);
+    } else {
+      return 1;
+    }
+  }
+
+  cost(have) {
+    let cost;
+    if (typeof this._cost === 'function') {
+      cost = this._cost(have);
+    } else {
+      cost = this._cost;
+    }
+
+    for (const id in cost) {
+      cost[id] = Math.ceil(cost[id]);
+      if (cost[id] <= 0) delete cost[id];
+    }
+    return cost;
+  }
+}
+
