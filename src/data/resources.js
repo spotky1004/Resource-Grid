@@ -180,11 +180,13 @@ export const Rescources = {
 
   Water: new Resource({
     name: "Water",
-    craftTime: 100
+    craftTime: 100,
+    position: [5, 0]
   }),
   Lava: new Resource({
     name: "Lava",
-    craftTime: 500
+    craftTime: 500,
+    position: [5, 1]
   }),
   Steam: new Resource({
     name: "Steam",
@@ -193,13 +195,24 @@ export const Rescources = {
       "Lava": 8
     },
     craftTime: 300,
-    craftMultiply: 100
+    craftMultiply: 100,
+    position: [5, 2]
   }),
 
   Loot: new Resource({
     name: "Loot",
+    position: [7, 0]
   })
 };
+
+/** @type {Resource[]} */
+export const ResourceArr = new Array(81).fill(null);
+for (const id in Rescources) {
+  /** @type {Resource} */
+  const Resource = Rescources[id];
+  const position = Resource.position.y + 9*Resource.position.x;
+  ResourceArr[position] = Resource;
+}
 
 /**
  * @param {string} name 
