@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { saveFile } from "../saveload.js";
+import { savefile } from "../saveload.js";
 
-const SaveFileContext = createContext(saveFile);
+const SavefileContext = createContext(savefile);
 
-export default SaveFileContext;
+export default SavefileContext;

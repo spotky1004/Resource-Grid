@@ -1,8 +1,9 @@
 // import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+// eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
-import SaveFileContext from "../contexts/savefile.js";
+import SavefileContext from "../contexts/savefile.js";
 
 const ResourceGridItem = styled.div`
   --margin: calc(var(--cellSize) / 10);
@@ -103,17 +104,17 @@ const ResourceName = styled.div`
  */
 function RescouceGridItem({ data, index }) {
   return (
-    <SaveFileContext.Consumer>
+    <SavefileContext.Consumer>
       {
-        value => (
+        savefile => (
           <ResourceGridItem>
             {
-              data &&
+              (data && savefile.unlocked[index]) &&
               <ResourceInfo>
                 <span>
                   <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.y}) calc(var(--resourceGap) * -${data.position.x})` }}></ResourceImage>
                   <ResourceQuantity>
-                    {value.resources[index]}
+                    {savefile.resources[index]}
                   </ResourceQuantity>
                 </span>
                 <span>
@@ -124,7 +125,7 @@ function RescouceGridItem({ data, index }) {
           </ResourceGridItem>
         )
       }
-    </SaveFileContext.Consumer>
+    </SavefileContext.Consumer>
   );
 }
 
