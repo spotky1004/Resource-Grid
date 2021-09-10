@@ -2,6 +2,7 @@
 import styled, { keyframes } from 'styled-components';
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
+import SaveFileContext from "../contexts/savefile.js";
 
 const ResourceGridItem = styled.div`
   --margin: calc(var(--cellSize) / 10);
@@ -100,22 +101,31 @@ const ResourceName = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function RescouceGridItem({ data }) {
-  return data ? (
-    <ResourceGridItem>
-      <ResourceInfo>
-        <span>
-          <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.y}) calc(var(--resourceGap) * -${data.position.x})` }}></ResourceImage>
-          <ResourceQuantity>
-            1004
-          </ResourceQuantity>
-        </span>
-        <span>
-          <ResourceName name={data.name}></ResourceName>
-        </span>
-      </ResourceInfo>
-    </ResourceGridItem>
-  ) : <ResourceGridItem style={{ opacity: 0, pointerEvents: 'none' }}/>;
+function RescouceGridItem({ data, index }) {
+  return (
+    <SaveFileContext.Consumer>
+      {
+        value => (
+          <ResourceGridItem>
+            {
+              data &&
+              <ResourceInfo>
+                <span>
+                  <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.y}) calc(var(--resourceGap) * -${data.position.x})` }}></ResourceImage>
+                  <ResourceQuantity>
+                    {value.resources[index]}
+                  </ResourceQuantity>
+                </span>
+                <span>
+                  <ResourceName name={data.name}></ResourceName>
+                </span>
+              </ResourceInfo>
+            }
+          </ResourceGridItem>
+        )
+      }
+    </SaveFileContext.Consumer>
+  );
 }
 
 export default RescouceGridItem;

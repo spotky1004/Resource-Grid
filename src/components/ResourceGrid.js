@@ -32,8 +32,12 @@ function ResourceGrid() {
   return (
     <>
       <RescouceGrid>
-          {ResourceArr.map(resource => (
-            <RescouceGridItem data={resource} />
+          {ResourceArr.map((resource, index) => (
+            <RescouceGridItem
+              key={resource !== null ? resource.name : `empty_${index}`}
+              data={resource}
+              index={index}
+            />
           ))}
       </RescouceGrid>
       <OtherContents>

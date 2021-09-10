@@ -2,12 +2,16 @@ const saveKey = "resource_grid";
 
 const DefaultSave = {
   resources: new Array(81).fill(0),
-  startTimes: new Array(81).fill(0)
+  startTimes: new Array(81).fill(null),
+  unlocked: new Array(81).fill(true),
 };
+DefaultSave.resources[0] = 1;
 
 export function save() {
   localStorage.setItem(saveKey, saveFile);
 }
+
+/** @returns {DefaultSave} */
 export function load() {
   return localStorage.getItem(saveKey) ?? mergeObject({}, DefaultSave);
 }
