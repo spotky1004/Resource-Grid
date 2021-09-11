@@ -111,13 +111,9 @@ function RescouceGridItem({ data, index, save }) {
     ) return;
     setSave({...save});
   }, [save, saveState]);
-
-  // if (index === 1) setInterval(() => console.log(save, saveState), 1000);
   
   return (
-    <ResourceGridItem
-      // onClick={setSave({...save})}
-    >
+    <ResourceGridItem>
       {
         data &&
         <ResourceInfo>
