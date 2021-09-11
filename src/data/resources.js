@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+import { DefaultSave } from "../saveload";
 import Resource from "../class/Resource.js"; 
 
 export const Rescources = {
@@ -9,7 +11,7 @@ export const Rescources = {
   }),
   Tree: new Resource({
     name: "Tree",
-    craftTime: 30,
+    craftTime: 1,
     position: [0, 1]
   }),
   Log: new Resource({
@@ -205,14 +207,23 @@ export const Rescources = {
   })
 };
 
+
+
 /** @type {Resource[]} */
 export const ResourceArr = new Array(81).fill(null);
 for (const id in Rescources) {
   /** @type {Resource} */
   const Resource = Rescources[id];
-  const position = Resource.position.y + 9*Resource.position.x;
+  const position = 9*Resource.position.y + Resource.position.x;
   ResourceArr[position] = Resource;
 }
+
+export const AutoConnected = Array.from({ length: 81 }, (_, i) => {
+  if (!ResourceArr[i]) return null;
+  return ResourceArr.findIndex(e => e && e.automates ? e.automates.includes(ResourceArr[i].name) : false);
+});
+
+
 
 /**
  * @param {string} name 
@@ -220,4 +231,53 @@ for (const id in Rescources) {
  */
 export function getResourceByName(name) {
   return Rescources[name];
+}
+
+
+
+/**
+ * @param {string} name 
+ * @param {DefaultSave} savefile 
+ * @returns 
+ */
+export function canBuy(name, savefile) {
+  const Resource = getResourceByName(name);
+  if (savefile.resources[Resource.order].startTime !== null) return;
+
+  const cost = Resource.cost(savefile.resources[Resource.order].have);
+  
+  let bulk = Infinity;
+  if (cost === null) return bulk;
+
+  for (const resourceName in cost) {
+    const _cost = cost[resourceName];
+    const _have = savefile.resources[getResourceByName(resourceName).order].have;
+    if (_cost > _have) return false;
+    bulk = Math.min(bulk, _have/_cost);
+  }
+  return Math.floor(bulk);
+}
+/**
+ * @param {string} name 
+ * @param {boolean} doBulk
+ * @param {DefaultSave} savefile 
+ * @returns 
+ */
+export function buy(name, savefile, doBulk=false) {
+  const Resource = getResourceByName(name);
+
+  const cost = Resource.cost(savefile);
+    const bulk = doBulk ? Resource.canBuy(savefile) : 1;
+    
+    if (!bulk) return false;
+
+    for (const resourceName in cost) {
+      const _cost = bulk * cost[resourceName];
+      const _order = getResourceByName(resourceName).order;
+      savefile.resources[_order].have -= _cost;
+    }
+
+    savefile.resources[Resource.order].startTime = new Date().getTime();
+
+    return bulk;
 }

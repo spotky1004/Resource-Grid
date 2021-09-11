@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import tick from "./tick.js";
+import { savefile } from "./saveload.js";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,6 +12,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+setInterval(() => tick(savefile), 1000/60);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

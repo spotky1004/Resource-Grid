@@ -1,9 +1,8 @@
-// import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 // eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
-import SavefileContext from "../contexts/savefile.js";
+import { useState, useEffect } from 'react';
 
 const ResourceGridItem = styled.div`
   --margin: calc(var(--cellSize) / 10);
@@ -102,30 +101,38 @@ const ResourceName = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function RescouceGridItem({ data, index }) {
+function RescouceGridItem({ data, index, save }) {
+  const [saveState, setSave] = useState({...save});
+
+  useEffect(() => {
+    if (
+      saveState.have === save.have &&
+      save.startTime === null
+    ) return;
+    setSave({...save});
+  }, [save, saveState]);
+
+  // if (index === 1) setInterval(() => console.log(save, saveState), 1000);
+  
   return (
-    <SavefileContext.Consumer>
+    <ResourceGridItem
+      // onClick={setSave({...save})}
+    >
       {
-        savefile => (
-          <ResourceGridItem>
-            {
-              (data && savefile.unlocked[index]) &&
-              <ResourceInfo>
-                <span>
-                  <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.y}) calc(var(--resourceGap) * -${data.position.x})` }}></ResourceImage>
-                  <ResourceQuantity>
-                    {savefile.resources[index]}
-                  </ResourceQuantity>
-                </span>
-                <span>
-                  <ResourceName name={data.name}></ResourceName>
-                </span>
-              </ResourceInfo>
-            }
-          </ResourceGridItem>
-        )
+        data &&
+        <ResourceInfo>
+          <span>
+            <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}></ResourceImage>
+            <ResourceQuantity>
+              {saveState.have}
+            </ResourceQuantity>
+          </span>
+          <span>
+            <ResourceName name={data.name}></ResourceName>
+          </span>
+        </ResourceInfo>
       }
-    </SavefileContext.Consumer>
+    </ResourceGridItem>
   );
 }
 

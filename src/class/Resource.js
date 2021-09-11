@@ -1,5 +1,3 @@
-// import { getResourceByName } from "../data/resources.js";
-
 export default class Resource {
   /**
    * @typedef ResourceConstructor
@@ -22,6 +20,7 @@ export default class Resource {
     this.craftTime = data.craftTime;
     this.craftMultiply = data.craftMultiply || 1;
     this._position = data.position;
+    this.order = 9*this._position[0] + this._position[1];
     this.randomGrantOnCraft = data.randomGrantOnCraft;
     this.randomGrantPerSecond = data.randomGrantPerSecond;
     this._effectMultiply = data.effectMultiply;
@@ -30,8 +29,8 @@ export default class Resource {
 
   get position() {
     return {
-      x: this._position[0],
-      y: this._position[1]
+      x: this._position[1],
+      y: this._position[0]
     }
   }
 
@@ -45,15 +44,17 @@ export default class Resource {
 
   cost(have) {
     let cost;
-    if (typeof this._cost === 'function') {
+    if (typeof this._cost === 'undefined') {
+      return null;
+    } else if (typeof this._cost === 'function') {
       cost = this._cost(have);
     } else {
       cost = this._cost;
     }
 
-    for (const id in cost) {
-      cost[id] = Math.ceil(cost[id]);
-      if (cost[id] <= 0) delete cost[id];
+    for (const resource in cost) {
+      cost[resource] = Math.ceil(cost[resource]);
+      if (cost[resource] <= 0) delete cost[resource];
     }
     return cost;
   }

@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import RescouceGridItem from "./RescouceGridItem.js";
 import { ResourceArr } from "../data/resources.js";
+import { savefile } from "../saveload.js";
 
 const RescouceGrid = styled.div`
   --cellSize: calc(var(--min) / 9);
@@ -36,6 +37,7 @@ function ResourceGrid() {
             <RescouceGridItem
               key={resource !== null ? resource.name : `empty_${index}`}
               data={resource}
+              save={savefile.resources[index]}
               index={index}
             />
           ))}
