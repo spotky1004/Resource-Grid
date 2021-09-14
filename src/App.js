@@ -34,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
     --colReverse: #ffffff;
     --colReverseWeak: #efefef;
     --colAlt1: #13d1f2;
+    --colOverlay: #fff6;
   }
   body#theme-light {
     --colStrong: #ffffff;
@@ -44,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
     --colReverse: #191919;
     --colReverseWeak: #2a2a2a;
     --colAlt1: #f29913;
+    --colOverlay: #0006;
   }
 `;
 const MainContainer = styled.div`

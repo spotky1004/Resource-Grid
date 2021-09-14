@@ -1,4 +1,5 @@
-// import { useState } from 'react';
+import { connect } from "react-redux";
+import { craftStart, craftEnd } from "../modules/resources.js";
 import styled from "styled-components";
 import RescouceGridItem from "./RescouceGridItem.js";
 import { ResourceArr } from "../data/resources.js";
@@ -28,12 +29,18 @@ const OtherContents = styled.div`
   flex: 7;
 `;
 
-function ResourceGrid() {
+function ResourceGrid({ save, craftStart }) {
   return (
     <>
       <RescouceGrid>
-          {ResourceArr.map(resource => (
-            <RescouceGridItem data={resource} />
+          {ResourceArr.map((ResourceData, index) => (
+            <RescouceGridItem
+              key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
+              data={ResourceData}
+              index={index}
+              save={save[index]}
+              craftStart={craftStart}
+            />
           ))}
       </RescouceGrid>
       <OtherContents>
@@ -43,4 +50,12 @@ function ResourceGrid() {
   );
 }
 
-export default ResourceGrid;
+export default connect(
+  ({ resources }) => ({
+    save: resources
+  }),
+  {
+    craftStart,
+    craftEnd,
+  }
+)(ResourceGrid);

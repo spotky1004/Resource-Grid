@@ -1,10 +1,18 @@
+// eslint-disable-next-line
+import { DefaultSave } from "../saveload";
 import Resource from "../class/Resource.js"; 
 
-export const Rescources = {
+export const Resources = {
+  TreeSeed: new Resource({
+    name: "TreeSeed",
+    description: "Generate tree",
+    automates: ["Tree"],
+    position: [0, 0]
+  }),
   Tree: new Resource({
     name: "Tree",
-    craftTime: 30,
-    position: [0, 0]
+    craftTime: 1,
+    position: [0, 1]
   }),
   Log: new Resource({
     name: "Log",
@@ -13,7 +21,7 @@ export const Rescources = {
     },
     craftTime: 10,
     craftMultiply: 5,
-    position: [0, 1]
+    position: [0, 2]
   }),
   Plank: new Resource({
     name: "Plank",
@@ -21,7 +29,7 @@ export const Rescources = {
       "Log": 1
     },
     craftTime: 5,
-    position: [0, 2]
+    position: [0, 3]
   }),
   Charcoal: new Resource({
     name: "Charcoal",
@@ -30,7 +38,7 @@ export const Rescources = {
     },
     craftTime: 3,
     craftMultiply: 4,
-    position: [0, 3]
+    position: [0, 4]
   }),
   Vine: new Resource({
     name: "Vine",
@@ -41,80 +49,40 @@ export const Rescources = {
     position: [0, 6]
   }),
 
-  TreeSeed: new Resource({
-    name: "Tree Seed",
-    description: "Generate tree",
-    automates: ["Tree"],
-    position: [1, 0]
-  }),
-  Axe: new Resource({
-    name: "Axe",
-    description: "Cut tree",
-    cost: (have) => ({
-      "Log": (have+1)**2,
-      "Plank": 3 * (have+1)**2
-    }),
-    craftTime: 5,
-    automates: ["Log"],
-    position: [1, 1]
-  }),
-
   Stone: new Resource({
     name: "Stone",
     craftTime: 10,
     position: [2, 0]
   }),
   CopperOre: new Resource({
-    name: "Copper Ore",
+    name: "CopperOre",
     position: [2, 1]
   }),
   IronOre: new Resource({
-    name: "Iron Ore",
+    name: "IronOre",
     position: [2, 2]
   }),
   GoldOre: new Resource({
-    name: "Gold Ore",
+    name: "GoldOre",
     position: [2, 3]
   }),
   EmeraldStone: new Resource({
-    name: "Emerald Stone",
+    name: "EmeraldStone",
     position: [2, 5]
   }),
   AmethystStone: new Resource({
-    name: "Amethyst Stone",
+    name: "AmethystStone",
     position: [2, 6]
   }),
   RubyStone: new Resource({
-    name: "Ruby Stone",
+    name: "RubyStone",
     position: [2, 7]
   }),
   SapphireStone: new Resource({
-    name: "Sapphire Stone",
+    name: "SapphireStone",
     position: [2, 8]
   }),
 
-  Pickaxe: new Resource({
-    name: "Pickaxe",
-    description: "Generate Stone & Ores randomely per second",
-    cost: (have) => ({
-      "Plank": 5 * (have + 1)**2,
-      "Stone": 6 * have**2,
-      "Copper": 3 * (have-4)**2,
-      "Iron": 5 * (have-9)**2,
-      "Gold": 7 * (have-14)**2,
-      "Emerald": 4 * (have-19)**1.4,
-      "Ruby": 5 * (have-24)**1.4,
-    }),
-    randomGrantPerSecond: [
-      [0.03, "Copper", 3],
-      [0.015, "Iron", 8],
-      [0.0075, "Gold", 13],
-      [0.001, "Emerald", 18],
-      [0.0001, "Ruby", 23]
-    ],
-    effectMultiply: (have) => have**1.5,
-    position: [3, 0]
-  }),
   Copper: new Resource({
     name: "Copper",
     cost: {
@@ -199,25 +167,117 @@ export const Rescources = {
     position: [5, 2]
   }),
 
+  Axe: new Resource({
+    name: "Axe",
+    description: "Cut tree",
+    cost: (have) => ({
+      "Log": (have+1)**2,
+      "Plank": 3 * (have+1)**2
+    }),
+    craftTime: 5,
+    automates: ["Log"],
+    position: [6, 0]
+  }),
+  Pickaxe: new Resource({
+    name: "Pickaxe",
+    description: "Generate Stone & Ores randomely per second",
+    cost: (have) => ({
+      "Plank": 5 * (have + 1)**2,
+      "Stone": 6 * have**2,
+      "Copper": 3 * (have-4)**2,
+      "Iron": 5 * (have-9)**2,
+      "Gold": 7 * (have-14)**2,
+      "Emerald": 4 * (have-19)**1.4,
+      "Ruby": 5 * (have-24)**1.4,
+    }),
+    randomGrantPerSecond: [
+      [0.03, "Copper", 3],
+      [0.015, "Iron", 8],
+      [0.0075, "Gold", 13],
+      [0.001, "Emerald", 18],
+      [0.0001, "Ruby", 23]
+    ],
+    effectMultiply: (have) => have**1.5,
+    position: [6, 1]
+  }),
+
   Loot: new Resource({
     name: "Loot",
-    position: [7, 0]
+    position: [8, 0]
   })
 };
 
+
+
 /** @type {Resource[]} */
 export const ResourceArr = new Array(81).fill(null);
-for (const id in Rescources) {
+for (const id in Resources) {
   /** @type {Resource} */
-  const Resource = Rescources[id];
-  const position = Resource.position.y + 9*Resource.position.x;
+  const Resource = Resources[id];
+  const position = 9*Resource.position.y + Resource.position.x;
   ResourceArr[position] = Resource;
 }
+
+export const AutoConnected = Array.from({ length: 81 }, (_, i) => {
+  if (!ResourceArr[i]) return null;
+  return ResourceArr.findIndex(e => e && e.automates ? e.automates.includes(ResourceArr[i].name) : false);
+});
+
+
 
 /**
  * @param {string} name 
  * @returns {Resource}
  */
 export function getResourceByName(name) {
-  return Rescources[name];
+  return Resources[name];
+}
+
+
+
+/**
+ * @param {string} name 
+ * @param {DefaultSave} savefile 
+ * @returns 
+ */
+export function canBuy(name, savefile) {
+  const Resource = getResourceByName(name);
+  if (savefile.resources[Resource.order].startTime !== null) return;
+
+  const cost = Resource.cost(savefile.resources[Resource.order].have);
+  
+  let bulk = Infinity;
+  if (cost === null) return bulk;
+
+  for (const resourceName in cost) {
+    const _cost = cost[resourceName];
+    const _have = savefile.resources[getResourceByName(resourceName).order].have;
+    if (_cost > _have) return false;
+    bulk = Math.min(bulk, _have/_cost);
+  }
+  return Math.floor(bulk);
+}
+/**
+ * @param {string} name 
+ * @param {boolean} doBulk
+ * @param {DefaultSave} savefile 
+ * @returns 
+ */
+export function buy(name, savefile, doBulk=false) {
+  const Resource = getResourceByName(name);
+
+  const cost = Resource.cost(savefile);
+  const bulk = doBulk ? canBuy(savefile) : 1;
+  
+  if (!bulk) return false;
+
+  for (const resourceName in cost) {
+    const _cost = bulk * cost[resourceName];
+    const _order = getResourceByName(resourceName).order;
+    savefile.resources[_order].have -= _cost;
+  }
+
+  savefile.resources[Resource.order].startTime = new Date().getTime();
+
+  return bulk;
 }

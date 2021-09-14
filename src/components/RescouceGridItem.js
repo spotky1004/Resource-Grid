@@ -1,5 +1,5 @@
-// import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+// eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
 
@@ -100,22 +100,25 @@ const ResourceName = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function RescouceGridItem({ data }) {
-  return data ? (
-    <ResourceGridItem>
-      <ResourceInfo>
-        <span>
-          <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.y}) calc(var(--resourceGap) * -${data.position.x})` }}></ResourceImage>
-          <ResourceQuantity>
-            1004
-          </ResourceQuantity>
-        </span>
-        <span>
-          <ResourceName name={data.name}></ResourceName>
-        </span>
-      </ResourceInfo>
+function RescouceGridItem({ data, index, save, craftStart, craftEnd }) {
+    return (
+    <ResourceGridItem onClick={() => craftStart(index)}>
+      {
+        data &&
+        <ResourceInfo>
+          <span>
+            <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}></ResourceImage>
+            <ResourceQuantity>
+              {save.have}
+            </ResourceQuantity>
+          </span>
+          <span>
+            <ResourceName name={data.name}></ResourceName>
+          </span>
+        </ResourceInfo>
+      }
     </ResourceGridItem>
-  ) : <ResourceGridItem style={{ opacity: 0, pointerEvents: 'none' }}/>;
+  );
 }
 
 export default RescouceGridItem;
