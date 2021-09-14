@@ -3,6 +3,16 @@ import styled, { keyframes } from 'styled-components';
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
 
+const namespaceAppear = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(100%) scale(0.2, 1);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1, 1);
+  }
+`;
 const ResourceGridItem = styled.div`
   --margin: calc(var(--cellSize) / 10);
   --boxRatio: 1.3;
@@ -27,6 +37,29 @@ const ResourceGridItem = styled.div`
     background-color: var(--colMain4);
     transform: scale(1.4);
     z-index: 1;
+  }
+
+  &:hover::before {
+    content: attr(name);
+
+    padding: 1% 5%;
+    
+    min-width: 60%;
+    height: 15%;
+
+    position: absolute;
+    top: -15%;
+    left: 5%;
+
+    color: var(--colMainReverse);
+    word-spacing: -0.3em;
+    font-size: 0.9em;
+    text-align: center;
+
+    background-color: var(--colMain4);
+    border-radius: calc(var(--cellSize) / 30);
+
+    animation: ${namespaceAppear} 0.4s cubic-bezier(.12,.81,.31,.95);
   }
 `;
 const ResourceInfo = styled.div`
@@ -64,45 +97,16 @@ const ResourceQuantity = styled.div`
   font-weight: bolder;
   color: var(--colReverse);
 `;
-const textGoLeft = keyframes`
-  from {
-    transform: translateX(0%);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-100%);
-  }
-  50.0001% {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0%);
-  }
-`;
-const ResourceName = styled.div`
-  overflow: hidden;
-
-  &::after {
-    --shadowSize: calc(var(--boxSize) / 10);
-
-    min-width: 100%;
-
-    display: inline-block;
-
-    content: attr(name);
-
-    color: var(--colReverse);
-    animation: ${textGoLeft} 3s linear infinite;
-  }
-`;
 
 /**
  * @param {object} obj
  * @param {Resource} obj.data 
  */
 function RescouceGridItem({ data, index, save, craftStart, craftEnd }) {
+    const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
+
     return (
-    <ResourceGridItem onClick={() => craftStart(index)}>
+    <ResourceGridItem onClick={() => craftStart(index)} name={displayName}>
       {
         data &&
         <ResourceInfo>
@@ -113,7 +117,7 @@ function RescouceGridItem({ data, index, save, craftStart, craftEnd }) {
             </ResourceQuantity>
           </span>
           <span>
-            <ResourceName name={data.name}></ResourceName>
+
           </span>
         </ResourceInfo>
       }

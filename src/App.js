@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
     --colMain4: #4a4a4a;
     --colReverse: #ffffff;
     --colReverseWeak: #efefef;
+    --colReverseWeaker: #cdcdcd;
     --colAlt1: #13d1f2;
     --colOverlay: #fff6;
   }
@@ -44,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
     --colMain4: #cdcdcd;
     --colReverse: #191919;
     --colReverseWeak: #2a2a2a;
+    --colReverseWeaker: #4a4a4a;
     --colAlt1: #f29913;
     --colOverlay: #0006;
   }
