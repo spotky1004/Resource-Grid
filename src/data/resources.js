@@ -2,9 +2,9 @@
 import { DefaultSave } from "../saveload";
 import Resource from "../class/Resource.js"; 
 
-export const Rescources = {
+export const Resources = {
   TreeSeed: new Resource({
-    name: "Tree Seed",
+    name: "TreeSeed",
     description: "Generate tree",
     automates: ["Tree"],
     position: [0, 0]
@@ -55,31 +55,31 @@ export const Rescources = {
     position: [2, 0]
   }),
   CopperOre: new Resource({
-    name: "Copper Ore",
+    name: "CopperOre",
     position: [2, 1]
   }),
   IronOre: new Resource({
-    name: "Iron Ore",
+    name: "IronOre",
     position: [2, 2]
   }),
   GoldOre: new Resource({
-    name: "Gold Ore",
+    name: "GoldOre",
     position: [2, 3]
   }),
   EmeraldStone: new Resource({
-    name: "Emerald Stone",
+    name: "EmeraldStone",
     position: [2, 5]
   }),
   AmethystStone: new Resource({
-    name: "Amethyst Stone",
+    name: "AmethystStone",
     position: [2, 6]
   }),
   RubyStone: new Resource({
-    name: "Ruby Stone",
+    name: "RubyStone",
     position: [2, 7]
   }),
   SapphireStone: new Resource({
-    name: "Sapphire Stone",
+    name: "SapphireStone",
     position: [2, 8]
   }),
 
@@ -211,9 +211,9 @@ export const Rescources = {
 
 /** @type {Resource[]} */
 export const ResourceArr = new Array(81).fill(null);
-for (const id in Rescources) {
+for (const id in Resources) {
   /** @type {Resource} */
-  const Resource = Rescources[id];
+  const Resource = Resources[id];
   const position = 9*Resource.position.y + Resource.position.x;
   ResourceArr[position] = Resource;
 }
@@ -230,7 +230,7 @@ export const AutoConnected = Array.from({ length: 81 }, (_, i) => {
  * @returns {Resource}
  */
 export function getResourceByName(name) {
-  return Rescources[name];
+  return Resources[name];
 }
 
 
@@ -267,17 +267,17 @@ export function buy(name, savefile, doBulk=false) {
   const Resource = getResourceByName(name);
 
   const cost = Resource.cost(savefile);
-    const bulk = doBulk ? Resource.canBuy(savefile) : 1;
-    
-    if (!bulk) return false;
+  const bulk = doBulk ? canBuy(savefile) : 1;
+  
+  if (!bulk) return false;
 
-    for (const resourceName in cost) {
-      const _cost = bulk * cost[resourceName];
-      const _order = getResourceByName(resourceName).order;
-      savefile.resources[_order].have -= _cost;
-    }
+  for (const resourceName in cost) {
+    const _cost = bulk * cost[resourceName];
+    const _order = getResourceByName(resourceName).order;
+    savefile.resources[_order].have -= _cost;
+  }
 
-    savefile.resources[Resource.order].startTime = new Date().getTime();
+  savefile.resources[Resource.order].startTime = new Date().getTime();
 
-    return bulk;
+  return bulk;
 }

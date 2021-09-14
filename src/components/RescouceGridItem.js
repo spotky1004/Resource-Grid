@@ -2,7 +2,6 @@ import styled, { keyframes } from 'styled-components';
 // eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
-import { useState, useEffect } from 'react';
 
 const ResourceGridItem = styled.div`
   --margin: calc(var(--cellSize) / 10);
@@ -101,26 +100,16 @@ const ResourceName = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function RescouceGridItem({ data, index, save }) {
-  const [saveState, setSave] = useState({...save});
-
-  useEffect(() => {
-    if (
-      saveState.have === save.have &&
-      save.startTime === null
-    ) return;
-    setSave({...save});
-  }, [save, saveState]);
-  
-  return (
-    <ResourceGridItem>
+function RescouceGridItem({ data, index, save, craftStart, craftEnd }) {
+    return (
+    <ResourceGridItem onClick={() => craftStart(index)}>
       {
         data &&
         <ResourceInfo>
           <span>
             <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}></ResourceImage>
             <ResourceQuantity>
-              {saveState.have}
+              {save.have}
             </ResourceQuantity>
           </span>
           <span>

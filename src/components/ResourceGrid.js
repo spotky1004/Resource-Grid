@@ -1,8 +1,8 @@
-// import { useState } from 'react';
+import { connect } from "react-redux";
+import { craftStart, craftEnd } from "../modules/resources.js";
 import styled from "styled-components";
 import RescouceGridItem from "./RescouceGridItem.js";
 import { ResourceArr } from "../data/resources.js";
-import { savefile } from "../saveload.js";
 
 const RescouceGrid = styled.div`
   --cellSize: calc(var(--min) / 9);
@@ -29,16 +29,17 @@ const OtherContents = styled.div`
   flex: 7;
 `;
 
-function ResourceGrid() {
+function ResourceGrid({ save, craftStart }) {
   return (
     <>
       <RescouceGrid>
-          {ResourceArr.map((resource, index) => (
+          {ResourceArr.map((ResourceData, index) => (
             <RescouceGridItem
-              key={resource !== null ? resource.name : `empty_${index}`}
-              data={resource}
-              save={savefile.resources[index]}
+              key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
+              data={ResourceData}
               index={index}
+              save={save[index]}
+              craftStart={craftStart}
             />
           ))}
       </RescouceGrid>
@@ -49,4 +50,12 @@ function ResourceGrid() {
   );
 }
 
-export default ResourceGrid;
+export default connect(
+  ({ resources }) => ({
+    save: resources
+  }),
+  {
+    craftStart,
+    craftEnd,
+  }
+)(ResourceGrid);
