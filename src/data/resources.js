@@ -184,11 +184,11 @@ export const Resources = {
     cost: (have) => ({
       "Plank": 5 * (have + 1)**2,
       "Stone": 6 * have**2,
-      "Copper": 3 * (have-4)**2,
-      "Iron": 5 * (have-9)**2,
-      "Gold": 7 * (have-14)**2,
-      "Emerald": 4 * (have-19)**1.4,
-      "Ruby": 5 * (have-24)**1.4,
+      "Copper": 3 * Math.max(0, have-4)**2,
+      "Iron": 5 * Math.max(0, have-9)**2,
+      "Gold": 7 * Math.max(0, have-14)**2,
+      "Emerald": 4 * Math.max(0, have-19)**1.4,
+      "Ruby": 5 * Math.max(0, have-24)**1.4,
     }),
     randomGrantPerSecond: [
       [0.03, "Copper", 3],

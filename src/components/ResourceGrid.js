@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { craftStart, craftEnd } from "../modules/resources.js";
 import styled from "styled-components";
-import RescouceGridItem from "./RescouceGridItem.js";
+import Rescouce from "./Rescouce.js";
 import { ResourceArr } from "../data/resources.js";
 
 const RescouceGrid = styled.div`
@@ -34,7 +34,7 @@ function ResourceGrid({ save, craftStart }) {
     <>
       <RescouceGrid>
           {ResourceArr.map((ResourceData, index) => (
-            <RescouceGridItem
+            <Rescouce
               key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
               data={ResourceData}
               index={index}

@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 // eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
+import ResourceCost from "./ResourceCost.js";
 
 const namespaceAppear = keyframes`
   from {
@@ -13,15 +14,17 @@ const namespaceAppear = keyframes`
     transform: translateY(0) scale(1, 1);
   }
 `;
-const ResourceGridItem = styled.div`
+const ResourceWarp = styled.div`
   --margin: calc(var(--cellSize) / 10);
   --boxRatio: 1.3;
   --boxSize: calc(var(--cellSize) - var(--margin));
+  --cellWidth: calc(var(--boxSize) / var(--boxRatio));
+  --cellHeight: var(--boxSize);
 
   margin: calc(var(--margin) / 2);
 
-  width: calc(var(--boxSize) / var(--boxRatio));
-  height: calc(var(--boxSize));
+  width: var(--cellWidth);
+  height: var(--cellHeight);
   
   background-color: var(--colMain3);
   border-radius: calc(var(--boxSize) / 15);
@@ -102,27 +105,34 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function RescouceGridItem({ data, index, save, craftStart, craftEnd }) {
+function ResourceGridItem({ data, index, save, craftStart, craftEnd }) {
     const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
 
+    const have = save.have;
+    const cost = data ? Object.entries(data.cost(have) ?? {}) : [];
+
     return (
-    <ResourceGridItem onClick={() => craftStart(index)} name={displayName}>
+    <ResourceWarp onClick={() => craftStart(index)} name={displayName}>
       {
         data &&
         <ResourceInfo>
           <span>
-            <ResourceImage style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}></ResourceImage>
+            <ResourceImage
+              style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}
+            ></ResourceImage>
             <ResourceQuantity>
-              {save.have}
+              {have}
             </ResourceQuantity>
           </span>
           <span>
-
+            <ResourceCost
+              cost={cost}
+            />
           </span>
         </ResourceInfo>
       }
-    </ResourceGridItem>
+    </ResourceWarp>
   );
 }
 
-export default RescouceGridItem;
+export default ResourceGridItem;

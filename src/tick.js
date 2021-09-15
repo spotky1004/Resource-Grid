@@ -1,7 +1,7 @@
 import stroe from "./store.js";
 // eslint-disable-next-line
 import { DefaultSave } from "./saveload.js";
-import { ResourceArr, AutoConnected } from "./data/resources.js";
+import { Resources, ResourceArr, AutoConnected, canBuy } from "./data/resources.js";
 import { craftStart, craftEnd } from "./modules/resources.js";
 
 function Tick() {
@@ -15,14 +15,21 @@ function Tick() {
     const Resource = ResourceArr[i];
     if (Resource === null) continue;
     const order = i;
+    const save = savefile.resources[order];
 
     // Check Unlocked
     
 
     // Start Automate
-    if (Resource.automates) {
+    if (Resource.automates && save.have >= 1) {
       for (let j = 0; j < Resource.automates.length; j++) {
-        if (ResourceArr[Resource.automates]) continue;
+        const _Resource = Resources[Resource.automates[j]];
+        const _order = _Resource.order;
+        if (
+          savefile.resources[_order].startTime !== null ||
+          canBuy(_Resource.name, savefile) === 0
+        ) continue;
+        // console.log(savefile.resources[_order].startTime);
         stroe.dispatch(craftStart(j));
       }
     }

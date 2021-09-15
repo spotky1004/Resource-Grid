@@ -35,14 +35,16 @@ function reducer(state = savefile.resources, action) {
       const bulk = 1;
       
       if (!bulk) return false;
-    
+
+      state = [...state];
       for (const resourceName in cost) {
         const _cost = bulk * cost[resourceName];
         const _order = ResourceArr[action.order];
-        state[_order].have -= _cost;
+        state[_order] = {
+          ...state[_order],
+          have: state[_order].have - _cost
+        };
       }
-
-      state = [...state];
       state[order] = {
         ...state[order],
         startTime: new Date().getTime()

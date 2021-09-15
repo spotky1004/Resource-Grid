@@ -1,12 +1,13 @@
+import "./font/font.css";
 import styled, { createGlobalStyle } from 'styled-components';
-import ResourceGrid from "./components/ResourceGrid.js";
+import ResourceGrid from "./components/ResourceGrid.js"; 
 
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
   
-    font-family: 'Azeret Mono', monospace;
+    /* font-family: 'Azeret Mono', monospace; */
     white-space: nowrap;
     
     user-select: none;
