@@ -25,12 +25,12 @@ function Tick() {
       for (let j = 0; j < Resource.automates.length; j++) {
         const _Resource = Resources[Resource.automates[j]];
         const _order = _Resource.order;
+        console.log(_order, savefile.resources[_order]);
         if (
           savefile.resources[_order].startTime !== null ||
           canBuy(_Resource.name, savefile) === 0
         ) continue;
-        // console.log(savefile.resources[_order].startTime);
-        stroe.dispatch(craftStart(j));
+        stroe.dispatch(craftStart(_order));
       }
     }
 
