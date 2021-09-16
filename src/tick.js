@@ -1,14 +1,14 @@
-import stroe from "./store.js";
+import store from "./store.js";
 // eslint-disable-next-line
 import { DefaultSave } from "./saveload.js";
-import { Resources, ResourceArr, AutoConnected, canBuy } from "./data/resources.js";
-import { craftStart, craftEnd } from "./modules/resources.js";
+import { Resources, ResourceArr, getCooldown, canBuy } from "./data/resources.js";
+import { craftStart, craftUpdate } from "./modules/resources.js";
 
 function Tick() {
   /**
    * @type {DefaultSave}
    */
-  const savefile = stroe.getState();
+  const savefile = store.getState();
   const Time = new Date().getTime();
 
   for (let i = 0; i < ResourceArr.length; i++) {
@@ -25,23 +25,25 @@ function Tick() {
       for (let j = 0; j < Resource.automates.length; j++) {
         const _Resource = Resources[Resource.automates[j]];
         const _order = _Resource.order;
-        console.log(_order, savefile.resources[_order]);
         if (
-          savefile.resources[_order].startTime !== null ||
+          savefile.resources[_order].lastTime !== null ||
           canBuy(_Resource.name, savefile) === 0
         ) continue;
-        stroe.dispatch(craftStart(_order));
+        store.dispatch(craftStart(_order));
       }
     }
 
     // Check craft end
-    if (savefile.resources[order].startTime !== null) {
-      let craftTime = Resource.craftTime*1000;
-      if (AutoConnected[order] !== -1) {
-        craftTime /= savefile.resources[AutoConnected[order]].have;
-      }
-      if (Time >= savefile.resources[order].startTime + craftTime) {
-        stroe.dispatch(craftEnd(i));
+    const lastTime = savefile.resources[order].lastTime;
+    if (lastTime !== null) {
+      let craftTime = getCooldown(Resource.name, savefile);
+      let progressIncrement = (Time - lastTime)/craftTime;
+      if (Time >= lastTime + craftTime) {
+        store.dispatch(craftUpdate({
+          order: i,
+          canBulk: true,
+          progressIncrement
+        }));
       }
     }
   }

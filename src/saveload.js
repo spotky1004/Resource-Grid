@@ -3,7 +3,8 @@ const saveKey = "resource_grid";
 export const DefaultSave = {
   resources: Array.from({ length: 81 }, _ => ({
     have: 0,
-    startTime: null,
+    lastTime: null,
+    progress: 0,
     unlocked: false
   }))
 };

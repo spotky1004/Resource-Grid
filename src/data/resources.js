@@ -11,7 +11,7 @@ export const Resources = {
   }),
   Tree: new Resource({
     name: "Tree",
-    craftTime: 1,
+    craftTime: 10,
     position: [0, 1]
   }),
   Log: new Resource({
@@ -280,4 +280,15 @@ export function buy(name, savefile, doBulk=false) {
   savefile.resources[Resource.order].startTime = new Date().getTime();
 
   return bulk;
+}
+export function getCooldown(name, savefile) {
+  const Resource = Resources[name];
+  const order = Resource.order;
+
+  let craftTime = Resource.craftTime*1000;
+  if (AutoConnected[order] !== -1) {
+    craftTime /= savefile.resources[AutoConnected[order]].have;
+  }
+
+  return craftTime;
 }
