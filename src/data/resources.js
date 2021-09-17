@@ -50,6 +50,9 @@ export const Resources = {
     },
     craftTime: 3,
     craftMultiply: 4,
+    unlockAt: {
+      "CopperOre": 1,
+    },
     position: [0, 4]
   }),
   Vine: new Resource({
@@ -72,18 +75,30 @@ export const Resources = {
     ],
     description: "Chance to grant some ore on craft.\nChance is based on Pickaxe",
     effectMultiply: (savefile) => savefile[Resources.Pickaxe.order].have**1.3,
+    unlockAt: {
+      "Pickaxe": 1,
+    },
     position: [2, 0]
   }),
   CopperOre: new Resource({
     name: "CopperOre",
+    unlockAt: {
+      "CopperOre": 1,
+    },
     position: [2, 1]
   }),
   IronOre: new Resource({
     name: "IronOre",
+    unlockAt: {
+      "IronOre": 1,
+    },
     position: [2, 2]
   }),
   GoldOre: new Resource({
     name: "GoldOre",
+    unlockAt: {
+      "GoldOre": 1,
+    },
     position: [2, 3]
   }),
   EmeraldStone: new Resource({
@@ -110,6 +125,9 @@ export const Resources = {
       "Charcoal": 1
     },
     craftTime: 10,
+    unlockAt: {
+      "CopperOre": 1,
+    },
     position: [3, 1]
   }),
   Iron: new Resource({
@@ -119,6 +137,9 @@ export const Resources = {
       "Charcoal": 3
     },
     craftTime: 15,
+    unlockAt: {
+      "IronOre": 1,
+    },
     position: [3, 2]
   }),
   Gold: new Resource({
@@ -126,6 +147,9 @@ export const Resources = {
     cost: {
       "GoldOre": 5,
       "Charcoal": 2,
+    },
+    unlockAt: {
+      "GoldOre": 1,
     },
     position: [3, 3]
   }),
@@ -169,6 +193,9 @@ export const Resources = {
   Water: new Resource({
     name: "Water",
     craftTime: 100,
+    unlockAt: {
+      "Copper": 1,
+    },
     position: [5, 0]
   }),
   Lava: new Resource({
@@ -176,6 +203,10 @@ export const Resources = {
     cost: {
       "Stone": 250,
       "Charcoal": 50
+    },
+    unlockAt: {
+      "Stone": 100,
+      "Charcoal": 1,
     },
     craftTime: 500,
     position: [5, 1]
@@ -193,14 +224,31 @@ export const Resources = {
 
   Axe: new Resource({
     name: "Axe",
-    description: "Cut tree",
+    description: "Cuts tree",
     cost: (have) => ({
       "Log": (have+1)**2,
       "Plank": 3 * (have+1)**2
     }),
     craftTime: 5,
     automates: ["Log"],
+    unlockAt: {
+      "Plank": 1,
+    },
     position: [6, 0]
+  }),
+  Saw: new Resource({
+    name: "Saw",
+    description: "Automates Plank",
+    cost: (have) => ({
+      "Plank": 10 * (have+1)**2,
+      "Iron": 3 * (have+1)**1.2
+    }),
+    craftTime: 60,
+    automates: ["Plank"],
+    unlockAt: {
+      "Iron": 1,
+    },
+    position: [6, 1]
   }),
   Pickaxe: new Resource({
     name: "Pickaxe",
@@ -214,12 +262,18 @@ export const Resources = {
     }),
     craftTime: 30,
     automates: ["Stone"],
-    position: [6, 1]
+    unlockAt: {
+      "Plank": 1
+    },
+    position: [6, 2]
   }),
   GemstomePickaxe: new Resource({
     name: "GemstonePickaxe",
     craftTime: 120,
-    position: [6, 2],
+    unlockAt: {
+      "EmeraldStone": 1,
+    },
+    position: [6, 3],
   }),
   Pump: new Resource({
     name: "Pump",
@@ -231,7 +285,10 @@ export const Resources = {
     }),
     craftTime: 80,
     automates: ["Water"],
-    position: [6, 3]
+    unlockAt: {
+      "Copper": 1,
+    },
+    position: [6, 4]
   }),
   Volcano: new Resource({
     name: "Volcano",
@@ -242,7 +299,10 @@ export const Resources = {
     }),
     craftTime: 50,
     automates: ["Lava"],
-    position: [6, 4]
+    unlockAt: {
+      "Lava": 1,
+    },
+    position: [6, 5]
   }),
   MetalworkFactory: new Resource({
     name: "MetalworkFactory",
@@ -255,7 +315,11 @@ export const Resources = {
     }),
     craftTime: 500,
     automates: ["Iron", "Gold", "Copper"],
-    position: [6, 5]
+    unlockAt: {
+      "Pump": 1,
+      "Volcano": 1,
+    },
+    position: [6, 6]
   }),
 
   Forest: new Resource({
