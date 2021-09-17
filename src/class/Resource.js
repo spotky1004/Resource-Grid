@@ -9,7 +9,8 @@ export default class Resource {
    * @property {number} [craftMultiply] - Craft multiply (default: 1)
    * @property {[number, number]} position - Position on Rescource Grid
    * @property {[number, string][]} [randomGrantOnCraft] - [chance, id] | Randomely grants resource on craft
-   * @property {function(object): number} [effectMultiply] - Multiply random chance and 
+   * @property {function(object): number} [effectMultiply] - Multiply random chance and Automate speed
+   * @property {boolean} [noCostIfAutomate] - yes
    * @property {string[]} [automates] - Automatically craft/generate resource
    */
   /** @param {ResourceConstructor} data */
@@ -24,6 +25,7 @@ export default class Resource {
     this.order = 9*this._position[0] + this._position[1];
     this.randomGrantOnCraft = data.randomGrantOnCraft ?? [];
     this._effectMultiply = data.effectMultiply;
+    this.noCostIfAutomate = data.noCostIfAutomate || false;
     this.automates = data.automates;
   }
 
@@ -42,9 +44,9 @@ export default class Resource {
     }
   }
 
-  cost(have) {
+  cost(have, isAuto) {
     let cost;
-    if (typeof this._cost === 'undefined') {
+    if (typeof this._cost === 'undefined' || (isAuto && this.noCostIfAutomate)) {
       return null;
     } else if (typeof this._cost === 'function') {
       cost = this._cost(have);

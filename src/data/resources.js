@@ -53,6 +53,7 @@ export const Resources = {
     unlockAt: {
       "CopperOre": 1,
     },
+    noCostIfAutomate: true,
     position: [0, 4]
   }),
   Vine: new Resource({
@@ -215,11 +216,15 @@ export const Resources = {
   Steam: new Resource({
     name: "Steam",
     cost: {
-      "Water": 100,
-      "Lava": 8
+      "Water": 10,
+      "Lava": 5
     },
     craftTime: 300,
-    craftMultiply: 100,
+    craftMultiply: 15,
+    unlockAt: {
+      "Water": 1,
+      "Lava": 1,
+    },
     position: [5, 2]
   }),
 
@@ -321,6 +326,21 @@ export const Resources = {
       "Volcano": 1,
     },
     position: [6, 6]
+  }),
+  CharcoalMiner: new Resource({
+    name: "CharcoalMiner",
+    description: "Mines Charcoal without any cost",
+    cost: (have) => ({
+      "Steam": 15*(have+1)**1.2,
+      "Pump": 2+have,
+      "Iron": 50*(have+1)*(1+have/20)
+    }),
+    craftTime: 300,
+    automates: ["Charcoal"],
+    unlockAt: {
+      "MetalworkFactory": 1,
+    },
+    position: [6, 7]
   }),
 
   Forest: new Resource({

@@ -6,18 +6,19 @@ const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
 
-export const craftStart = order => ({
+export const craftStart = (order, isAuto) => ({
   type: CRAFT_START,
-  order
+  order,
+  isAuto
 });
 export const craftUpdate = ({
   order,
-  canBulk,
+  isAuto,
   progressIncrement,
 }) => ({
   type: CRAFT_UPDATE,
   order,
-  canBulk,
+  isAuto,
   progressIncrement
 });
 export const resourceUnlock = order => ({
@@ -54,7 +55,7 @@ function reducer(state = savefile.resources, action) {
   if (!Resource) return state;
   const order = action.order;
   const have = state[order].have;
-  const cost = Resource.cost(have);
+  const cost = Resource.cost(have, action.isAuto);
 
   switch (action.type) {
     case CRAFT_START:
@@ -76,13 +77,13 @@ function reducer(state = savefile.resources, action) {
       state[order] = {
         ...state[order],
         lastTime: new Date().getTime(),
-        progress: state[order].progress + action.progressIncrement,
+        progress: state[order].progress + action.progressIncrement*100,
       };
 
       if (state[order].progress >= 1) {
         state[order].lastTime = null;
         let bulk = 1;
-        if (action.canBulk) {
+        if (action.isAuto) {
           bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
           state[order].progress %= 1;

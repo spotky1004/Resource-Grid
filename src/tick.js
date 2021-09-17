@@ -21,6 +21,7 @@ function Tick() {
     if (Resource === null) continue;
     const order = i;
     const save = savefile.resources[order];
+    const isAuto = 1 <= savefile.resources[AutoConnected[order]]?.have;
 
     // Check Unlocked
     if (!save.unlocked && isUnlocked(Resource.name, savefile.resources)) {
@@ -36,7 +37,7 @@ function Tick() {
           savefile.resources[_order].lastTime !== null ||
           canBuy(_Resource.name, savefile) === 0
         ) continue;
-        store.dispatch(craftStart(_order));
+        store.dispatch(craftStart(_order, true));
       }
     }
 
@@ -47,7 +48,7 @@ function Tick() {
       let progressIncrement = (Time - lastTime)/craftTime;
       store.dispatch(craftUpdate({
         order: i,
-        canBulk: 1 <= savefile.resources[AutoConnected[order]]?.have,
+        isAuto,
         progressIncrement
       }));
     }
