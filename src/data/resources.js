@@ -317,9 +317,8 @@ export const Resources = {
     craftTime: 200,
     automates: ["Iron", "Gold", "Copper"],
     unlockAt: {
-      "Copper": 3,
-      "Iron": 3,
-      "Gold": 3,
+      "Pump": 1,
+      "Volcano": 1,
     },
     position: [6, 6]
   }),
