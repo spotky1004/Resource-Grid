@@ -1,7 +1,7 @@
 import store from "./store.js";
 // eslint-disable-next-line
 import { DefaultSave } from "./saveload.js";
-import { Resources, ResourceArr, getCooldown, canBuy } from "./data/resources.js";
+import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected } from "./data/resources.js";
 import { craftStart, craftUpdate } from "./modules/resources.js";
 
 function Tick() {
@@ -40,7 +40,7 @@ function Tick() {
       let progressIncrement = (Time - lastTime)/craftTime;
       store.dispatch(craftUpdate({
         order: i,
-        canBulk: true,
+        canBulk: 1 <= savefile.resources[AutoConnected[order]]?.have,
         progressIncrement
       }));
     }

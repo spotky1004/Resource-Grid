@@ -36,7 +36,6 @@ function ResourceGrid({ save, craftStart }) {
               key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
               data={ResourceData}
               index={index}
-              // save={save[index]}
               craftStart={craftStart}
             />
           ))}

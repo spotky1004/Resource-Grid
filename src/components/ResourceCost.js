@@ -52,9 +52,8 @@ function ResourceCost({ cost }) {
           const costResource = Resources[costResourceName];
 
           return (
-            <div>
+            <div key={index}>
               <CostDisplay
-                key={index}
                 style={{backgroundPosition: `calc(var(--resourceGap) * -${costResource.position.x}) calc(var(--resourceGap) * -${costResource.position.y})` }}
               >
                 {costQuantity}

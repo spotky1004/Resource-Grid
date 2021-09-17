@@ -11,7 +11,7 @@ export const Resources = {
   }),
   Tree: new Resource({
     name: "Tree",
-    craftTime: 10,
+    craftTime: 20,
     position: [0, 1]
   }),
   Log: new Resource({
@@ -19,8 +19,11 @@ export const Resources = {
     cost: {
       "Tree": 1
     },
-    craftTime: 10,
-    craftMultiply: 5,
+    craftTime: 20,
+    craftMultiply: 2,
+    randomGrantOnCraft: [
+      [0.0008, "TreeSeed", 0]
+    ],
     position: [0, 2]
   }),
   Plank: new Resource({
@@ -28,7 +31,8 @@ export const Resources = {
     cost: {
       "Log": 1
     },
-    craftTime: 5,
+    craftTime: 15,
+    craftMultiply: 3,
     position: [0, 3]
   }),
   Charcoal: new Resource({
@@ -51,7 +55,15 @@ export const Resources = {
 
   Stone: new Resource({
     name: "Stone",
-    craftTime: 10,
+    craftTime: 40,
+    randomGrantOnCraft: [
+      [0.03, "CopperOre"],
+      [0.008, "IronOre"],
+      [0.003, "GoldOre"],
+      [0.001, "EmeraldStone"],
+    ],
+    description: "Chance to grant some ore on craft. Chance is based on Pickaxe",
+    effectMultiply: (savefile) => savefile[Resources.Pickaxe.order].have**1.5,
     position: [2, 0]
   }),
   CopperOre: new Resource({
@@ -153,7 +165,7 @@ export const Resources = {
   }),
   Lava: new Resource({
     name: "Lava",
-    craftTime: 500,
+    craftTime: 1000,
     position: [5, 1]
   }),
   Steam: new Resource({
@@ -180,25 +192,25 @@ export const Resources = {
   }),
   Pickaxe: new Resource({
     name: "Pickaxe",
-    description: "Generate Stone & Ores randomely per second",
+    description: "Automatically mines stone",
     cost: (have) => ({
-      "Plank": 5 * (have + 1)**2,
-      "Stone": 6 * have**2,
+      "Plank": 10 * (have + 1)*(have / 5 + 1),
+      "Stone": 6 * have**1.4,
       "Copper": 3 * Math.max(0, have-4)**2,
       "Iron": 5 * Math.max(0, have-9)**2,
       "Gold": 7 * Math.max(0, have-14)**2,
-      "Emerald": 4 * Math.max(0, have-19)**1.4,
-      "Ruby": 5 * Math.max(0, have-24)**1.4,
     }),
-    randomGrantPerSecond: [
-      [0.03, "Copper", 3],
-      [0.015, "Iron", 8],
-      [0.0075, "Gold", 13],
-      [0.001, "Emerald", 18],
-      [0.0001, "Ruby", 23]
-    ],
-    effectMultiply: (have) => have**1.5,
+    craftTime: 30,
+    automates: ["Stone"],
     position: [6, 1]
+  }),
+  GemstomePickaxe: new Resource({
+    name: "GemstonePickaxe",
+    position: [6, 2],
+  }),
+  MetalworkFactory: new Resource({
+    name: "MetalworkFactory",
+    position: [6, 3]
   }),
 
   Loot: new Resource({
@@ -287,7 +299,7 @@ export function getCooldown(name, savefile) {
 
   let craftTime = Resource.craftTime*1000;
   if (AutoConnected[order] !== -1) {
-    craftTime /= savefile.resources[AutoConnected[order]].have;
+    craftTime /= Math.max(1, savefile.resources[AutoConnected[order]].have);
   }
 
   return craftTime;

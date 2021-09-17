@@ -142,7 +142,7 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
               {save.have}
             </ResourceQuantity>
             <ResourceProgress style={{
-              height: save.progress * 100
+              height: `${save.progress * 100}%`
             }}></ResourceProgress>
           </span>
           <ResourceCost cost={cost}/>

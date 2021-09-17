@@ -1,6 +1,6 @@
 // import produce from 'immer';
 import { savefile } from '../saveload';
-import { ResourceArr } from '../data/resources';
+import { Resources, ResourceArr } from '../data/resources';
 
 const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
@@ -20,41 +20,52 @@ export const craftUpdate = ({
   progressIncrement
 });
 
-/**
- * @typedef {object} ResourceAction
- * @property {string} type
- * @property {string} order
- * @property {boolean} [canBulk]
- * @property {number} [progressIncrement]
- */
+function buyResource(state, cost, bulkMax=0) {
+  if (Object.keys(cost ?? {}).length === 0) return false;
 
-/**
- * @param {savefile} state 
- * @param {ResourceAction} action 
- */
+  let bulk = bulkMax;
+
+  // Check can buy & Bulk count
+  for (const resourceName in cost) {
+    const _cost = cost[resourceName];
+    const _order = Resources[resourceName].order;
+    bulk = Math.min(bulk, state[_order].have/_cost);
+  }
+  bulk = Math.floor(bulk);
+  if (bulk <= 0) return false;
+
+  // Subtract resource
+  for (const resourceName in cost) {
+    const _cost = cost[resourceName];
+    const _order = Resources[resourceName].order;
+    state[_order] = {
+      ...state[_order],
+      have: state[_order].have - _cost*bulk
+    };
+  }
+  return bulk;
+}
+
 function reducer(state = savefile.resources, action) {
   const Resource = ResourceArr[action.order];
+  if (!Resource) return state;
   const order = action.order;
-  const have = state[order]?.have;
+  const have = state[order].have;
+  const cost = Resource.cost(have);
 
   switch (action.type) {
     case CRAFT_START:
-      const cost = Resource.cost(have);
-
       state = [...state];
-      for (const resourceName in cost) {
-        const _cost = cost[resourceName];
-        const _order = ResourceArr[action.order];
-        state[_order] = {
-          ...state[_order],
-          have: state[_order].have - _cost
-        };
-      }
+      if (state[order].lastTime !== null) return state;
+      const canBuy = buyResource(state, cost, 1);
+      if (!canBuy) return state;
+
       state[order] = {
         ...state[order],
-        lastTime: new Date().getTime()
+        lastTime: new Date().getTime(),
+        progress: 0,
       };
-    
+      
       return state;
     case CRAFT_UPDATE:
       state = [...state];
@@ -66,13 +77,30 @@ function reducer(state = savefile.resources, action) {
       };
 
       if (state[order].progress >= 1) {
+        state[order].lastTime = null;
+        let bulk = 1;
         if (action.canBulk) {
-          state[order].have += Math.floor(state[order].progress);
+          bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
+          state[order].have += bulk*Resource.craftMultiply;
           state[order].progress %= 1;
         } else {
-          state[order].have++;
-          state[order].lastTime = null;
+          state[order].have += Resource.craftMultiply;
           state[order].progress = 0;
+        }
+
+        const EffectMultiply = Resource.effectMultiply(state);
+        console.log(Resource.name, EffectMultiply);
+        // randomGrantOnCraft
+        for (let i = 0; i < Resource.randomGrantOnCraft.length; i++) {
+          const [chance, toGrant] = Resource.randomGrantOnCraft[i];
+          const realChance = chance*EffectMultiply;
+          const grantChance = 1-((1-realChance)**bulk); // TODO: Change to better formula
+          if (Math.random() < grantChance) {
+            state[Resources[toGrant].order] = {
+              ...state[Resources[toGrant].order],
+              have: state[Resources[toGrant].order].have + 1
+            }
+          }
         }
       }
       return state;

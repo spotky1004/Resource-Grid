@@ -7,9 +7,8 @@ export default class Resource {
    * @property {number} [craftTime] - Crafting/Generating time (in second)
    * @property {number} [craftMultiply] - Craft multiply (default: 1)
    * @property {[number, number]} position - Position on Rescource Grid
-   * @property {[number, string, number][]} [randomGrantOnCraft] - [chance, id, greatThan&sub] | Randomely grants resource on craft
-   * @property {[number, string, number][]} [randomGrantPerSecond] - [chance, id, greatThan&sub] | Randomely grants resource every second
-   * @property {function(number): number} [effectMultiply] - Multiply random chance and 
+   * @property {[number, string][]} [randomGrantOnCraft] - [chance, id] | Randomely grants resource on craft
+   * @property {function(object): number} [effectMultiply] - Multiply random chance and 
    * @property {string[]} [automates] - Automatically craft/generate resource
    */
   /** @param {ResourceConstructor} data */
@@ -21,8 +20,7 @@ export default class Resource {
     this.craftMultiply = data.craftMultiply || 1;
     this._position = data.position;
     this.order = 9*this._position[0] + this._position[1];
-    this.randomGrantOnCraft = data.randomGrantOnCraft;
-    this.randomGrantPerSecond = data.randomGrantPerSecond;
+    this.randomGrantOnCraft = data.randomGrantOnCraft ?? [];
     this._effectMultiply = data.effectMultiply;
     this.automates = data.automates;
   }
@@ -34,9 +32,9 @@ export default class Resource {
     }
   }
 
-  effectMultiply(have) {
+  effectMultiply(savefile) {
     if (typeof this._effectMultiply === 'function') {
-      return this._effectMultiply(have);
+      return this._effectMultiply(savefile);
     } else {
       return 1;
     }
