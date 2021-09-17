@@ -21,8 +21,6 @@ export const craftUpdate = ({
 });
 
 function buyResource(state, cost, bulkMax=0) {
-  if (Object.keys(cost ?? {}).length === 0) return false;
-
   let bulk = bulkMax;
 
   // Check can buy & Bulk count

@@ -130,7 +130,12 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
   const cost = data ? Object.entries(data.cost(save.have) ?? {}) : [];
 
   return (
-    <ResourceWarp onClick={() => craftStart(index)} name={displayName}>
+    <ResourceWarp
+      onClick={() => {
+        if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) craftStart(index)
+      }}
+      name={displayName}
+    >
       {
         data &&
         <ResourceInfo>
