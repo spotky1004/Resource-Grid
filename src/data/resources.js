@@ -202,10 +202,10 @@ export const Resources = {
   }),
   Lava: new Resource({
     name: "Lava",
-    cost: {
+    cost: (have) => ({
       "Stone": 100,
-      "Charcoal": 15
-    },
+      "Charcoal": 50-45*(1-1/(have/7))
+    }),
     unlockAt: {
       "Stone": 100,
       "Charcoal": 1,
