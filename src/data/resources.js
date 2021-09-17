@@ -213,16 +213,17 @@ export const Resources = {
     craftTime: 120,
     position: [6, 2],
   }),
-  MetalworkFactory: new Resource({
-    name: "MetalworkFactory",
-    craftTime: 500,
-    position: [6, 3]
-  }),
   Pump: new Resource({
     name: "Pump",
     description: "Generates Water",
+    cost: (have) => ({
+      "Copper": 30*(have+1)**1.2,
+      "Iron": 10*(have+1)**1.2,
+      "Gold": 10*(have+1)**1.2,
+    }),
     craftTime: 80,
-    position: [6, 4]
+    automates: ["Water"],
+    position: [6, 3]
   }),
   Volcano: new Resource({
     name: "Volcano",
@@ -232,6 +233,20 @@ export const Resources = {
       "Lava": 1*have**2,
     }),
     craftTime: 50,
+    automates: ["Lava"],
+    position: [6, 4]
+  }),
+  MetalworkFactory: new Resource({
+    name: "MetalworkFactory",
+    description: "Automates Copper, Iron and Gold",
+    cost: (have) => ({
+      "Iron": 300*((have+1)**1.15),
+      "Gold": 300*((have+1)**1.15),
+      "Pump": (have+1)*2,
+      "Volcano": (have+1),
+    }),
+    craftTime: 500,
+    automates: ["Iron", "Gold", "Copper"],
     position: [6, 5]
   }),
 

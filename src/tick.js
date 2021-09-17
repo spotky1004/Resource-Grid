@@ -3,6 +3,9 @@ import store from "./store.js";
 import { DefaultSave } from "./saveload.js";
 import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected } from "./data/resources.js";
 import { craftStart, craftUpdate } from "./modules/resources.js";
+import { save } from "./saveload.js";
+
+let lastSave = new Date().getTime();
 
 function Tick() {
   /**
@@ -10,6 +13,8 @@ function Tick() {
    */
   const savefile = store.getState();
   const Time = new Date().getTime();
+
+  if (Time - lastSave > 5000) save(savefile);
 
   for (let i = 0; i < ResourceArr.length; i++) {
     const Resource = ResourceArr[i];

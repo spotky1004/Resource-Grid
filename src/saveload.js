@@ -10,13 +10,13 @@ export const DefaultSave = {
 };
 DefaultSave.resources[0].have = 1;
 
-export function save() {
-  localStorage.setItem(saveKey, savefile);
+export function save(savefile) {
+  localStorage.setItem(saveKey, JSON.stringify(savefile));
 }
 
 /** @returns {DefaultSave} */
 export function load() {
-  return localStorage.getItem(saveKey) ?? mergeObject({}, DefaultSave);
+  return JSON.parse(localStorage.getItem(saveKey)) ?? mergeObject({}, DefaultSave);
 }
 export const savefile = load();
 
