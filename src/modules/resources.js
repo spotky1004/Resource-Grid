@@ -77,7 +77,7 @@ function reducer(state = savefile.resources, action) {
       state[order] = {
         ...state[order],
         lastTime: new Date().getTime(),
-        progress: state[order].progress + action.progressIncrement*100,
+        progress: state[order].progress + action.progressIncrement,
       };
 
       if (state[order].progress >= 1) {
