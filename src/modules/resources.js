@@ -87,7 +87,6 @@ function reducer(state = savefile.resources, action) {
         }
 
         const EffectMultiply = Resource.effectMultiply(state);
-        console.log(Resource.name, EffectMultiply);
         // randomGrantOnCraft
         for (let i = 0; i < Resource.randomGrantOnCraft.length; i++) {
           const [chance, toGrant] = Resource.randomGrantOnCraft[i];

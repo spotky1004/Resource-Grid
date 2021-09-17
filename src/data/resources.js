@@ -62,8 +62,8 @@ export const Resources = {
       [0.003, "GoldOre"],
       [0.001, "EmeraldStone"],
     ],
-    description: "Chance to grant some ore on craft. Chance is based on Pickaxe",
-    effectMultiply: (savefile) => savefile[Resources.Pickaxe.order].have**1.5,
+    description: "Chance to grant some ore on craft.\nChance is based on Pickaxe",
+    effectMultiply: (savefile) => savefile[Resources.Pickaxe.order].have**1.3,
     position: [2, 0]
   }),
   CopperOre: new Resource({
@@ -165,7 +165,11 @@ export const Resources = {
   }),
   Lava: new Resource({
     name: "Lava",
-    craftTime: 1000,
+    cost: {
+      "Stone": 250,
+      "Charcoal": 50
+    },
+    craftTime: 500,
     position: [5, 1]
   }),
   Steam: new Resource({
@@ -206,11 +210,29 @@ export const Resources = {
   }),
   GemstomePickaxe: new Resource({
     name: "GemstonePickaxe",
+    craftTime: 120,
     position: [6, 2],
   }),
   MetalworkFactory: new Resource({
     name: "MetalworkFactory",
+    craftTime: 500,
     position: [6, 3]
+  }),
+  Pump: new Resource({
+    name: "Pump",
+    description: "Generates Water",
+    craftTime: 80,
+    position: [6, 4]
+  }),
+  Volcano: new Resource({
+    name: "Volcano",
+    description: "Automates Lava",
+    cost: (have) => ({
+      "Stone": 500,
+      "Lava": 1*have**2,
+    }),
+    craftTime: 50,
+    position: [6, 5]
   }),
 
   Loot: new Resource({
@@ -300,6 +322,7 @@ export function getCooldown(name, savefile) {
   let craftTime = Resource.craftTime*1000;
   if (AutoConnected[order] !== -1) {
     craftTime /= Math.max(1, savefile.resources[AutoConnected[order]].have);
+    craftTime /= ResourceArr[AutoConnected[order]].effectMultiply(savefile.resources);
   }
 
   return craftTime;
