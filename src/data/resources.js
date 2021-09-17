@@ -254,7 +254,7 @@ export const Resources = {
     name: "Pickaxe",
     description: "Automatically mines stone",
     cost: (have) => ({
-      "Plank": 10 * (have + 1)**1.2,
+      "Plank": 10 * (have + 1)**(have / 100 + 1),
       "Stone": 6 * have**1.4,
       "Copper": 3 * Math.max(0, have-4)**2,
       "Iron": 5 * Math.max(0, have-9)**2,
