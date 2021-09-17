@@ -7,11 +7,13 @@ export const Resources = {
     name: "TreeSeed",
     description: "Generate tree",
     automates: ["Tree"],
+    unlockAt: {},
     position: [0, 0]
   }),
   Tree: new Resource({
     name: "Tree",
     craftTime: 20,
+    unlockAt: {},
     position: [0, 1]
   }),
   Log: new Resource({
@@ -24,6 +26,9 @@ export const Resources = {
     randomGrantOnCraft: [
       [0.0008, "TreeSeed", 0]
     ],
+    unlockAt: {
+      "Tree": 1,
+    },
     position: [0, 2]
   }),
   Plank: new Resource({
@@ -33,6 +38,9 @@ export const Resources = {
     },
     craftTime: 15,
     craftMultiply: 3,
+    unlockAt: {
+      "Log": 1
+    },
     position: [0, 3]
   }),
   Charcoal: new Resource({
@@ -250,10 +258,51 @@ export const Resources = {
     position: [6, 5]
   }),
 
-  Loot: new Resource({
-    name: "Loot",
+  Forest: new Resource({
+    name: "Forest",
+    position: [7, 0]
+  }),
+  Underground: new Resource({
+    name: "Underground",
+    position: [7, 1]
+  }),
+  Ocean: new Resource({
+    name: "Ocean",
+    position: [7, 2]
+  }),
+  City: new Resource({
+    name: "City",
+    position: [7, 3]
+  }),
+  EarthEssence: new Resource({
+    name: "EarthEssence",
+    position: [7, 4]
+  }),
+
+  DivineShard: new Resource({
+    name: "DivineShard",
     position: [8, 0]
-  })
+  }),
+  ReplicantiBoost: new Resource({
+    name: "ReplicantiBoost",
+    position: [8, 7]
+  }),
+  Replicanti: new Resource({
+    name: "Replicanti",
+    cost: {
+      "Replicanti": 1
+    },
+    craftMultiply: 2,
+    effectMultiply: (savefile) => {
+      const replicanti = savefile[Resources.Replicanti.order].have;
+      const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
+      const replicantiPow = Math.min(0.95, 0.5 + 0.4/(1/((replicantiBoost**0.9)/50)));
+      return (replicantiBoost+1)**1.2*(replicanti+1)**replicantiPow/(replicanti+1);
+    },
+    automates: ["Replicanti"],
+    craftTime: 10,
+    position: [8, 8]
+  }),
 };
 
 
@@ -341,4 +390,13 @@ export function getCooldown(name, savefile) {
   }
 
   return craftTime;
+}
+export function isUnlocked(name, savefile) {
+  const Resource = Resources[name];
+
+  if (!Resource || !Resource.unlockAt) return false;
+  for (const name in Resource.unlockAt) {
+    if (savefile[Resources[name].order].have < Resource.unlockAt[name]) return false;
+  }
+  return true;
 }

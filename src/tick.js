@@ -1,8 +1,8 @@
 import store from "./store.js";
 // eslint-disable-next-line
 import { DefaultSave } from "./saveload.js";
-import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected } from "./data/resources.js";
-import { craftStart, craftUpdate } from "./modules/resources.js";
+import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked } from "./data/resources.js";
+import { craftStart, craftUpdate, resourceUnlock } from "./modules/resources.js";
 import { save } from "./saveload.js";
 
 let lastSave = new Date().getTime();
@@ -23,7 +23,9 @@ function Tick() {
     const save = savefile.resources[order];
 
     // Check Unlocked
-    
+    if (!save.unlocked && isUnlocked(Resource.name, savefile.resources)) {
+      store.dispatch(resourceUnlock(order));
+    }
 
     // Start Automate
     if (Resource.automates && save.have >= 1) {
@@ -39,7 +41,7 @@ function Tick() {
     }
 
     // Check craft end
-    const lastTime = savefile.resources[order].lastTime;
+    const lastTime = save.lastTime;
     if (lastTime !== null) {
       let craftTime = getCooldown(Resource.name, savefile);
       let progressIncrement = (Time - lastTime)/craftTime;

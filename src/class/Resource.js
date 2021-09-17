@@ -3,6 +3,7 @@ export default class Resource {
    * @typedef ResourceConstructor
    * @property {string} name - Name of the resource
    * @property {string} description - Description of the resource
+   * @property {Object.<stringe, number>} unlockAt - Check resource is unlocked
    * @property {Object.<string, number> | function(number): RescourceEnum.<string, number> } [cost] - {[id]: quantity} | Cost of the resource
    * @property {number} [craftTime] - Crafting/Generating time (in second)
    * @property {number} [craftMultiply] - Craft multiply (default: 1)
@@ -15,6 +16,7 @@ export default class Resource {
   constructor(data) {
     this.name = data.name;
     this.description = data.description;
+    this.unlockAt = data.unlockAt;
     this._cost = data.cost;
     this.craftTime = data.craftTime;
     this.craftMultiply = data.craftMultiply || 1;

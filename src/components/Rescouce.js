@@ -129,7 +129,7 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
 
   const cost = data ? Object.entries(data.cost(save.have) ?? {}) : [];
 
-  return (
+  return (save.unlocked ?
     <ResourceWarp
       onClick={() => {
         if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) craftStart(index)
@@ -154,7 +154,7 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
         </ResourceInfo>
       }
     </ResourceWarp>
-  );
+    : <ResourceWarp style={{opacity: 0.3, pointerEvents: "none"}}></ResourceWarp>);
 }
 
 export default connect(

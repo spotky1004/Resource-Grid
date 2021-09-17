@@ -4,6 +4,7 @@ import { Resources, ResourceArr } from '../data/resources';
 
 const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
+const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
 
 export const craftStart = order => ({
   type: CRAFT_START,
@@ -18,6 +19,10 @@ export const craftUpdate = ({
   order,
   canBulk,
   progressIncrement
+});
+export const resourceUnlock = order => ({
+  type: RESOURCE_UNLOCK,
+  order
 });
 
 function buyResource(state, cost, bulkMax=0) {
@@ -100,6 +105,13 @@ function reducer(state = savefile.resources, action) {
           }
         }
       }
+      return state;
+    case RESOURCE_UNLOCK:
+      state = [...state];
+      state[order] = {
+        ...state[order],
+        unlocked: true
+      };
       return state;
     default:
       return state;
