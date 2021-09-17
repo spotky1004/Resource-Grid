@@ -295,7 +295,7 @@ export const Resources = {
     description: "Automates Lava",
     cost: (have) => ({
       "Stone": 200,
-      "Lava": 1*have**2,
+      "Lava": 1*(have+1)**2,
     }),
     craftTime: 50,
     automates: ["Lava"],
