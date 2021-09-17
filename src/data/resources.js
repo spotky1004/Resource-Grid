@@ -148,6 +148,7 @@ export const Resources = {
       "GoldOre": 1,
       "Charcoal": 2,
     },
+    craftTime: 10,
     unlockAt: {
       "GoldOre": 1,
     },
