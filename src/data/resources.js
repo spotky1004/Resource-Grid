@@ -204,7 +204,7 @@ export const Resources = {
     name: "Lava",
     cost: {
       "Stone": 100,
-      "Charcoal": 50
+      "Charcoal": 15
     },
     unlockAt: {
       "Stone": 100,
