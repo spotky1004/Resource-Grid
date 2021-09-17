@@ -1,5 +1,3 @@
-import { connect } from "react-redux";
-import { craftStart, craftEnd } from "../modules/resources.js";
 import styled from "styled-components";
 import Rescouce from "./Rescouce.js";
 import { ResourceArr } from "../data/resources.js";
@@ -38,7 +36,7 @@ function ResourceGrid({ save, craftStart }) {
               key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
               data={ResourceData}
               index={index}
-              save={save[index]}
+              // save={save[index]}
               craftStart={craftStart}
             />
           ))}
@@ -50,12 +48,4 @@ function ResourceGrid({ save, craftStart }) {
   );
 }
 
-export default connect(
-  ({ resources }) => ({
-    save: resources
-  }),
-  {
-    craftStart,
-    craftEnd,
-  }
-)(ResourceGrid);
+export default ResourceGrid;

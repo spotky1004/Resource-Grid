@@ -38,13 +38,11 @@ function Tick() {
     if (lastTime !== null) {
       let craftTime = getCooldown(Resource.name, savefile);
       let progressIncrement = (Time - lastTime)/craftTime;
-      if (Time >= lastTime + craftTime) {
-        store.dispatch(craftUpdate({
-          order: i,
-          canBulk: true,
-          progressIncrement
-        }));
-      }
+      store.dispatch(craftUpdate({
+        order: i,
+        canBulk: true,
+        progressIncrement
+      }));
     }
   }
 }

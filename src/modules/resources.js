@@ -3,15 +3,10 @@ import { savefile } from '../saveload';
 import { ResourceArr } from '../data/resources';
 
 const CRAFT_START = 'resource/CRAFT_START';
-const CRAFT_END = 'resource/CRAFT_END';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 
 export const craftStart = order => ({
   type: CRAFT_START,
-  order
-});
-export const craftEnd = order => ({
-  type: CRAFT_END,
   order
 });
 export const craftUpdate = ({

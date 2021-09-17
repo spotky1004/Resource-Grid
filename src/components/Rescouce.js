@@ -1,3 +1,5 @@
+import { connect, useSelector } from "react-redux";
+import { craftStart, craftUpdate } from "../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
 // eslint-disable-next-line
 import Resource from '../class/Resource';
@@ -20,6 +22,7 @@ const ResourceWarp = styled.div`
   --boxSize: calc(var(--cellSize) - var(--margin));
   --cellWidth: calc(var(--boxSize) / var(--boxRatio));
   --cellHeight: var(--boxSize);
+  --borderRadius: calc(var(--boxSize) / 15);
 
   margin: calc(var(--margin) / 2);
 
@@ -27,7 +30,7 @@ const ResourceWarp = styled.div`
   height: var(--cellHeight);
   
   background-color: var(--colMain3);
-  border-radius: calc(var(--boxSize) / 15);
+  border-radius: var(--borderRadius);
   box-shadow: var(--baseShadow);
 
   transform: scale(1);
@@ -63,6 +66,8 @@ const ResourceWarp = styled.div`
     border-radius: calc(var(--cellSize) / 30);
 
     animation: ${namespaceAppear} 0.4s cubic-bezier(.12,.81,.31,.95);
+    
+    pointer-events: none;
   }
 `;
 const ResourceInfo = styled.div`
@@ -75,6 +80,19 @@ const ResourceInfo = styled.div`
     width: calc(var(--boxSize) / var(--boxRatio));
     height: calc(var(--boxSize));
   }
+`;
+const ResourceProgress = styled.span`
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 0%;
+  max-height: 100%;
+
+  background-color: var(--colOverlay);
+  border-radius: var(--borderRadius);
+
+  z-index: -1;
 `;
 const ResourceImage = styled.div`
   --imageSize: calc(var(--boxSize) / var(--boxRatio) - var(--margin));
@@ -105,13 +123,13 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ data, index, save, craftStart, craftEnd }) {
-    const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
+function ResourceGridItem({ data, index, craftStart, craftEnd }) {
+  const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
+  const save = useSelector(state => state.resources[index]);
 
-    const have = save.have;
-    const cost = data ? Object.entries(data.cost(have) ?? {}) : [];
+  const cost = data ? Object.entries(data.cost(save.have) ?? {}) : [];
 
-    return (
+  return (
     <ResourceWarp onClick={() => craftStart(index)} name={displayName}>
       {
         data &&
@@ -121,18 +139,23 @@ function ResourceGridItem({ data, index, save, craftStart, craftEnd }) {
               style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}
             ></ResourceImage>
             <ResourceQuantity>
-              {have}
+              {save.have}
             </ResourceQuantity>
+            <ResourceProgress style={{
+              height: save.progress * 100
+            }}></ResourceProgress>
           </span>
-          <span>
-            <ResourceCost
-              cost={cost}
-            />
-          </span>
+          <ResourceCost cost={cost}/>
         </ResourceInfo>
       }
     </ResourceWarp>
   );
 }
 
-export default ResourceGridItem;
+export default connect(
+  () => ({}),
+  {
+    craftStart,
+    craftUpdate,
+  }
+)(ResourceGridItem);;
