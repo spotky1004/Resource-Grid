@@ -46,7 +46,7 @@ export const Resources = {
   Charcoal: new Resource({
     name: "Charcoal",
     cost: {
-      "Log": 3
+      "Plank": 3
     },
     craftTime: 3,
     craftMultiply: 4,
@@ -227,7 +227,6 @@ export const Resources = {
     name: "Axe",
     description: "Cuts tree",
     cost: (have) => ({
-      "Log": (have+1)**2,
       "Plank": 3 * (have+1)**2
     }),
     craftTime: 5,
