@@ -66,11 +66,11 @@ export const Resources = {
 
   Stone: new Resource({
     name: "Stone",
-    craftTime: 40,
+    craftTime: 20,
     randomGrantOnCraft: [
-      [0.03, "CopperOre"],
-      [0.008, "IronOre"],
-      [0.003, "GoldOre"],
+      [0.05, "CopperOre"],
+      [0.02, "IronOre"],
+      [0.01, "GoldOre"],
       [0.001, "EmeraldStone"],
     ],
     description: "Chance to grant some ore on craft.\nChance is based on Pickaxe",
