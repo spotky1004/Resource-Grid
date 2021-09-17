@@ -202,14 +202,14 @@ export const Resources = {
   Lava: new Resource({
     name: "Lava",
     cost: {
-      "Stone": 250,
+      "Stone": 100,
       "Charcoal": 50
     },
     unlockAt: {
       "Stone": 100,
       "Charcoal": 1,
     },
-    craftTime: 500,
+    craftTime: 200,
     position: [5, 1]
   }),
   Steam: new Resource({
@@ -279,9 +279,9 @@ export const Resources = {
     name: "Pump",
     description: "Generates Water",
     cost: (have) => ({
-      "Copper": 30*(have+1)**1.2,
-      "Iron": 10*(have+1)**1.2,
-      "Gold": 10*(have+1)**1.2,
+      "Copper": 5*(have+1)**1.2,
+      "Iron": 3*(have+1)**1.2,
+      "Gold": 3*(have+1)**1.2,
     }),
     craftTime: 80,
     automates: ["Water"],
@@ -294,7 +294,7 @@ export const Resources = {
     name: "Volcano",
     description: "Automates Lava",
     cost: (have) => ({
-      "Stone": 500,
+      "Stone": 200,
       "Lava": 1*have**2,
     }),
     craftTime: 50,
@@ -311,10 +311,10 @@ export const Resources = {
       "Copper": 10*((have+1)**1.15),
       "Iron": 10*((have+1)**1.15),
       "Gold": 10*((have+1)**1.15),
-      "Pump": (have-5)*2,
-      "Volcano": (have-5),
+      "Pump": (have+1)*2,
+      "Volcano": (have+1),
     }),
-    craftTime: 500,
+    craftTime: 200,
     automates: ["Iron", "Gold", "Copper"],
     unlockAt: {
       "Copper": 3,
