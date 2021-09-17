@@ -121,7 +121,7 @@ export const Resources = {
   Copper: new Resource({
     name: "Copper",
     cost: {
-      "CopperOre": 3,
+      "CopperOre": 1,
       "Charcoal": 1
     },
     craftTime: 10,
@@ -133,7 +133,7 @@ export const Resources = {
   Iron: new Resource({
     name: "Iron",
     cost: {
-      "IronOre": 4,
+      "IronOre": 1,
       "Charcoal": 3
     },
     craftTime: 15,
@@ -145,7 +145,7 @@ export const Resources = {
   Gold: new Resource({
     name: "Gold",
     cost: {
-      "GoldOre": 5,
+      "GoldOre": 1,
       "Charcoal": 2,
     },
     unlockAt: {
