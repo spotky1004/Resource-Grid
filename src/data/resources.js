@@ -104,18 +104,30 @@ export const Resources = {
   }),
   EmeraldStone: new Resource({
     name: "EmeraldStone",
+    unlockAt: {
+      "EmeraldStone": 1,
+    },
     position: [2, 5]
   }),
   AmethystStone: new Resource({
     name: "AmethystStone",
+    unlockAt: {
+      "AmethystStone": 1,
+    },
     position: [2, 6]
   }),
   RubyStone: new Resource({
     name: "RubyStone",
+    unlockAt: {
+      "RubyStone": 1,
+    },
     position: [2, 7]
   }),
   SapphireStone: new Resource({
     name: "SapphireStone",
+    unlockAt: {
+      "SapphireStone": 1,
+    },
     position: [2, 8]
   }),
 
@@ -161,6 +173,9 @@ export const Resources = {
       "EmeraldStone": 10,
       "Lava": 1
     },
+    unlockAt: {
+      "EmeraldStone": 1,
+    },
     craftTime: 100,
     position: [3, 5]
   }),
@@ -171,6 +186,9 @@ export const Resources = {
       "Lava": 2
     },
     craftTime: 150,
+    unlockAt: {
+      "AmethystStone": 1,
+    },
     position: [3, 6]
   }),
   Ruby: new Resource({
@@ -180,6 +198,9 @@ export const Resources = {
       "Lava": 4
     },
     craftTime: 200,
+    unlockAt: {
+      "RubyStone": 1,
+    },
     position: [3, 7]
   }),
   Sapphire: new Resource({
@@ -189,6 +210,9 @@ export const Resources = {
       "Lava": 8
     },
     craftTime: 250,
+    unlockAt: {
+      "SapphireStone": 1,
+    },
     position: [3, 8]
   }),
 
@@ -204,7 +228,7 @@ export const Resources = {
     name: "Lava",
     cost: (have) => ({
       "Stone": 100,
-      "Charcoal": 50-45*(1-1/(have/7))
+      "Charcoal": 50-45*(1-1/(have/7+1))
     }),
     unlockAt: {
       "Stone": 100,
@@ -361,6 +385,12 @@ export const Resources = {
   }),
   EarthEssence: new Resource({
     name: "EarthEssence",
+    unlockAt: {
+      "Forest": 1,
+      "Underground": 1,
+      "Ocean": 1,
+      "City": 1,
+    },
     position: [7, 4]
   }),
 
@@ -370,6 +400,9 @@ export const Resources = {
   }),
   ReplicantiBoost: new Resource({
     name: "ReplicantiBoost",
+    unlockAt: {
+      "Replicanti": 1,
+    },
     position: [8, 7]
   }),
   Replicanti: new Resource({
@@ -383,6 +416,9 @@ export const Resources = {
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
       const replicantiPow = Math.min(0.95, 0.5 + 0.4/(1/((replicantiBoost**0.9)/50)));
       return (replicantiBoost+1)**1.2*(replicanti+1)**replicantiPow/(replicanti+1);
+    },
+    unlockAt: {
+      "Replicanti": 1,
     },
     automates: ["Replicanti"],
     craftTime: 10,
