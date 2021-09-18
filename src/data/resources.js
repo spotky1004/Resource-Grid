@@ -24,7 +24,8 @@ export const Resources = {
     craftTime: 20,
     craftMultiply: 2,
     randomGrantOnCraft: [
-      [0.0008, "TreeSeed", 0]
+      [0.0008, "TreeSeed", 0],
+      [0.03, "Fruit"]
     ],
     unlockAt: {
       "Tree": 1,
@@ -64,11 +65,55 @@ export const Resources = {
     name: "Mushroom",
     position: [0, 6]
   }),
+  Fruit: new Resource({
+    name: "Fruit",
+    unlockAt: {
+      "Fruit": 1,
+    },
+    position: [0, 7]
+  }),
+
+  Wall: new Resource({
+    name: "Wall",
+    cost: {
+      "Brick": 3,
+    },
+    craftTime: 15,
+    unlockAt: {
+      "Brick": 1,
+    },
+    position: [1, 5]
+  }),
+  House: new Resource({
+    name: "House",
+    cost: {
+      "Wall": 4,
+      "Glass": 2,
+    },
+    craftTime: 50,
+    unlockAt: {
+      "Wall": 1,
+    },
+    position: [1, 6]
+  }),
+  Citizen: new Resource({
+    name: "Citizen",
+    cost: (have) => ({
+      "House": 1,
+      "Fruit": 5+have,
+    }),
+    craftTime: 30,
+    unlockAt: {
+      "House": 1,
+    },
+    position: [1, 7]
+  }),
 
   Stone: new Resource({
     name: "Stone",
     craftTime: 20,
     randomGrantOnCraft: [
+      [0.01, "Sand"],
       [0.05, "CopperOre"],
       [0.02, "IronOre"],
       [0.01, "GoldOre"],
@@ -102,6 +147,21 @@ export const Resources = {
     },
     position: [2, 3]
   }),
+  ShinyStone: new Resource({
+    name: "ShinyStone",
+    craftTime: 50,
+    randomGrantOnCraft: [
+      [0.03, "EmeraldStone"],
+      [0.01, "AmethystStone"],
+      [0.003, "RubyStone"],
+      [0.001, "SapphireStone"],
+    ],
+    description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
+    unlockAt: {
+      "GemstonePickaxe": 1,
+    },
+    position: [2, 4]
+  }),
   EmeraldStone: new Resource({
     name: "EmeraldStone",
     unlockAt: {
@@ -131,6 +191,19 @@ export const Resources = {
     position: [2, 8]
   }),
 
+  Brick: new Resource({
+    name: "Brick",
+    cost: {
+      "Stone": 10,
+      "Charcoal": 1,
+    },
+    craftTime: 3,
+    unlockAt: {
+      "Stone": 1,
+      "Charcoal": 1,
+    },
+    position: [3, 0],
+  }),
   Copper: new Resource({
     name: "Copper",
     cost: {
@@ -176,7 +249,7 @@ export const Resources = {
     unlockAt: {
       "EmeraldStone": 1,
     },
-    craftTime: 100,
+    craftTime: 30,
     position: [3, 5]
   }),
   Amethyst: new Resource({
@@ -185,7 +258,7 @@ export const Resources = {
       "AmethystStone": 10,
       "Lava": 2
     },
-    craftTime: 150,
+    craftTime: 40,
     unlockAt: {
       "AmethystStone": 1,
     },
@@ -197,7 +270,7 @@ export const Resources = {
       "RubyStone": 10,
       "Lava": 4
     },
-    craftTime: 200,
+    craftTime: 50,
     unlockAt: {
       "RubyStone": 1,
     },
@@ -209,11 +282,48 @@ export const Resources = {
       "SapphireStone": 10,
       "Lava": 8
     },
-    craftTime: 250,
+    craftTime: 60,
     unlockAt: {
       "SapphireStone": 1,
     },
     position: [3, 8]
+  }),
+
+  Energy: new Resource({
+    name: "Energy",
+    craftTime: 50,
+    unlockAt: {
+      "Citizen": 1
+    },
+    position: [4, 0]
+  }),
+  PickaxeUpgrade: new Resource({
+    name: "PickaxeUpgrade",
+    cost: (have) => ({
+      "Energy": 7*(have+1)**1.2,
+      "Emerald": 3*(have-2),
+    }),
+    craftTime: 100,
+    unlockAt: {
+      "Energy": 1,
+      "Pickaxe": 1,
+    },
+    position: [4, 1]
+  }),
+  Generator: new Resource({
+    name: "Generator",
+    cost: (have) => ({
+      "Iron": 30*(have+1),
+      "Lava": 1+have,
+      "Steam": have*3,
+      "Citizen": 1+have,
+    }),
+    craftTime: 100,
+    automates: ["Energy"],
+    unlockAt: {
+      "Citizen": 1
+    },
+    position: [4, 7]
   }),
 
   Water: new Resource({
@@ -227,7 +337,7 @@ export const Resources = {
   Lava: new Resource({
     name: "Lava",
     cost: (have) => ({
-      "Stone": 100,
+      "Stone": 100-90*(1-1/(have/14+1)),
       "Charcoal": 50-45*(1-1/(have/7+1))
     }),
     unlockAt: {
@@ -250,6 +360,25 @@ export const Resources = {
       "Lava": 1,
     },
     position: [5, 2]
+  }),
+  Sand: new Resource({
+    name: "Sand",
+    unlockAt: {
+      "Sand": 1,
+    },
+    position: [5, 7]
+  }),
+  Glass: new Resource({
+    name: "Glass",
+    cost: {
+      "Sand": 10,
+      "Charcoal": 3
+    },
+    craftTime: 6,
+    unlockAt: {
+      "Sand": 1,
+    },
+    position: [5, 8]
   }),
 
   Axe: new Resource({
@@ -291,16 +420,31 @@ export const Resources = {
     }),
     craftTime: 30,
     automates: ["Stone"],
+    effectMultiply: (savefile) => {
+      let mult = 1;
+      mult *= savefile[Resources.GemstonePickaxe.order].have + 1;
+      mult *= savefile[Resources.PickaxeUpgrade.order].have/3 + 1;
+      return mult;
+    },
     unlockAt: {
       "Plank": 1
     },
     position: [6, 2]
   }),
-  GemstomePickaxe: new Resource({
+  GemstonePickaxe: new Resource({
     name: "GemstonePickaxe",
+    description: "Automatically mines Shiny stone & Boost Pickaxe",
+    cost: (have) => ({
+      "Iron": 100 * (have+1),
+      "Emerald": 2 * (have+1),
+      "Amethyst": 2 * (have-2),
+      "Ruby": 2 * (have-5),
+      "Sapphire": 2 * (have-8),
+    }),
     craftTime: 120,
+    automates: ["ShinyStone"],
     unlockAt: {
-      "EmeraldStone": 1,
+      "Emerald": 1,
     },
     position: [6, 3],
   }),
