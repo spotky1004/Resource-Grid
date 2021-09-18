@@ -157,6 +157,7 @@ export const Resources = {
       [0.001, "SapphireStone"],
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
+    effectMultiply: (savefile) => savefile[Resources.GemstonePickaxe.order].have,
     unlockAt: {
       "GemstonePickaxe": 1,
     },
@@ -443,6 +444,11 @@ export const Resources = {
     }),
     craftTime: 120,
     automates: ["ShinyStone"],
+    effectMultiply: (savefile) => {
+      let mult = 1;
+      mult *= savefile[Resources.PickaxeUpgrade.order].have/3 + 1;
+      return mult;
+    },
     unlockAt: {
       "Emerald": 1,
     },
