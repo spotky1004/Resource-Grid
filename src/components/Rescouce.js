@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
 import { craftStart, craftUpdate } from "../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
@@ -5,6 +6,7 @@ import styled, { keyframes } from 'styled-components';
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
 import ResourceCost from "./ResourceCost.js";
+import ResourceRandomTable from "./ResourceRandom.js";
 
 const namespaceAppear = keyframes`
   from {
@@ -124,6 +126,8 @@ const ResourceQuantity = styled.div`
  * @param {Resource} obj.data 
  */
 function ResourceGridItem({ data, index, craftStart, craftEnd }) {
+  const [isHover, setHover] = useState(false);
+
   const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
   const save = useSelector(state => state.resources[index]);
 
@@ -134,6 +138,8 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
       onClick={() => {
         if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) craftStart(index)
       }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       name={displayName}
     >
       {
@@ -151,6 +157,12 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
             }}></ResourceProgress>
           </span>
           <ResourceCost cost={cost}/>
+          {
+            isHover &&
+            <ResourceRandomTable
+              data={data}
+            />
+          }
         </ResourceInfo>
       }
     </ResourceWarp>
