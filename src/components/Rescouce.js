@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
 import { craftStart, craftUpdate } from "../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
+import notation from "../util/notation.js";
 // eslint-disable-next-line
 import Resource from '../class/Resource';
 import resourceImage from "../resources/Resources.png";
@@ -150,7 +151,7 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
               style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}
             ></ResourceImage>
             <ResourceQuantity>
-              {save.have}
+              {notation(save.have)}
             </ResourceQuantity>
             <ResourceProgress style={{
               height: `${save.progress * 100}%`

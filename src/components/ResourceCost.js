@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import notation from "../util/notation.js";
 import { Resources } from '../data/resources';
 import resourceImage from "../resources/Resources.png";
 
@@ -27,12 +28,13 @@ const CostDisplay = styled.div`
   justify-content: flex-end;
 
   color: var(--colReverse);
+  font-size: 0.8em;
   font-weight: 900;
   text-shadow:
-    calc(var(--imageSize) / 60) calc(var(--imageSize) / 60) 0 var(--colMain1),
-    calc(var(--imageSize) / -60) calc(var(--imageSize) / -60) 0 var(--colMain1),
-    calc(var(--imageSize) / 60) calc(var(--imageSize) / -60) 0 var(--colMain1),
-    calc(var(--imageSize) / -60) calc(var(--imageSize) / 60) 0 var(--colMain1);
+    calc(var(--imageSize) / 30) calc(var(--imageSize) / 30) 0 var(--colMain1),
+    calc(var(--imageSize) / -30) calc(var(--imageSize) / -30) 0 var(--colMain1),
+    calc(var(--imageSize) / 30) calc(var(--imageSize) / -30) 0 var(--colMain1),
+    calc(var(--imageSize) / -30) calc(var(--imageSize) / 30) 0 var(--colMain1);
   text-align: right;
 
   border: calc(var(--imageSize) / 15) solid var(--colMain2);
@@ -56,7 +58,7 @@ function ResourceCost({ cost }) {
               <CostDisplay
                 style={{backgroundPosition: `calc(var(--resourceGap) * -${costResource.position.x}) calc(var(--resourceGap) * -${costResource.position.y})` }}
               >
-                {costQuantity}
+                {notation(costQuantity)}
               </CostDisplay>
             </div>
           )
