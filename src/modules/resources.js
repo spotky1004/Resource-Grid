@@ -79,7 +79,7 @@ function reducer(state = savefile.resources, action) {
       state[order] = {
         ...state[order],
         lastTime: action.Time,
-        progress: state[order].progress + action.progressIncrement*10,
+        progress: state[order].progress + action.progressIncrement,
       };
 
       if (state[order].progress >= 1) {
