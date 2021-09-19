@@ -25,7 +25,7 @@ export const Resources = {
     craftMultiply: 2,
     randomGrantOnCraft: [
       [0.0008, "TreeSeed", 0],
-      [0.03, "Fruit"]
+      [0.05, "Fruit"]
     ],
     unlockAt: {
       "Tree": 1,
@@ -59,20 +59,101 @@ export const Resources = {
   }),
   Vine: new Resource({
     name: "Vine",
+    unlockAt: {
+      "Vine": 1
+    },
     position: [0, 5]
   }),
   Mushroom: new Resource({
     name: "Mushroom",
+    unlockAt: {
+      "Mushroom": 1
+    },
     position: [0, 6]
   }),
   Fruit: new Resource({
     name: "Fruit",
+    craftTime: 30,
     unlockAt: {
       "Fruit": 1,
     },
     position: [0, 7]
   }),
 
+  Orchard: new Resource({
+    name: "Orchard",
+    cost: (have) => ({
+      "Citizen": 4+(have*2)**1.2,
+      "Fruit": 3,
+      "Sand": 1000*(have+1),
+      "Water": 35*(have+1)**1.1
+    }),
+    automates: ["Fruit"],
+    craftTime: 150,
+    unlockAt: {
+      "Citizen": 1
+    },
+    position: [1, 0]
+  }),
+  Trap: new Resource({
+    name: "Trap",
+    cost: {
+      "Iron": 150,
+      "Energy": 50,
+      "Glass": 200,
+      "Fruit": 1,
+    },
+    craftTime: 30,
+    unlockAt: {
+      "Orchard": 1
+    },
+    position: [1, 1]
+  }),
+  Animal: new Resource({
+    name: "Animal",
+    cost: {
+      "Trap": 1,
+    },
+    craftTime: 25,
+    unlockAt: {
+      "Trap": 1
+    },
+    position: [1, 2]
+  }),
+  TreasureMap: new Resource({
+    name: "TreasureMap",
+    cost: {
+      "ShinyStone": 1000,
+      "Plank": 1000,
+      "Water": 50
+    },
+    craftTime: 50,
+    unlockAt: {
+      "Animal": 1
+    },
+    position: [1, 3]
+  }),
+  Loot: new Resource({
+    name: "Loot",
+    cost: {
+      "Citizen": 1,
+      "Animal": 1,
+      "TreasureMap": 1,
+      "Energy": 200,
+    },
+    randomGrantOnCraft: [
+      [0.5, "TreeSeed"],
+      [0.3, "Sapphire"],
+      [0.4, "Vine"],
+      [0.2, "Mushroom"],
+      [0.05, "DivinePowder"]
+    ],
+    craftTime: 30,
+    unlockAt: {
+      "TreasureMap": 1,
+    },
+    position: [1, 4]
+  }),
   Wall: new Resource({
     name: "Wall",
     cost: {
@@ -98,22 +179,37 @@ export const Resources = {
   }),
   Citizen: new Resource({
     name: "Citizen",
-    cost: (have) => ({
+    cost: {
       "House": 1,
-      "Fruit": 5+have,
-    }),
+      "Fruit": 5,
+    },
     craftTime: 30,
     unlockAt: {
       "House": 1,
     },
     position: [1, 7]
   }),
+  CityBuilder: new Resource({
+    name: "CityBuilder",
+    cost: (have) => ({
+      "Citizen": 3*(have+1)**2,
+      "Energy": 100*(have+1)**1.6,
+      "Iron": 300*(have+1)**1.2,
+      "Gold": 500*(have+1)**1.2
+    }),
+    craftTime: 200,
+    automates: ["Brick", "Wall", "House", "Glass", "Citizen"],
+    unlockAt: {
+      "Energy": 1,
+    },
+    position: [1, 8]
+  }),
 
   Stone: new Resource({
     name: "Stone",
     craftTime: 20,
     randomGrantOnCraft: [
-      [0.01, "Sand"],
+      [0.05, "Sand"],
       [0.05, "CopperOre"],
       [0.02, "IronOre"],
       [0.01, "GoldOre"],
@@ -157,7 +253,12 @@ export const Resources = {
       [0.001, "SapphireStone"],
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
-    effectMultiply: (savefile) => savefile[Resources.GemstonePickaxe.order].have,
+    effectMultiply: (savefile) => {
+      let mult = 1;
+      mult *= savefile[Resources.GemstonePickaxe.order].have;
+      mult *= 1+savefile[Resources.GemBoost.order].have/3;
+      return mult;
+    },
     unlockAt: {
       "GemstonePickaxe": 1,
     },
@@ -195,7 +296,7 @@ export const Resources = {
   Brick: new Resource({
     name: "Brick",
     cost: {
-      "Stone": 10,
+      "Stone": 5,
       "Charcoal": 1,
     },
     craftTime: 3,
@@ -221,7 +322,7 @@ export const Resources = {
     name: "Iron",
     cost: {
       "IronOre": 1,
-      "Charcoal": 3
+      "Charcoal": 2
     },
     craftTime: 15,
     unlockAt: {
@@ -233,7 +334,7 @@ export const Resources = {
     name: "Gold",
     cost: {
       "GoldOre": 1,
-      "Charcoal": 2,
+      "Charcoal": 1,
     },
     craftTime: 10,
     unlockAt: {
@@ -247,6 +348,9 @@ export const Resources = {
       "EmeraldStone": 10,
       "Lava": 1
     },
+    randomGrantOnCraft: [
+      [0.2, "Steam"]
+    ],
     unlockAt: {
       "EmeraldStone": 1,
     },
@@ -259,6 +363,9 @@ export const Resources = {
       "AmethystStone": 10,
       "Lava": 2
     },
+    randomGrantOnCraft: [
+      [0.4, "Steam"]
+    ],
     craftTime: 40,
     unlockAt: {
       "AmethystStone": 1,
@@ -271,6 +378,9 @@ export const Resources = {
       "RubyStone": 10,
       "Lava": 4
     },
+    randomGrantOnCraft: [
+      [0.6, "Steam"]
+    ],
     craftTime: 50,
     unlockAt: {
       "RubyStone": 1,
@@ -283,6 +393,9 @@ export const Resources = {
       "SapphireStone": 10,
       "Lava": 8
     },
+    randomGrantOnCraft: [
+      [0.8, "Steam"]
+    ],
     craftTime: 60,
     unlockAt: {
       "SapphireStone": 1,
@@ -293,6 +406,9 @@ export const Resources = {
   Energy: new Resource({
     name: "Energy",
     craftTime: 50,
+    randomGrantOnCraft: [
+      [0.01, "Replicanti"]
+    ],
     unlockAt: {
       "Citizen": 1
     },
@@ -304,12 +420,38 @@ export const Resources = {
       "Energy": 7*(have+1)**1.2,
       "Emerald": 3*(have-2),
     }),
-    craftTime: 100,
+    craftTime: 30,
     unlockAt: {
       "Energy": 1,
       "Pickaxe": 1,
     },
     position: [4, 1]
+  }),
+  GemBoost: new Resource({
+    name: "GemBoost",
+    cost: (have) => ({
+      "Energy": 100*(have+1)**1.2,
+      "Amethyst": 3*(have+1)**1.1
+    }),
+    craftTime: 45,
+    unlockAt: {
+      "Energy": 1,
+      "ShinyStone": 1,
+    },
+    position: [4, 2]
+  }),
+  MetalworkBoost: new Resource({
+    name: "MetalworkBoost",
+    cost: (have) => ({
+      "Energy": 300*(have+1)**1.1,
+      "GreenPotion": 1+have/2,
+      "Iron": 300*(have/3+1)**1.2
+    }),
+    craftTime: 60,
+    unlockAt: {
+      "GreenPotion": 1
+    },
+    position: [4, 3]
   }),
   Generator: new Resource({
     name: "Generator",
@@ -320,11 +462,24 @@ export const Resources = {
       "Citizen": 1+have,
     }),
     craftTime: 100,
+    effectMultiply: (savefile) => 4**savefile[Resources.GeneratorBoost.order].have,
     automates: ["Energy"],
     unlockAt: {
       "Citizen": 1
     },
     position: [4, 7]
+  }),
+  GeneratorBoost: new Resource({
+    name: "GeneratorBoost",
+    cost: (have) => ({
+      "Steam": 50*(have/2+1),
+      "Replicanti": 100**(have+2),
+    }),
+    craftTime: 60,
+    unlockAt: {
+      "ReplicantiBoost": 1
+    },
+    position: [4, 8]
   }),
 
   Water: new Resource({
@@ -354,13 +509,27 @@ export const Resources = {
       "Water": 10,
       "Lava": 5
     },
-    craftTime: 300,
+    craftTime: 60,
     craftMultiply: 15,
     unlockAt: {
       "Water": 1,
       "Lava": 1,
     },
     position: [5, 2]
+  }),
+  GreenPotion: new Resource({
+    name: "GreenPotion",
+    cost: {
+      "Vine": 1,
+      "Mushroom": 2,
+      "Emerald": 10
+    },
+    craftTime: 10,
+    unlockAt: {
+      "Vine": 1,
+      "Mushroom": 1,
+    },
+    position: [5, 5]
   }),
   Sand: new Resource({
     name: "Sand",
@@ -372,8 +541,8 @@ export const Resources = {
   Glass: new Resource({
     name: "Glass",
     cost: {
-      "Sand": 10,
-      "Charcoal": 3
+      "Sand": 1,
+      "Charcoal": 1
     },
     craftTime: 6,
     unlockAt: {
@@ -462,7 +631,7 @@ export const Resources = {
       "Iron": 3*(have+1)**1.2,
       "Gold": 3*(have+1)**1.2,
     }),
-    craftTime: 80,
+    craftTime: 30,
     automates: ["Water"],
     unlockAt: {
       "Copper": 1,
@@ -476,7 +645,7 @@ export const Resources = {
       "Stone": 200,
       "Lava": 1*(have+1)**(have/15+1),
     }),
-    craftTime: 50,
+    craftTime: 35,
     automates: ["Lava"],
     unlockAt: {
       "Lava": 1,
@@ -490,11 +659,12 @@ export const Resources = {
       "Copper": 10*((have+1)**1.15),
       "Iron": 10*((have+1)**1.15),
       "Gold": 10*((have+1)**1.15),
-      "Pump": (have+1)*2,
-      "Volcano": (have+1),
+      "Pump": 2,
+      "Volcano": 1,
     }),
-    craftTime: 200,
+    craftTime: 150,
     automates: ["Iron", "Gold", "Copper"],
+    effectMultiply: (savefile) => savefile[Resources.MetalworkBoost.order].have/3+1,
     unlockAt: {
       "Pump": 1,
       "Volcano": 1,
@@ -507,7 +677,8 @@ export const Resources = {
     cost: (have) => ({
       "Steam": 15*(have+1)**1.2,
       "Pump": 2+have,
-      "Iron": 50*(have+1)*(1+have/20)
+      "Iron": 50*(have+1)*(1+have/20),
+      "Citizen": 1+have,
     }),
     craftTime: 300,
     automates: ["Charcoal"],
@@ -515,6 +686,22 @@ export const Resources = {
       "MetalworkFactory": 1,
     },
     position: [6, 7]
+  }),
+  GemCutter: new Resource({
+    name: "GemCutter",
+    cost: (have) => ({
+      "Energy": 200*(have+1)**1.2,
+      "Iron": 1000*(have+1)**1.1,
+      "Water": 300*(have+1)**1.1,
+      "Lava": 100*(have+1)**1.1
+    }),
+    automates: ["Emerald", "Amethyst", "Ruby", "Sapphire"],
+    craftTime: 300,
+    unlockAt: {
+      "CharcoalMiner": 1,
+      "Emerald": 1,
+    },
+    position: [6, 8]
   }),
 
   Forest: new Resource({
@@ -544,12 +731,34 @@ export const Resources = {
     position: [7, 4]
   }),
 
+  DivinePowder: new Resource({
+    name: "DivinePowder",
+    cost: (have) => ({
+      "Replicanti": 10**((have/5)**0.9+6),
+      "Energy": 100+have**2,
+      "Sapphire": 1+(have/10)**0.2
+    }),
+    craftTime: 3,
+    unlockAt: {
+      "Replicanti": 1,
+      "Energy": 1,
+    },
+    position: [8, 0]
+  }),
   DivineShard: new Resource({
     name: "DivineShard",
-    position: [8, 0]
+    unlockAt: {
+      "DivinePowder": 1,
+    },
+    position: [8, 1]
   }),
   ReplicantiBoost: new Resource({
     name: "ReplicantiBoost",
+    cost: (have) => ({
+      "Replicanti": 10**(have+2),
+      "Energy": Math.SQRT2**(have)*64
+    }),
+    craftTime: 100,
     unlockAt: {
       "Replicanti": 1,
     },
@@ -564,14 +773,14 @@ export const Resources = {
     effectMultiply: (savefile) => {
       const replicanti = savefile[Resources.Replicanti.order].have;
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
-      const replicantiPow = Math.min(0.95, 0.5 + 0.4/(1/((replicantiBoost**0.9)/50)));
-      return (replicantiBoost+1)**1.2*(replicanti+1)**replicantiPow/(replicanti+1);
+      const replicantiPow = Math.min(0.95, 0.6 + 0.35/(1/((replicantiBoost**0.9)/30)));
+      return 1.5**(replicantiBoost+1)*(replicanti+1)**replicantiPow/(replicanti+1);
     },
     unlockAt: {
       "Replicanti": 1,
     },
     automates: ["Replicanti"],
-    craftTime: 10,
+    craftTime: 30,
     position: [8, 8]
   }),
 };

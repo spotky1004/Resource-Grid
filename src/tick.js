@@ -35,7 +35,8 @@ function Tick() {
         const _order = _Resource.order;
         if (
           savefile.resources[_order].lastTime !== null ||
-          canBuy(_Resource.name, savefile) === 0
+          canBuy(_Resource.name, savefile) === 0 ||
+          savefile.resources[_order].automationDisabled
         ) continue;
         store.dispatch(craftStart(_order, true));
       }
@@ -49,6 +50,7 @@ function Tick() {
       store.dispatch(craftUpdate({
         order: i,
         isAuto,
+        Time,
         progressIncrement
       }));
     }

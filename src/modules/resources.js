@@ -14,11 +14,13 @@ export const craftStart = (order, isAuto) => ({
 export const craftUpdate = ({
   order,
   isAuto,
+  Time,
   progressIncrement,
 }) => ({
   type: CRAFT_UPDATE,
   order,
   isAuto,
+  Time,
   progressIncrement
 });
 export const resourceUnlock = order => ({
@@ -76,8 +78,8 @@ function reducer(state = savefile.resources, action) {
       
       state[order] = {
         ...state[order],
-        lastTime: new Date().getTime(),
-        progress: state[order].progress + action.progressIncrement,
+        lastTime: action.Time,
+        progress: state[order].progress + action.progressIncrement*10,
       };
 
       if (state[order].progress >= 1) {
