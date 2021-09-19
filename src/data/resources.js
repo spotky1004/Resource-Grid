@@ -84,7 +84,7 @@ export const Resources = {
     name: "Orchard",
     cost: (have) => ({
       "Citizen": 4+(have*2)**1.2,
-      "Fruit": 3,
+      "Fruit": 1,
       "Sand": 1000*(have+1),
       "Water": 35*(have+1)**1.1
     }),
@@ -114,7 +114,7 @@ export const Resources = {
     cost: {
       "Trap": 1,
     },
-    craftTime: 25,
+    craftTime: 30,
     unlockAt: {
       "Trap": 1
     },
@@ -127,7 +127,7 @@ export const Resources = {
       "Plank": 1000,
       "Water": 50
     },
-    craftTime: 50,
+    craftTime: 30,
     unlockAt: {
       "Animal": 1
     },
@@ -143,10 +143,9 @@ export const Resources = {
     },
     randomGrantOnCraft: [
       [0.5, "TreeSeed"],
-      [0.3, "Sapphire"],
       [0.4, "Vine"],
       [0.2, "Mushroom"],
-      [0.05, "DivinePowder"]
+      [0.08, "GreenPotion"]
     ],
     craftTime: 30,
     unlockAt: {
@@ -417,7 +416,7 @@ export const Resources = {
   PickaxeUpgrade: new Resource({
     name: "PickaxeUpgrade",
     cost: (have) => ({
-      "Energy": 7*(have+1)**1.2,
+      "Energy": 7*1.2**(have+1),
       "Emerald": 3*(have-2),
     }),
     craftTime: 30,
@@ -430,7 +429,7 @@ export const Resources = {
   GemBoost: new Resource({
     name: "GemBoost",
     cost: (have) => ({
-      "Energy": 100*(have+1)**1.2,
+      "Energy": (100+have*10)*1.5**(have+1),
       "Amethyst": 3*(have+1)**1.1
     }),
     craftTime: 45,
@@ -443,7 +442,7 @@ export const Resources = {
   MetalworkBoost: new Resource({
     name: "MetalworkBoost",
     cost: (have) => ({
-      "Energy": 300*(have+1)**1.1,
+      "Energy": 3000*2**(have+1),
       "GreenPotion": 1+have/2,
       "Iron": 300*(have/3+1)**1.2
     }),
@@ -676,7 +675,7 @@ export const Resources = {
     description: "Mines Charcoal without any cost",
     cost: (have) => ({
       "Steam": 15*(have+1)**1.2,
-      "Pump": 2+have,
+      "Pump": 2,
       "Iron": 50*(have+1)*(1+have/20),
       "Citizen": 1+have,
     }),
