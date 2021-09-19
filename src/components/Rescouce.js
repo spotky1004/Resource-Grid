@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { craftStart, craftUpdate } from "../modules/resources.js";
+import { craftStart } from "../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
 import notation from "../util/notation.js";
 // eslint-disable-next-line
 import Resource from '../class/Resource';
-import resourceImage from "../resources/Resources.png";
+import ResourceImage from "./ResourceImage.js";
 import ResourceCost from "./ResourceCost.js";
 import ResourceRandomTable from "./ResourceRandom.js";
 
@@ -97,23 +97,6 @@ const ResourceProgress = styled.span`
 
   z-index: -1;
 `;
-const ResourceImage = styled.div`
-  --imageSize: calc(var(--boxSize) / var(--boxRatio) - var(--margin));
-  --resourceGap: calc(var(--imageSize) * 9 / 8);
-  --imageScale: calc(81 / 8);
-
-  box-sizing: content-box;
-  margin: calc(var(--margin) / 2);
-
-  width: var(--imageSize);
-  height: var(--imageSize);
-
-  background-image: url(${resourceImage});
-  background-repeat: no-repeat;
-  background-size: calc(100% * var(--imageScale));
-  image-rendering: pixelated;
-  filter: drop-shadow(var(--baseShadow));
-`;
 const ResourceQuantity = styled.div`
   padding-right: calc(var(--boxSize) / 20);
 
@@ -126,7 +109,7 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ data, index, craftStart, craftEnd }) {
+function ResourceGridItem({ data, index, craftStart }) {
   const [isHover, setHover] = useState(false);
 
   const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
@@ -148,7 +131,12 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
         <ResourceInfo>
           <span>
             <ResourceImage
-              style={{backgroundPosition: `calc(var(--resourceGap) * -${data.position.x}) calc(var(--resourceGap) * -${data.position.y})` }}
+              size="calc(var(--boxSize) / var(--boxRatio) - var(--margin))"
+              position={data.position}
+              style={{
+                filter: "drop-shadow(var(--baseShadow))",
+                margin: "calc(var(--margin) / 2)"
+              }}
             ></ResourceImage>
             <ResourceQuantity>
               {notation(save.have)}
@@ -157,12 +145,14 @@ function ResourceGridItem({ data, index, craftStart, craftEnd }) {
               height: `${save.progress * 100}%`
             }}></ResourceProgress>
           </span>
-          <ResourceCost cost={cost}/>
           {
             isHover &&
-            <ResourceRandomTable
-              data={data}
-            />
+            <>
+              <ResourceCost cost={cost}/>
+              <ResourceRandomTable
+                data={data}
+              />
+            </>
           }
         </ResourceInfo>
       }
@@ -174,6 +164,5 @@ export default connect(
   () => ({}),
   {
     craftStart,
-    craftUpdate,
   }
 )(ResourceGridItem);;

@@ -1,7 +1,17 @@
+import { useState } from 'react';
 import styled from "styled-components";
 import Rescouce from "./Rescouce.js";
 import { ResourceArr } from "../data/resources.js";
 
+const AutoToggleButton = styled.div`
+  position: absolute;
+  left: calc(var(--h) / 50);
+  bottom: calc(var(--w) / 100);
+  
+  color: var(--colReverseWeak);
+
+  background-color: var(--colMain3);
+`;
 const RescouceGrid = styled.div`
   --cellSize: calc(var(--min) / 9);
 
@@ -28,8 +38,13 @@ const OtherContents = styled.div`
 `;
 
 function ResourceGrid({ save, craftStart }) {
+  const [autoToggle, setAutoToggle] = useState(false);
+
   return (
     <>
+      <AutoToggleButton>
+        Toggle Auto
+      </AutoToggleButton>
       <RescouceGrid>
           {ResourceArr.map((ResourceData, index) => (
             <Rescouce

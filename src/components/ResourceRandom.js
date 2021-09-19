@@ -1,15 +1,16 @@
 import { connect } from "react-redux";
 import { craftStart, craftUpdate } from "../modules/resources.js";
 import styled from 'styled-components';
+import notation from "../util/notation.js";
 import { Resources } from "../data/resources.js";
-import resourceImage from "../resources/Resources.png";
+import ResourceImage from "./ResourceImage.js";
 
 const ResourceRandomTable = styled.div`
   position: absolute;
   right: 0;
   transform: translateX(100%);
 
-  min-width: 50%;
+  min-width: 60%;
   height: var(--boxSize);
 
   display: flex;
@@ -46,19 +47,6 @@ const ChanceItem = styled.div`
   font-size: 0.8em;
   font-weight: bold;
 `;
-const ChanceItemImage = styled.span`
-  --imageSize: var(--itemHeight);
-  --resourceGap: calc(var(--imageSize) * 9 / 8);
-  --imageScale: calc(81 / 8);
-
-  width: var(--imageSize);
-  height: var(--imageSize);
-
-  background-image: url(${resourceImage});
-  background-repeat: no-repeat;
-  background-size: calc(100% * var(--imageScale));
-  image-rendering: pixelated;
-`;
 
 
 function ResourceRandom({ data, save }) {
@@ -67,15 +55,16 @@ function ResourceRandom({ data, save }) {
 
   return (RandomTable.length !== 0 || EffectMultiply !== 1 ?
     <ResourceRandomTable>
-      <EffectDisplay>{EffectMultiply.toFixed(1)}</EffectDisplay>
+      <EffectDisplay>{notation(EffectMultiply)}</EffectDisplay>
       <ChanceTable>
         {RandomTable.map(([chance, resource]) => {
           const Resource = Resources[resource];
           return (
             <ChanceItem>
-              {save[Resource.order].unlocked ? <ChanceItemImage
-                style={{backgroundPosition: `calc(var(--resourceGap) * -${Resource.position.x}) calc(var(--resourceGap) * -${Resource.position.y})`}}
-              ></ChanceItemImage> : <span>?&nbsp;</span>}
+              {save[Resource.order].unlocked ? <ResourceImage
+                size="var(--itemHeight)"
+                position={Resource.position}
+              /> : <span>?&nbsp;</span>}
               <span>{(chance*100).toFixed(2).padStart(6, "0")}%</span>
             </ChanceItem>
           );
