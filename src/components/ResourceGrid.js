@@ -68,10 +68,10 @@ function ResourceGrid({ craftStart }) {
         Toggle Auto
       </AutoToggleButton>
       <RescouceGrid>
-          {ResourceArr.map((ResourceData, index) => (
+          {ResourceArr.map((Resource, index) => (
             <Rescouce
-              key={ResourceData !== null ? ResourceData.name : `empty_${index}`}
-              data={ResourceData}
+              key={Resource !== null ? Resource.name : `empty_${index}`}
+              Resource={Resource}
               autoToggleMode={autoToggle}
               index={index}
               craftStart={craftStart}

@@ -49,9 +49,9 @@ const ChanceItem = styled.div`
 `;
 
 
-function ResourceRandom({ data, save }) {
-  const EffectMultiply = data ? data.effectMultiply(save) : 1;
-  const RandomTable = data.randomGrantOnCraft.map(e => [Math.min(1, e[0]*EffectMultiply), e[1]]);
+function ResourceRandom({ Resource, save }) {
+  const EffectMultiply = Resource ? Resource.effectMultiply(save) : 1;
+  const RandomTable = Resource.randomGrantOnCraft.map(e => [Math.min(1, e[0]*EffectMultiply), e[1]]);
 
   return (RandomTable.length !== 0 || EffectMultiply !== 1 ?
     <ResourceRandomTable>

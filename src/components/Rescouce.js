@@ -110,12 +110,12 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ data, index, craftStart, autoToggleMode, toggleAuto }) {
+function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleAuto }) {
   const [isHover, setHover] = useState(false);
 
-  const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
+  const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
   const save = useSelector(state => state.resources[index]);
-  const cost = data ? Object.entries(data.cost(save.have) ?? {}) : [];
+  const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
   const autoConnected = AutoConnected[index];
 
   const displayResource = save.unlocked && (!autoToggleMode || autoConnected !== -1);
@@ -125,7 +125,7 @@ function ResourceGridItem({ data, index, craftStart, autoToggleMode, toggleAuto 
       onClick={() => {
         if (autoToggleMode) {
           toggleAuto(index);
-        } else if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) {
+        } else if (Resource && Object.keys(Resource.cost(save.have) ?? {}).length !== 0) {
           craftStart(index);
         }
       }}
@@ -141,12 +141,12 @@ function ResourceGridItem({ data, index, craftStart, autoToggleMode, toggleAuto 
       }}
     >
       {
-        (displayResource && data) &&
+        (displayResource && Resource) &&
         <ResourceInfo>
           <span>
             <ResourceImage
               size="calc(var(--boxSize) / var(--boxRatio) - var(--margin))"
-              position={data.position}
+              position={Resource.position}
               style={{
                 filter: "drop-shadow(var(--baseShadow))",
                 margin: "calc(var(--margin) / 2)"
@@ -164,7 +164,7 @@ function ResourceGridItem({ data, index, craftStart, autoToggleMode, toggleAuto 
             <>
               <ResourceCost cost={cost}/>
               <ResourceRandomTable
-                data={data}
+                Resource={Resource}
               />
             </>
           }
