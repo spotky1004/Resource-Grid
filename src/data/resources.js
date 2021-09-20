@@ -519,8 +519,8 @@ export const Resources = {
   UpgradePotion: new Resource({
     name: "UpgradePotion",
     cost: {
-      "Vine": 1,
-      "Mushroom": 2,
+      "Vine": 2,
+      "Mushroom": 1,
       "Emerald": 10
     },
     craftTime: 10,
