@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/Resource-Grid/static/css/main.2646eeb4.chunk.css",
-    "main.js": "/Resource-Grid/static/js/main.61a26de8.chunk.js",
-    "main.js.map": "/Resource-Grid/static/js/main.61a26de8.chunk.js.map",
+    "main.js": "/Resource-Grid/static/js/main.890ac2bc.chunk.js",
+    "main.js.map": "/Resource-Grid/static/js/main.890ac2bc.chunk.js.map",
     "runtime-main.js": "/Resource-Grid/static/js/runtime-main.75f65508.js",
     "runtime-main.js.map": "/Resource-Grid/static/js/runtime-main.75f65508.js.map",
-    "static/js/2.775c8617.chunk.js": "/Resource-Grid/static/js/2.775c8617.chunk.js",
-    "static/js/2.775c8617.chunk.js.map": "/Resource-Grid/static/js/2.775c8617.chunk.js.map",
+    "static/js/2.8c3b1b4b.chunk.js": "/Resource-Grid/static/js/2.8c3b1b4b.chunk.js",
+    "static/js/2.8c3b1b4b.chunk.js.map": "/Resource-Grid/static/js/2.8c3b1b4b.chunk.js.map",
     "static/js/3.7fba3e1a.chunk.js": "/Resource-Grid/static/js/3.7fba3e1a.chunk.js",
     "static/js/3.7fba3e1a.chunk.js.map": "/Resource-Grid/static/js/3.7fba3e1a.chunk.js.map",
     "index.html": "/Resource-Grid/index.html",
     "static/css/main.2646eeb4.chunk.css.map": "/Resource-Grid/static/css/main.2646eeb4.chunk.css.map",
-    "static/js/2.775c8617.chunk.js.LICENSE.txt": "/Resource-Grid/static/js/2.775c8617.chunk.js.LICENSE.txt",
+    "static/js/2.8c3b1b4b.chunk.js.LICENSE.txt": "/Resource-Grid/static/js/2.8c3b1b4b.chunk.js.LICENSE.txt",
     "static/media/font.css": "/Resource-Grid/static/media/3XF5ErsiyJsY9O_Gepph-FvtTQgMQUdNekSfnPRR27yby5s.2b9a2358.woff2"
   },
   "entrypoints": [
     "static/js/runtime-main.75f65508.js",
-    "static/js/2.775c8617.chunk.js",
+    "static/js/2.8c3b1b4b.chunk.js",
     "static/css/main.2646eeb4.chunk.css",
-    "static/js/main.61a26de8.chunk.js"
+    "static/js/main.890ac2bc.chunk.js"
   ]
 }
