@@ -136,8 +136,6 @@ function reducer(state = savefile.resources, action) {
       state = [...state];
       state[order] = {
         ...state[order],
-        lastTime: null,
-        progress: 0,
         automationDisabled: !state[order].automationDisabled
       };
       return state;
