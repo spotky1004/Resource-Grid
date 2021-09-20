@@ -12,6 +12,7 @@ const Image = styled.div`
   background-repeat: no-repeat;
   background-size: calc(100% * var(--imageScale));
   image-rendering: pixelated;
+  image-rendering: crisp-edges;
 `;
 
 function ResourceImage({ size, position, style, content }) {
