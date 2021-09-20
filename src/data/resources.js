@@ -83,7 +83,7 @@ export const Resources = {
   Orchard: new Resource({
     name: "Orchard",
     cost: (have) => ({
-      "Citizen": 4+(have*2)**1.2,
+      "Citizen": 3+(have*2)**1.2,
       "Fruit": 1,
       "Sand": 1000*(have+1),
       "Water": 35*(have+1)**1.1
@@ -100,7 +100,7 @@ export const Resources = {
     cost: {
       "Iron": 150,
       "Energy": 50,
-      "Glass": 200,
+      "Glass": 100,
       "Fruit": 1,
     },
     craftTime: 30,
@@ -114,6 +114,9 @@ export const Resources = {
     cost: {
       "Trap": 1,
     },
+    randomGrantOnCraft: [
+      [0.5, "Animal"]
+    ],
     craftTime: 30,
     unlockAt: {
       "Trap": 1
@@ -123,10 +126,13 @@ export const Resources = {
   TreasureMap: new Resource({
     name: "TreasureMap",
     cost: {
-      "ShinyStone": 1000,
+      "ShinyStone": 250,
       "Plank": 1000,
       "Water": 50
     },
+    randomGrantOnCraft: [
+      [0.75, "TreasureMap"]
+    ],
     craftTime: 30,
     unlockAt: {
       "Animal": 1
@@ -143,8 +149,8 @@ export const Resources = {
     },
     randomGrantOnCraft: [
       [0.5, "TreeSeed"],
-      [0.4, "Vine"],
-      [0.2, "Mushroom"],
+      [0.7, "Vine"],
+      [0.35, "Mushroom"],
       [0.08, "UpgradePotion"]
     ],
     craftTime: 30,
@@ -208,10 +214,10 @@ export const Resources = {
     name: "Stone",
     craftTime: 20,
     randomGrantOnCraft: [
-      [0.05, "Sand"],
-      [0.05, "CopperOre"],
-      [0.02, "IronOre"],
-      [0.01, "GoldOre"],
+      [0.07, "Sand"],
+      [0.07, "CopperOre"],
+      [0.03, "IronOre"],
+      [0.015, "GoldOre"],
       [0.001, "EmeraldStone"],
     ],
     description: "Chance to grant some ore on craft.\nChance is based on Pickaxe",
@@ -244,12 +250,12 @@ export const Resources = {
   }),
   ShinyStone: new Resource({
     name: "ShinyStone",
-    craftTime: 50,
+    craftTime: 45,
     randomGrantOnCraft: [
       [0.03, "EmeraldStone"],
-      [0.01, "AmethystStone"],
-      [0.003, "RubyStone"],
-      [0.001, "SapphireStone"],
+      [0.015, "AmethystStone"],
+      [0.007, "RubyStone"],
+      [0.003, "SapphireStone"],
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
     effectMultiply: (savefile) => {
@@ -375,7 +381,7 @@ export const Resources = {
     name: "Ruby",
     cost: {
       "RubyStone": 10,
-      "Lava": 4
+      "Lava": 3
     },
     randomGrantOnCraft: [
       [0.6, "Steam"]
@@ -390,7 +396,7 @@ export const Resources = {
     name: "Sapphire",
     cost: {
       "SapphireStone": 10,
-      "Lava": 8
+      "Lava": 4
     },
     randomGrantOnCraft: [
       [0.8, "Steam"]
@@ -492,14 +498,14 @@ export const Resources = {
   Lava: new Resource({
     name: "Lava",
     cost: (have) => ({
-      "Stone": 100-90*(1-1/(have/14+1)),
-      "Charcoal": 50-45*(1-1/(have/7+1))
+      "Stone": 100-96*(1-1/(have/14+1)),
+      "Charcoal": 50-48*(1-1/(have/7+1))
     }),
     unlockAt: {
       "Stone": 100,
       "Charcoal": 1,
     },
-    craftTime: 200,
+    craftTime: 150,
     position: [5, 1]
   }),
   Steam: new Resource({
