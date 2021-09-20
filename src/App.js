@@ -97,6 +97,18 @@ function App() {
     <div className="App">
       <GlobalStyle />
       <MainContainer>
+        {
+          !process.env.NODE_ENV || process.env.NODE_ENV === 'development' &&
+          <span style={{
+            top: 0, left: 0,
+            position: 'absolute',
+            color: "var(--colReverse)",
+            fontSize: "1.3em",
+            pointerEvents: "none",
+            opacity: 0.6,
+            fontWeight: "bold"
+          }}>Dev Mode Activated</span>
+        }
         <ResourceGrid />
       </MainContainer>
     </div>
