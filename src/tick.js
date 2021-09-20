@@ -24,7 +24,7 @@ function Tick() {
     const isAuto = 1 <= savefile.resources[AutoConnected[order]]?.have;
 
     // Check Unlocked
-    if (!save.unlocked && isUnlocked(Resource.name, savefile.resources)) {
+    if (!save.unlocked && (save.have >= 1 || isUnlocked(Resource.name, savefile.resources))) {
       store.dispatch(resourceUnlock(order));
     }
 
