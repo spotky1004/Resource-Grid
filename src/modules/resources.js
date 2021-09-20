@@ -63,7 +63,7 @@ function reducer(state = savefile.resources, action) {
   if (!Resource) return state;
   const order = action.order;
   const have = state[order].have;
-  const isAuto = state[order].automationDisabled && action.isAuto;
+  const isAuto = !state[order].automationDisabled && action.isAuto;
   const cost = Resource.cost(have, isAuto);
 
   switch (action.type) {
