@@ -98,7 +98,7 @@ function App() {
       <GlobalStyle />
       <MainContainer>
         {
-          !process.env.NODE_ENV || process.env.NODE_ENV === 'development' &&
+          (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') &&
           <span style={{
             top: 0, left: 0,
             position: 'absolute',
@@ -107,7 +107,7 @@ function App() {
             pointerEvents: "none",
             opacity: 0.6,
             fontWeight: "bold"
-          }}>Dev Mode Activated</span>
+          }}>Dev Mode Activated (Speed x10)</span>
         }
         <ResourceGrid />
       </MainContainer>

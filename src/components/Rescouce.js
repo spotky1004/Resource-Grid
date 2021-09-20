@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { craftStart } from "../modules/resources.js";
+import { craftStart, toggleAuto } from "../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
 import notation from "../util/notation.js";
+import { AutoConnected } from "../data/resources.js";
 // eslint-disable-next-line
 import Resource from '../class/Resource';
 import ResourceImage from "./ResourceImage.js";
@@ -109,25 +110,38 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ data, index, craftStart }) {
+function ResourceGridItem({ data, index, craftStart, autoToggleMode, toggleAuto }) {
   const [isHover, setHover] = useState(false);
 
   const displayName = data ? data.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
   const save = useSelector(state => state.resources[index]);
-
   const cost = data ? Object.entries(data.cost(save.have) ?? {}) : [];
+  const autoConnected = AutoConnected[index];
 
-  return (save.unlocked ?
+  const displayResource = save.unlocked && (!autoToggleMode || autoConnected !== -1);
+
+  return (
     <ResourceWarp
       onClick={() => {
-        if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) craftStart(index)
+        if (autoToggleMode) {
+          toggleAuto(index);
+        } else if (data && Object.keys(data.cost(save.have) ?? {}).length !== 0) {
+          craftStart(index);
+        }
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       name={displayName}
+      style={{
+        backgroundColor: (save.automationDisabled || (autoToggleMode && displayResource)) ?
+          (!save.automationDisabled ? "#1c5412" : "#541212" ) :
+          undefined,
+        opacity: displayResource ? undefined : 0.3,
+        pointerEvents: displayResource ? undefined: "none"
+      }}
     >
       {
-        data &&
+        (displayResource && data) &&
         <ResourceInfo>
           <span>
             <ResourceImage
@@ -137,13 +151,13 @@ function ResourceGridItem({ data, index, craftStart }) {
                 filter: "drop-shadow(var(--baseShadow))",
                 margin: "calc(var(--margin) / 2)"
               }}
-            ></ResourceImage>
+            />
             <ResourceQuantity>
               {notation(save.have)}
             </ResourceQuantity>
             <ResourceProgress style={{
               height: `${save.progress * 100}%`
-            }}></ResourceProgress>
+            }}/>
           </span>
           {
             isHover &&
@@ -157,12 +171,13 @@ function ResourceGridItem({ data, index, craftStart }) {
         </ResourceInfo>
       }
     </ResourceWarp>
-    : <ResourceWarp style={{opacity: 0.3, pointerEvents: "none"}}></ResourceWarp>);
+  );
 }
 
 export default connect(
   () => ({}),
   {
     craftStart,
+    toggleAuto,
   }
-)(ResourceGridItem);;
+)(ResourceGridItem);

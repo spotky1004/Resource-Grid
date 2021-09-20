@@ -796,7 +796,7 @@ for (const id in Resources) {
 }
 
 export const AutoConnected = Array.from({ length: 81 }, (_, i) => {
-  if (!ResourceArr[i]) return null;
+  if (!ResourceArr[i]) return -1;
   return ResourceArr.findIndex(e => e && e.automates ? e.automates.includes(ResourceArr[i].name) : false);
 });
 

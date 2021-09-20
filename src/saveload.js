@@ -5,7 +5,8 @@ export const DefaultSave = {
     have: 0,
     lastTime: null,
     progress: 0,
-    unlocked: false
+    unlocked: false,
+    automationDisabled: false,
   }))
 };
 DefaultSave.resources[0].have = 1;

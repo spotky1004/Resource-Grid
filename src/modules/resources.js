@@ -5,6 +5,7 @@ import { Resources, ResourceArr } from '../data/resources';
 const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
+const TOGGLE_AUTO = 'resource/TOGGLE_AUTO';
 
 export const craftStart = (order, isAuto) => ({
   type: CRAFT_START,
@@ -25,6 +26,10 @@ export const craftUpdate = ({
 });
 export const resourceUnlock = order => ({
   type: RESOURCE_UNLOCK,
+  order
+});
+export const toggleAuto = order => ({
+  type: TOGGLE_AUTO,
   order
 });
 
@@ -53,18 +58,29 @@ function buyResource(state, cost, bulkMax=0) {
 }
 
 function reducer(state = savefile.resources, action) {
+  if (action.type === TOGGLE_AUTO) console.log(action);
   const Resource = ResourceArr[action.order];
   if (!Resource) return state;
   const order = action.order;
   const have = state[order].have;
-  const cost = Resource.cost(have, action.isAuto);
+  const isAuto = state[order].automationDisabled && action.isAuto;
+  const cost = Resource.cost(have, isAuto);
 
   switch (action.type) {
     case CRAFT_START:
       state = [...state];
       if (state[order].lastTime !== null) return state;
       const canBuy = buyResource(state, cost, 1);
-      if (!canBuy) return state;
+      if (!canBuy) {
+        // If crafting progress is greater then 0, set it to 0
+        if (state[order].progress !== 0) {
+          state[order] = {
+            ...state[order],
+            progress: 0
+          }
+        }
+        return state;
+      }
 
       state[order] = {
         ...state[order],
@@ -85,7 +101,7 @@ function reducer(state = savefile.resources, action) {
       if (state[order].progress >= 1) {
         state[order].lastTime = null;
         let bulk = 1;
-        if (action.isAuto) {
+        if (isAuto) {
           bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
           state[order].progress %= 1;
@@ -114,6 +130,15 @@ function reducer(state = savefile.resources, action) {
       state[order] = {
         ...state[order],
         unlocked: true
+      };
+      return state;
+    case TOGGLE_AUTO:
+      state = [...state];
+      state[order] = {
+        ...state[order],
+        lastTime: null,
+        progress: 0,
+        automationDisabled: !state[order].automationDisabled
       };
       return state;
     default:

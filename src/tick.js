@@ -5,6 +5,7 @@ import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked 
 import { craftStart, craftUpdate, resourceUnlock } from "./modules/resources.js";
 import { save } from "./saveload.js";
 
+const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 let lastSave = new Date().getTime();
 
 function Tick() {
@@ -46,7 +47,7 @@ function Tick() {
     const lastTime = save.lastTime;
     if (lastTime !== null) {
       let craftTime = getCooldown(Resource.name, savefile);
-      let progressIncrement = (Time - lastTime)/craftTime;
+      let progressIncrement = (Time - lastTime)/craftTime * (devMode ? 10 : 1);
       store.dispatch(craftUpdate({
         order: i,
         isAuto,
