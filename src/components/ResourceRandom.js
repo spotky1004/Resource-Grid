@@ -60,7 +60,9 @@ function ResourceRandom({ data, save }) {
         {RandomTable.map(([chance, resource]) => {
           const Resource = Resources[resource];
           return (
-            <ChanceItem>
+            <ChanceItem
+              key={Resource.name}
+            >
               {save[Resource.order].unlocked ? <ResourceImage
                 size="var(--itemHeight)"
                 position={Resource.position}

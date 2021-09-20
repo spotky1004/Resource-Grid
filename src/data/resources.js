@@ -145,7 +145,7 @@ export const Resources = {
       [0.5, "TreeSeed"],
       [0.4, "Vine"],
       [0.2, "Mushroom"],
-      [0.08, "GreenPotion"]
+      [0.08, "UpgradePotion"]
     ],
     craftTime: 30,
     unlockAt: {
@@ -443,12 +443,12 @@ export const Resources = {
     name: "MetalworkBoost",
     cost: (have) => ({
       "Energy": 3000*2**(have+1),
-      "GreenPotion": 1+have/2,
+      "UpgradePotion": 1+have/2,
       "Iron": 300*(have/3+1)**1.2
     }),
     craftTime: 60,
     unlockAt: {
-      "GreenPotion": 1
+      "UpgradePotion": 1
     },
     position: [4, 3]
   }),
@@ -516,8 +516,8 @@ export const Resources = {
     },
     position: [5, 2]
   }),
-  GreenPotion: new Resource({
-    name: "GreenPotion",
+  UpgradePotion: new Resource({
+    name: "UpgradePotion",
     cost: {
       "Vine": 1,
       "Mushroom": 2,
