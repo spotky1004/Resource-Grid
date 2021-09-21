@@ -20,7 +20,7 @@ const Warpper = styled.div`
   padding: calc(var(--height) * 0.15) 0;
 
   position: absolute;
-  bottom: calc(var(--height) * -1.37);
+  bottom: calc(var(--height) * -1.4);
   
   min-width: 80%;
   height: var(--height);
