@@ -8,6 +8,7 @@ import { AutoConnected } from "../data/resources.js";
 import Resource from '../class/Resource';
 import ResourceImage from "./ResourceImage.js";
 import ResourceCost from "./ResourceCost.js";
+import ResourceAutomate from './ResourceAutomate.js';
 import ResourceRandomTable from "./ResourceRandom.js";
 
 const namespaceAppear = keyframes`
@@ -147,25 +148,19 @@ function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleA
             <ResourceImage
               size="calc(var(--boxSize) / var(--boxRatio) - var(--margin))"
               position={Resource.position}
-              style={{
-                filter: "drop-shadow(var(--baseShadow))",
-                margin: "calc(var(--margin) / 2)"
-              }}
+              style={{filter: "drop-shadow(var(--baseShadow))", margin: "calc(var(--margin) / 2)"}}
             />
             <ResourceQuantity>
               {notation(save.have)}
             </ResourceQuantity>
-            <ResourceProgress style={{
-              height: `${save.progress * 100}%`
-            }}/>
+            <ResourceProgress style={{height: `${save.progress * 100}%`}}/>
           </span>
           {
             isHover &&
             <>
               <ResourceCost cost={cost}/>
-              <ResourceRandomTable
-                Resource={Resource}
-              />
+              <ResourceRandomTable Resource={Resource}/>
+              <ResourceAutomate Resource={Resource}/>
             </>
           }
         </ResourceInfo>

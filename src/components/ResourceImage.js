@@ -4,6 +4,8 @@ import resourceImage from "../resources/Resources.png";
 const Image = styled.div`
   --resourceGap: calc(var(--imageSize) * 9 / 8);
   --imageScale: calc(81 / 8);
+  
+  display: inline-block;
 
   width: var(--imageSize);
   height: var(--imageSize);

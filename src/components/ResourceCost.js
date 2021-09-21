@@ -43,7 +43,7 @@ function ResourceCost({ cost }) {
                 
                   border: "calc(var(--imageSize) / 15) solid var(--colMain2)",
                   borderRadius: "calc(min(var(--costCellWidth), var(--costCellHeight)) / 2)",
-                  filter: "drop-shadow(calc(var(--min) / 500) calc(var(--min) / 500) 0 var(--colStrong))"
+                  filter: "drop-shadow(var(--baseShadowSmall))"
                 }}
                 content={notation(costQuantity)}
               />

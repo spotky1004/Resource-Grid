@@ -1,4 +1,5 @@
 import "./font/font.css";
+// import "./font/fontAwesome.css"
 import styled, { createGlobalStyle } from 'styled-components';
 import ResourceGrid from "./components/ResourceGrid.js"; 
 
@@ -7,7 +8,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   
-    /* font-family: 'Azeret Mono', monospace; */
     white-space: nowrap;
     
     user-select: none;
@@ -57,6 +57,7 @@ const MainContainer = styled.div`
   --min: min(var(--w), var(--h));
 
   --baseShadow: calc(var(--min) / 250) calc(var(--min) / 250) 0 var(--colStrong);
+  --baseShadowSmall: calc(var(--min) / 500) calc(var(--min) / 500) 0 var(--colStrong);
 
   display: flex;
 
@@ -70,25 +71,19 @@ const MainContainer = styled.div`
     background-color 0.3s ease-out;
   
   @media only screen and (orientation: portrait) {
-    & {
-      --w: 100vw;
-      --h: calc(100vw * 9 / 16);
-      font-size: calc(var(--w) / 70);
-    }
+    --w: 100vw;
+    --h: calc(100vw * 9 / 16);
+    font-size: calc(var(--w) / 70);
   }
   @media only screen and (orientation: landscape) {
-    & {
-      --w: 100vh;
-      --h: calc(100vh * 9 / 16);
-      font-size: calc(var(--h) / 70);
-    }
+    --w: 100vh;
+    --h: calc(100vh * 9 / 16);
+    font-size: calc(var(--h) / 70);
   }
   @media only screen and (min-width: 1600px) and (min-height: 900px) {
-    & {
-      --w: 1600px;
-      --h: 900px;
-      font-size: calc(var(--h) / 70);
-    }
+    --w: 1600px;
+    --h: 900px;
+    font-size: calc(var(--h) / 70);
   }
 `;
 
