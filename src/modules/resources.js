@@ -58,7 +58,6 @@ function buyResource(state, cost, bulkMax=0) {
 }
 
 function reducer(state = savefile.resources, action) {
-  if (action.type === TOGGLE_AUTO) console.log(action);
   const Resource = ResourceArr[action.order];
   if (!Resource) return state;
   const order = action.order;
@@ -115,11 +114,12 @@ function reducer(state = savefile.resources, action) {
         for (let i = 0; i < Resource.randomGrantOnCraft.length; i++) {
           const [chance, toGrant] = Resource.randomGrantOnCraft[i];
           const realChance = chance*EffectMultiply;
-          const grantChance = 1-((1-realChance)**bulk); // TODO: Change to better formula
-          if (Math.random() < grantChance) {
+          const grantChance = 1-((1-Math.min(1, realChance))**bulk);
+          const grantCount = bulk*grantChance > 10 ? Math.floor(bulk*grantChance) : +(Math.random() < grantChance);
+          if (grantCount >= 1) {
             state[Resources[toGrant].order] = {
               ...state[Resources[toGrant].order],
-              have: state[Resources[toGrant].order].have + 1
+              have: state[Resources[toGrant].order].have + grantCount
             }
           }
         }
