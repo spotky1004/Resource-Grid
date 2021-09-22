@@ -73,14 +73,14 @@ const MainContainer = styled.div`
     background-color 0.3s ease-out;
 
   @media only screen and (orientation: portrait) {
-    --w: 90vw;
-    --h: calc(90vw * 9 / 16);
+    --baseSize: 90vw;
   }
   @media only screen and (orientation: landscape) {
-    --w: 83vw;
-    --h: calc(83vw * 9 / 16);
+    --baseSize: min(83vw, 160vh);
   }
-  font-size: calc(var(--h) / 70);
+  --w: var(--baseSize);
+  --h: calc(var(--baseSize) * 9 / 16);
+  font-size: calc(var(--baseSize) * 9 / 16 / 70);
   /* @media only screen and (min-width: 1600px) and (min-height: 900px) {
     --w: 1600px;
     --h: 900px;
