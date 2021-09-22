@@ -22,6 +22,8 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     justify-content: center;
 
+    overflow: hidden;
+
     color: var(--colReverse);
 
     background-color: var(--colMain1);
@@ -75,8 +77,8 @@ const MainContainer = styled.div`
     --h: calc(90vw * 9 / 16);
   }
   @media only screen and (orientation: landscape) {
-    --w: 80vw;
-    --h: calc(80vw * 9 / 16);
+    --w: 83vw;
+    --h: calc(83vw * 9 / 16);
   }
   font-size: calc(var(--h) / 70);
   /* @media only screen and (min-width: 1600px) and (min-height: 900px) {
