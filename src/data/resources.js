@@ -170,7 +170,7 @@ export const Resources = {
       [0.35, "Mushroom"],
       [0.08, "UpgradePotion"]
     ],
-    craftTime: 60,
+    craftTime: 30,
     unlockAt: {
       "TreasureMap": 1,
     },
