@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { craftStart, toggleAuto } from "../modules/resources.js";
+import { craftStart, toggleAuto } from "../../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
-import notation from "../util/notation.js";
-import { AutoConnected } from "../data/resources.js";
+import notation from "../../util/notation.js";
+import { AutoConnected } from "../../data/resources.js";
 // eslint-disable-next-line
-import Resource from '../class/Resource';
-import ResourceImage from "./ResourceImage.js";
-import ResourceCost from "./ResourceCost.js";
-import ResourceAutomate from './ResourceAutomate.js';
-import ResourceRandomTable from "./ResourceRandom.js";
+import Resource from '../../class/Resource';
+import ResourceImage from "./ResourceImage";
+import ResourceCost from "./cost.js";
+import ResourceAutomate from './automates.js';
+import ResourceRandomTable from "./random.js";
 
 const namespaceAppear = keyframes`
   from {
@@ -114,10 +114,11 @@ const ResourceQuantity = styled.div`
 function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleAuto }) {
   const [isHover, setHover] = useState(false);
 
-  const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, (_, g1, g2) => `${g1} ${g2}`) : "";
+  const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
   const save = useSelector(state => state.resources[index]);
   const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
   const autoConnected = AutoConnected[index];
+  // const autoHave = autoConnected !== -1 ? useSelector(state => state.resources[autoConnected]) : 0;
 
   const displayResource = save.unlocked && (!autoToggleMode || autoConnected !== -1);
 

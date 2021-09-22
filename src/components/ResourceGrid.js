@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import styled from "styled-components";
-import Rescouce from "./Rescouce.js";
+import Rescource from "./Resource/index.js";
 import { ResourceArr } from "../data/resources.js";
 
 const AutoToggleButton = styled.div`
@@ -26,7 +26,7 @@ const AutoToggleButton = styled.div`
     transform: scale(1.2);
   }
 `;
-const RescouceGrid = styled.div`
+const ResourceWarpper = styled.div`
   --cellSize: calc(var(--min) / 9);
 
   flex: 9;
@@ -67,9 +67,9 @@ function ResourceGrid({ craftStart }) {
       >
         Toggle Auto
       </AutoToggleButton>
-      <RescouceGrid>
+      <ResourceWarpper>
           {ResourceArr.map((Resource, index) => (
-            <Rescouce
+            <Rescource
               key={Resource !== null ? Resource.name : `empty_${index}`}
               Resource={Resource}
               autoToggleMode={autoToggle}
@@ -77,7 +77,7 @@ function ResourceGrid({ craftStart }) {
               craftStart={craftStart}
             />
           ))}
-      </RescouceGrid>
+      </ResourceWarpper>
       <OtherContents>
         - Nothing -
       </OtherContents>

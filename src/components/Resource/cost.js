@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import notation from "../util/notation.js";
-import { Resources } from '../data/resources';
+import notation from "../../util/notation.js";
+import { Resources } from '../../data/resources';
 import ResourceImage from "./ResourceImage.js";
 
 const RescouceCostTable = styled.div`

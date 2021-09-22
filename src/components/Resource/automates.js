@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { Resources } from "../data/resources.js";
+import { Resources } from "../../data/resources.js";
 import ResourceImage from "./ResourceImage.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCogs } from '@fortawesome/free-solid-svg-icons'

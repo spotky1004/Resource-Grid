@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
-import { craftStart, craftUpdate } from "../modules/resources.js";
+import { craftStart, craftUpdate } from "../../modules/resources.js";
 import styled from 'styled-components';
-import notation from "../util/notation.js";
-import { Resources } from "../data/resources.js";
+import notation from "../../util/notation.js";
+import { Resources } from "../../data/resources.js";
 import ResourceImage from "./ResourceImage.js";
 
 const ResourceRandomTable = styled.div`
