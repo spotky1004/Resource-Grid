@@ -89,7 +89,7 @@ export const Resources = {
       "Fruit": 1000*(have+1)**1.3,
       "Energy": 10**(6.2+Math.sqrt(have/2))
     }),
-    automates: ["Loot"],
+    automates: ["Trap", "Animal", "TreasureMap", "Loot"],
     craftTime: 300,
     unlockAt: {
       "Loot": 1,
@@ -170,7 +170,6 @@ export const Resources = {
       [0.35, "Mushroom"],
       [0.08, "UpgradePotion"]
     ],
-    noCostIfAutomate: true,
     craftTime: 60,
     unlockAt: {
       "TreasureMap": 1,
