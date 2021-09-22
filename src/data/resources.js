@@ -79,6 +79,23 @@ export const Resources = {
     },
     position: [0, 7]
   }),
+  Explorer: new Resource({
+    name: "Explorer",
+    cost: (have) => ({
+      "Loot": 10*(have+1)**1.2,
+      "TreasureMap": 15*(have+1)**1.1,
+      "Citizen": 150*(have/2+1)**1.1,
+      "Animal": 15*(have+1)**1.1,
+      "Fruit": 1000*(have+1)**1.3,
+      "Energy": 10**(6.2+Math.sqrt(have/2))
+    }),
+    automates: ["Loot"],
+    craftTime: 300,
+    unlockAt: {
+      "Loot": 1,
+    },
+    position: [0, 8]
+  }),
 
   Orchard: new Resource({
     name: "Orchard",
@@ -153,7 +170,8 @@ export const Resources = {
       [0.35, "Mushroom"],
       [0.08, "UpgradePotion"]
     ],
-    craftTime: 30,
+    noCostIfAutomate: true,
+    craftTime: 60,
     unlockAt: {
       "TreasureMap": 1,
     },
@@ -449,7 +467,7 @@ export const Resources = {
     name: "MetalworkBoost",
     cost: (have) => ({
       "Energy": 3000*2**(have+1),
-      "UpgradePotion": 1+have/2,
+      "UpgradePotion": 1+(have**1.4)/2,
       "Iron": 300*(have/3+1)**1.2
     }),
     craftTime: 60,
@@ -457,6 +475,21 @@ export const Resources = {
       "UpgradePotion": 1
     },
     position: [4, 3]
+  }),
+  LiquidBoost: new Resource({
+    name: "LiquidBoost",
+    cost: (have) => ({
+      "Energy": 10**(6+have**1.1),
+      "UpgradePotion": 15*(have+1),
+      "Ruby": 15*(have+1),
+      "Water": 1000*(have+1)**1.2,
+      "Lava": 250*(have+1),
+    }),
+    craftTime: 75,
+    unlockAt: {
+      "MetalworkBoost": 1
+    },
+    position: [4, 4]
   }),
   Generator: new Resource({
     name: "Generator",
@@ -638,6 +671,7 @@ export const Resources = {
     }),
     craftTime: 30,
     automates: ["Water"],
+    effectMultiply: (savefile) => savefile[Resources.LiquidBoost.order].have/3+1,
     unlockAt: {
       "Copper": 1,
     },
@@ -648,10 +682,11 @@ export const Resources = {
     description: "Automates Lava",
     cost: (have) => ({
       "Stone": 200,
-      "Lava": 1*(have+1)**(have/15+1),
+      "Lava": 1*(have+1)*(have/15+1),
     }),
     craftTime: 35,
     automates: ["Lava"],
+    effectMultiply: (savefile) => savefile[Resources.LiquidBoost.order].have/3+1,
     unlockAt: {
       "Lava": 1,
     },
