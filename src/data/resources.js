@@ -534,7 +534,7 @@ export const Resources = {
       "Charcoal": 50-48*(1-1/(have/7+1))
     }),
     unlockAt: {
-      "Stone": 100,
+      "Stone": 1,
       "Charcoal": 1,
     },
     craftTime: 150,
