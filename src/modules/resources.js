@@ -115,7 +115,7 @@ function reducer(state = savefile.resources, action) {
           const [chance, toGrant] = Resource.randomGrantOnCraft[i];
           const realChance = chance*EffectMultiply;
           const grantChance = 1-((1-Math.min(1, realChance))**bulk);
-          const grantCount = bulk*grantChance > 5 || grantChance >= 0.99 ? Math.round(bulk*grantChance) : +(Math.random() < grantChance);
+          const grantCount = bulk*grantChance > 5 || grantChance >= 0.99 ? Math.round(bulk*realChance) : +(Math.random() < grantChance);
           if (grantCount >= 1) {
             state[Resources[toGrant].order] = {
               ...state[Resources[toGrant].order],
