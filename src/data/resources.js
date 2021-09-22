@@ -795,7 +795,7 @@ export const Resources = {
     name: "ReplicantiBoost",
     cost: (have) => ({
       "Replicanti": 10**(have+2),
-      "Energy": Math.SQRT2**(have)*64
+      "Energy": 10**(1.6+have**0.7)
     }),
     craftTime: 100,
     unlockAt: {
