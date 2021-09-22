@@ -1,5 +1,4 @@
 import "./font/font.css";
-// import "./font/fontAwesome.css"
 import styled, { createGlobalStyle } from 'styled-components';
 import ResourceGrid from "./components/ResourceGrid/ResourceGrid.js"; 
 
