@@ -7,9 +7,9 @@ import { AutoConnected } from "../../data/resources.js";
 // eslint-disable-next-line
 import Resource from '../../class/Resource';
 import ResourceImage from "./ResourceImage";
-import ResourceCost from "./cost.js";
-import ResourceAutomate from './automates.js';
-import ResourceRandomTable from "./random.js";
+import ResourceCost from "./ResourceCost.js";
+import ResourceAutomate from './ResourceAutomates.js';
+import ResourceRandomTable from "./ResourceRandom.js";
 
 const namespaceAppear = keyframes`
   from {

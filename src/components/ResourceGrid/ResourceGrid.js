@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import styled from "styled-components";
-import Rescource from "./Resource/index.js";
-import { ResourceArr } from "../data/resources.js";
+import Rescource from "./Resource.js";
+import { ResourceArr } from "../../data/resources.js";
 
 const AutoToggleButton = styled.div`
   position: absolute;
