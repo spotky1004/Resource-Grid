@@ -559,6 +559,7 @@ export const Resources = {
     cost: {
       "Vine": 2,
       "Mushroom": 1,
+      "Water": 5,
       "Emerald": 10
     },
     craftTime: 10,
@@ -567,6 +568,21 @@ export const Resources = {
       "Mushroom": 1,
     },
     position: [5, 5]
+  }),
+  UpgradePotionII: new Resource({
+    name: "UpgradePotionII",
+    cost: {
+      "UpgradePotion": 100,
+      "Fruit": 50_000,
+      "Sand": 10_000_000,
+      "Gold": 10_000,
+      "Lava": 5_000,
+    },
+    craftTime: 100,
+    unlockAt: {
+      "DivineShard": 50,
+    },
+    position: [5, 6]
   }),
   Sand: new Resource({
     name: "Sand",
@@ -738,6 +754,7 @@ export const Resources = {
     craftTime: 300,
     unlockAt: {
       "CharcoalMiner": 1,
+      "Energy": 1,
       "Emerald": 1,
     },
     position: [6, 8]
@@ -774,8 +791,9 @@ export const Resources = {
     name: "DivinePowder",
     cost: (have) => ({
       "Replicanti": 10**((have/5)**0.9+6),
-      "Energy": 100+have**2,
-      "Sapphire": 1+(have/10)**0.2
+      "Energy": 10**(2+Math.log(have+1)**1.3),
+      "Sapphire": 1+(have/10)**0.2,
+      "UpgradePotion": Math.floor(have/100)
     }),
     craftTime: 3,
     unlockAt: {
