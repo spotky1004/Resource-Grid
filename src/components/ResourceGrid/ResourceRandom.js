@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { craftStart, craftUpdate } from "../../modules/resources.js";
 import styled from 'styled-components';
 import notation from "../../util/notation.js";
 import { Resources } from "../../data/resources.js";
@@ -80,8 +79,5 @@ export default connect(
   (state) => ({
     save: state.resources
   }),
-  {
-    craftStart,
-    craftUpdate
-  }
+  {}
 )(ResourceRandom);

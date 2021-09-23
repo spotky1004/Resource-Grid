@@ -10,6 +10,7 @@ import ResourceImage from "./ResourceImage";
 import ResourceCost from "./ResourceCost.js";
 import ResourceAutomate from './ResourceAutomates.js';
 import ResourceRandomTable from "./ResourceRandom.js";
+import ResoruceProduction from './ResourceProduction.js';
 
 const namespaceAppear = keyframes`
   from {
@@ -118,7 +119,6 @@ function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleA
   const save = useSelector(state => state.resources[index]);
   const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
   const autoConnected = AutoConnected[index];
-  // const autoHave = autoConnected !== -1 ? useSelector(state => state.resources[autoConnected]) : 0;
 
   const displayResource = save.unlocked && (!autoToggleMode || autoConnected !== -1);
 
@@ -162,6 +162,7 @@ function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleA
               <ResourceCost cost={cost}/>
               <ResourceRandomTable Resource={Resource}/>
               <ResourceAutomate Resource={Resource}/>
+              <ResoruceProduction Resource={Resource} autoConnected={autoConnected}/>
             </>
           }
         </ResourceInfo>
