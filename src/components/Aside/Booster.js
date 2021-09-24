@@ -1,8 +1,8 @@
 // import styled from 'styled-components';
 
-function Booster() {
+function Booster({ style }) {
   return (
-    <div>
+    <div style={ style }>
       Booster Container
     </div>
   );

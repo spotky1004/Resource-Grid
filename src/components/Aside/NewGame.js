@@ -1,8 +1,8 @@
 // import styled from 'styled-components';
 
-function NewGame() {
+function NewGame({ style }) {
   return (
-    <div>
+    <div style={ style }>
       NewGame Container
     </div>
   );

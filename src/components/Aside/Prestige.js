@@ -1,8 +1,8 @@
 // import styled from 'styled-components';
 
-function Prestige() {
+function Prestige({ style }) {
   return (
-    <div>
+    <div style={ style }>
       Prestige Container
     </div>
   );

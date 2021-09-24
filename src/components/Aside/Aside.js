@@ -30,8 +30,7 @@ const Container = styled.div`
     width: 100%;
     background-color: var(--colMain3);
     border-radius: 5%;
-    
-    opacity: 0.4;
+    box-shadow: var(--baseShadow);
   }
 
   & > div:nth-child(1) {
@@ -49,11 +48,26 @@ const Container = styled.div`
 `;
 
 function Aside() {
+  const unlockStatus = useSelector(state => state.aside.unlockStatus);
+  const lockedStyle = {
+    opacity: 0.4,
+    pointerEvents: 'none'
+  };
+
   return (
     <Container>
-      <Prestige />
-      <NewGame />
-      <Booster />
+      <Prestige
+        isUnlocked={unlockStatus.Prestige}
+        style={!unlockStatus.Prestige ? lockedStyle : {}}
+      />
+      <NewGame
+        isUnlocked={unlockStatus.NewGame}
+        style={!unlockStatus.NewGame ? lockedStyle : {}}
+      />
+      <Booster
+        isUnlocked={unlockStatus.Booster}
+        style={!unlockStatus.Booster ? lockedStyle : {}}
+      />
       <Stats />
     </Container>
   );
