@@ -1,6 +1,7 @@
 import "./font/font.css";
 import styled, { createGlobalStyle } from 'styled-components';
 import ResourceGrid from "./components/ResourceGrid/ResourceGrid.js"; 
+import Aside from "./components/Aside/Aside.js";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -105,6 +106,7 @@ function App() {
           }}>Dev Mode Activated (Speed x10)</span>
         }
         <ResourceGrid />
+        <Aside />
       </MainContainer>
     </div>
   );

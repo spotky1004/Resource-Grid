@@ -37,19 +37,6 @@ const ResourceWarpper = styled.div`
   grid-auto-columns: var(--cellSize);
   place-items: center;
 `;
-const OtherContents = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: var(--colReverseWeak);
-  font-weight: bold;
-  font-size: 2em;
-  opacity: 0.3;
-
-  flex: 7;
-`;
 
 function ResourceGrid({ craftStart }) {
   const [autoToggle, setAutoToggle] = useState(false);
@@ -78,9 +65,6 @@ function ResourceGrid({ craftStart }) {
             />
           ))}
       </ResourceWarpper>
-      <OtherContents>
-        - Nothing -
-      </OtherContents>
     </>
   );
 }
