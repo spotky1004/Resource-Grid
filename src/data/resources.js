@@ -577,10 +577,11 @@ export const Resources = {
       "Sand": 10_000_000,
       "Gold": 10_000,
       "Lava": 5_000,
+      "DivineShard": 1
     },
-    craftTime: 100,
+    craftTime: 1000,
     unlockAt: {
-      "DivineShard": 50,
+      "DivineShard": 1,
     },
     position: [5, 6]
   }),
