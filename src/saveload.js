@@ -7,7 +7,14 @@ export const DefaultSave = {
     progress: 0,
     unlocked: false,
     automationDisabled: false,
-  }))
+  })),
+  aside: {
+    unlockStatus: {
+      Prestige: false,
+      NewGame: false,
+      Booster: false,
+    }
+  }
 };
 DefaultSave.resources[0].have = 1;
 
@@ -17,7 +24,7 @@ export function save(savefile) {
 
 /** @returns {DefaultSave} */
 export function load() {
-  return JSON.parse(localStorage.getItem(saveKey)) ?? mergeObject({}, DefaultSave);
+  return mergeObject(JSON.parse(localStorage.getItem(saveKey)) ?? {}, DefaultSave);
 }
 export const savefile = load();
 

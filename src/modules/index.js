@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import resources from "./resources.js";
+import resources from './resources.js';
+import aside from './aside.js';
 
 const rootReducer = combineReducers({
-  resources
+  resources,
+  aside
 });
 
 export default rootReducer;
