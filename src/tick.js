@@ -3,6 +3,7 @@ import store from "./store.js";
 import { DefaultSave } from "./saveload.js";
 import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked } from "./data/resources.js";
 import { craftStart, craftUpdate, resourceUnlock } from "./modules/resources.js";
+import { unlockTab } from "./modules/aside.js";
 import { save } from "./saveload.js";
 
 const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
@@ -17,6 +18,7 @@ function Tick() {
 
   if (Time - lastSave > 5000) save(savefile);
 
+  // Resources
   for (let i = 0; i < ResourceArr.length; i++) {
     const Resource = ResourceArr[i];
     if (Resource === null) continue;
@@ -55,6 +57,15 @@ function Tick() {
         progressIncrement
       }));
     }
+  }
+
+  // Aside
+  const unlockStatus = savefile.aside.unlockStatus;
+  if (
+    !unlockStatus.Prestige &&
+    savefile.resources[Resources.DivinePowder.order].have >= 1
+  ) {
+    store.dispatch(unlockTab('Prestige'));
   }
 }
 
