@@ -3,6 +3,17 @@ import styled from "styled-components";
 import Rescource from "./Resource.js";
 import { ResourceArr } from "../../data/resources.js";
 
+const ResourceWarpper = styled.div`
+  --cellSize: calc(var(--h) / 9);
+
+  flex: var(--resourceGridFlexGrow);
+
+  display: grid;
+  grid-template-columns: repeat(9, minmax(var(--cellSize), 1fr));
+  grid-auto-rows: var(--cellSize);
+  grid-auto-columns: var(--cellSize);
+  place-items: center;
+`;
 const AutoToggleButton = styled.div`
   position: absolute;
   left: calc(var(--h) / 50);
@@ -25,17 +36,6 @@ const AutoToggleButton = styled.div`
     background-color: var(--colMain4);
     transform: scale(1.2);
   }
-`;
-const ResourceWarpper = styled.div`
-  --cellSize: calc(var(--min) / 9);
-
-  flex: 9;
-
-  display: grid;
-  grid-template-columns: repeat(9, minmax(var(--cellSize), 1fr));
-  grid-auto-rows: var(--cellSize);
-  grid-auto-columns: var(--cellSize);
-  place-items: center;
 `;
 
 function ResourceGrid({ craftStart }) {
