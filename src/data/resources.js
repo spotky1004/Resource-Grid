@@ -791,9 +791,9 @@ export const Resources = {
   DivinePowder: new Resource({
     name: "DivinePowder",
     cost: (have) => ({
-      "Replicanti": 10**((have/5)**0.9+6),
+      "Replicanti": 10**((have/5)**0.87+6),
       "Energy": 10**(2+Math.log(have+1)**1.3),
-      "Sapphire": 1+(have/10)**0.2,
+      "Sapphire": 1+have**0.5,
       "UpgradePotion": Math.floor(have/100)
     }),
     craftTime: 3,
