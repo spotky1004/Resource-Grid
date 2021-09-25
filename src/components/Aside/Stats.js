@@ -1,9 +1,9 @@
 // import styled from 'styled-components';
 
-function Stats() {
+function Stats({ style }) {
   return (
-    <div>
-      Stats Container
+    <div style={ style }>
+      Stats coming soon!
     </div>
   );
 }

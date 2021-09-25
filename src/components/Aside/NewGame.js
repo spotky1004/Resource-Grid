@@ -3,7 +3,7 @@
 function NewGame({ style }) {
   return (
     <div style={ style }>
-      NewGame Container
+      
     </div>
   );
 }

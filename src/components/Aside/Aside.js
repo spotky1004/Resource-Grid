@@ -21,18 +21,17 @@ const Container = styled.div`
   font-weight: bold;
   font-size: 2em;
 
-  &::after {
+  /* &::after {
     position: absolute;
 
     width: var(--asideWidth);
     height: 3px;
 
-    opacity: 0.1;
+    background: linear-gradient(90deg, #f00 3%, #fff 1%);
 
     content: "Aside Width";
-
-    background: linear-gradient(90deg, #f00 3%, #fff 1%);
-  }
+    opacity: 0.1;
+  } */
 
   & > div {
     margin: 1%;
@@ -83,7 +82,9 @@ function Aside() {
         isUnlocked={unlockStatus.Booster}
         style={!unlockStatus.Booster ? lockedStyle : {}}
       />
-      <Stats />
+      <Stats
+        style={lockedStyle}
+      />
     </Container>
   );
 }

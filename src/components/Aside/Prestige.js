@@ -55,8 +55,9 @@ const PrestigeButton = styled.span`
     transform: scale(1.2);
   }
   &:active {
-    background-color: var(--colAlt1);
     color: var(--colMain1);
+    background-color: var(--colAlt1);
+    transform: scale(1.05);
   }
 `;
 
