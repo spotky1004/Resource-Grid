@@ -56,17 +56,19 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 const MainContainer = styled.div`
-  --min: min(var(--w), var(--h));
+  --resourceGridFlexGrow: 9;
+  --asideFlexGrow: 7;
+  --totalFlexGrow: calc(var(--resourceGridFlexGrow) + var(--asideFlexGrow));
 
-  --baseShadow: calc(var(--min) / 250) calc(var(--min) / 250) 0 var(--colStrong);
-  --baseShadowSmall: calc(var(--min) / 500) calc(var(--min) / 500) 0 var(--colStrong);
+  --baseShadow: calc(var(--h) / 250) calc(var(--h) / 250) 0 var(--colStrong);
+  --baseShadowSmall: calc(var(--h) / 500) calc(var(--h) / 500) 0 var(--colStrong);
 
   display: flex;
 
   width: var(--w);
   height: var(--h);
 
-  border-radius: calc(var(--min) / 50);
+  border-radius: calc(var(--h) / 50);
 
   transition: 
     background-image 0.5s linear,
@@ -80,7 +82,7 @@ const MainContainer = styled.div`
   }
   --w: var(--baseSize);
   --h: calc(var(--baseSize) * 9 / 16);
-  font-size: calc(var(--baseSize) * 9 / 16 / 70);
+  font-size: calc(var(--h) / 70);
   @media only screen and (min-width: 1600px) and (min-height: 900px) {
     --w: 1600px;
     --h: 900px;

@@ -6,7 +6,9 @@ import Booster from './Booster.js';
 import Stats from './Stats.js';
 
 const Container = styled.div`
-  flex: 7;
+  --asideWidth: calc(var(--w) / var(--totalFlexGrow) * 7 * 0.97);
+
+  flex: var(--asideFlexGrow);
 
   margin-left: 1.5%;
 
@@ -19,6 +21,19 @@ const Container = styled.div`
   font-weight: bold;
   font-size: 2em;
 
+  &::after {
+    position: absolute;
+
+    width: var(--asideWidth);
+    height: 3px;
+
+    opacity: 0.1;
+
+    content: "Aside Width";
+
+    background: linear-gradient(90deg, #f00 3%, #fff 1%);
+  }
+
   & > div {
     margin: 1%;
 
@@ -28,16 +43,16 @@ const Container = styled.div`
     align-items: center;
 
     width: 100%;
-    background-color: var(--colMain3);
-    border-radius: 5%;
+    background-color: var(--colMain2);
+    border-radius: calc(var(--asideWidth) / 60);
     box-shadow: var(--baseShadow);
   }
 
   & > div:nth-child(1) {
-    flex: 3;
+    flex: 2;
   }
   & > div:nth-child(2) {
-    flex: 2;
+    flex: 1;
   }
   & > div:nth-child(3) {
     flex: 3;
