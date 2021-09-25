@@ -25,7 +25,7 @@ const ExchangeDispaly = styled.div`
 
   background-color: var(--colOverlay);
 `;
-const ResourceCount = styled.span`
+const ResourceQuantity = styled.span`
   margin-right: 1%;
 `;
 const PrestigeButtonContainer = styled.div`
@@ -75,9 +75,9 @@ function Prestige({ isUnlocked, style }) {
           <>
             <Title>Prestige</Title>
             <ExchangeDispaly>
-              <ResourceCount>
+              <ResourceQuantity>
                 {PowdeHave}
-              </ResourceCount>
+              </ResourceQuantity>
               <ResourceImage
                 size="var(--_imageSize)"
                 position={{x: 0, y: 8}}
@@ -92,9 +92,9 @@ function Prestige({ isUnlocked, style }) {
                   color: "var(--colReverseWeak)"
                 }}
               />
-              <ResourceCount>
+              <ResourceQuantity>
                 {`${ShardHave}(+${PowdeHave})`}
-              </ResourceCount>
+              </ResourceQuantity>
               <ResourceImage
                 size="var(--_imageSize)"
                 position={{x: 1, y: 8}}
