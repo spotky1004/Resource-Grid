@@ -83,7 +83,7 @@ const MainContainer = styled.div`
   --w: var(--baseSize);
   --h: calc(var(--baseSize) * 9 / 16);
   font-size: calc(var(--h) / 70);
-  @media only screen and (min-width: 1600px) and (min-height: 900px) {
+  @media only screen and (min-width: 1700px) and (min-height: 1000px) {
     --w: 1600px;
     --h: 900px;
     font-size: calc(var(--h) / 70);
