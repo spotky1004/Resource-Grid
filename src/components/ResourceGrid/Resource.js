@@ -145,9 +145,9 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
       onMouseLeave={() => setHover(false)}
       name={displayName}
       style={{
-        backgroundColor: (save.automationDisabled || (selectMode === "AutoToggle" && displayResource)) ?
+        backgroundColor: (save.unlocked && (save.automationDisabled || (selectMode === "AutoToggle" && displayResource))) ?
           (!save.automationDisabled ? "#1c5412" : "#541212" ) :
-          undefined,
+          undefined, // TODO: make this better
         opacity: displayResource ? undefined : 0.3,
         pointerEvents: displayResource ? undefined: "none"
       }}
