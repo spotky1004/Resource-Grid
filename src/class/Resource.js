@@ -11,6 +11,8 @@ export default class Resource {
    * @property {[number, string][]} [randomGrantOnCraft] - [chance, id] | Randomely grants resource on craft
    * @property {function(object): number} [effectMultiply] - Multiply random chance and Automate speed
    * @property {boolean} [noCostIfAutomate] - yes
+   * @property {number} [defaultQuantity] - default
+   * @property {boolean} [keepOnPrestige] - Keep this resource on prestige
    * @property {string[]} [automates] - Automatically craft/generate resource
    */
   /** @param {ResourceConstructor} data */
@@ -26,6 +28,8 @@ export default class Resource {
     this.randomGrantOnCraft = data.randomGrantOnCraft ?? [];
     this._effectMultiply = data.effectMultiply;
     this.noCostIfAutomate = data.noCostIfAutomate || false;
+    this.defaultQuantity = data.defaultQuantity || 0;
+    this.keepOnPrestige = data.keepOnPrestige || false;
     this.automates = data.automates;
   }
 

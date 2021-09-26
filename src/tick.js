@@ -1,10 +1,11 @@
 import store from "./store.js";
 // eslint-disable-next-line
 import { DefaultSave } from "./saveload.js";
-import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked } from "./data/resources.js";
-import { craftStart, craftUpdate, resourceUnlock } from "./modules/resources.js";
-import { unlockTab } from "./modules/aside.js";
 import { save } from "./saveload.js";
+import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked } from "./data/resources.js";
+import { craftStart, craftUpdate, resourceUnlock, resetResourceData } from "./modules/resources.js";
+import { unlockTab } from "./modules/aside.js";
+import { endPrestige } from "./modules/prestige.js";
 
 const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 let lastSave = new Date().getTime();
@@ -54,7 +55,8 @@ function Tick() {
         order: i,
         isAuto,
         Time,
-        progressIncrement
+        progressIncrement,
+        doingPrestige: savefile.prestige.doingPrestige
       }));
     }
   }
@@ -66,6 +68,19 @@ function Tick() {
     savefile.resources[Resources.DivinePowder.order].have >= 1
   ) {
     store.dispatch(unlockTab('Prestige'));
+  }
+
+  // Prestige
+  if (savefile.prestige.doingPrestige) {
+    store.dispatch(craftUpdate({
+      order: Resources.DivineShard.order,
+      progressIncrement: savefile.prestige.lastPrestigeResourceQuantity,
+      isAuto: 1
+    }))
+    for (let i = 0; i < ResourceArr.length; i++) {
+      store.dispatch(resetResourceData(i));
+    }
+    store.dispatch(endPrestige());
   }
 }
 

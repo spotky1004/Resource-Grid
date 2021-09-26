@@ -6,6 +6,7 @@ const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
 const TOGGLE_AUTO = 'resource/TOGGLE_AUTO';
+const RESET_RESOURCE_DATA = 'resource/RESET_RESOURCE_DATA';
 
 export const craftStart = (order, isAuto) => ({
   type: CRAFT_START,
@@ -17,12 +18,14 @@ export const craftUpdate = ({
   isAuto,
   Time,
   progressIncrement,
+  doingPrestige
 }) => ({
   type: CRAFT_UPDATE,
   order,
   isAuto,
   Time,
-  progressIncrement
+  progressIncrement,
+  doingPrestige
 });
 export const resourceUnlock = order => ({
   type: RESOURCE_UNLOCK,
@@ -30,6 +33,10 @@ export const resourceUnlock = order => ({
 });
 export const toggleAuto = order => ({
   type: TOGGLE_AUTO,
+  order
+});
+export const resetResourceData = order => ({
+  type: RESET_RESOURCE_DATA,
   order
 });
 
@@ -89,6 +96,7 @@ function reducer(state = savefile.resources, action) {
       
       return state;
     case CRAFT_UPDATE:
+      if (action.doingPrestige) return state;
       state = [...state];
       
       state[order] = {
@@ -138,6 +146,18 @@ function reducer(state = savefile.resources, action) {
         ...state[order],
         automationDisabled: !state[order].automationDisabled
       };
+      return state;
+    case RESET_RESOURCE_DATA:
+      state = [...state];
+      if (!Resource.keepOnPrestige) {
+        state[order] = {
+          ...state[order],
+          have: Resource.defaultQuantity,
+          lastTime: null,
+          progress: 0,
+          unlocked: false
+        };
+      }
       return state;
     default:
       return state;

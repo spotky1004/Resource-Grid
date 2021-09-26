@@ -14,6 +14,11 @@ export const DefaultSave = {
       NewGame: false,
       Booster: false,
     }
+  },
+  prestige: {
+    doingPrestige: false,
+    totalPrestigeResourceQuantity: 0,
+    lastPrestigeResourceQuantity: 0
   }
 };
 DefaultSave.resources[0].have = 1;

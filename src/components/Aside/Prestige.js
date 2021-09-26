@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
+import { doPrestige } from '../../modules/prestige.js';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -61,9 +62,10 @@ const PrestigeButton = styled.span`
   }
 `;
 
-function Prestige({ isUnlocked, style }) {
-  const PowdeHave = useSelector(state => state.resources[72].have);
+function Prestige({ isUnlocked, style, doPrestige }) {
+  const PowderHave = useSelector(state => state.resources[72].have);
   const ShardHave = useSelector(state => state.resources[73].have);
+  const canPrestige = PowderHave >= 10;
 
   return (
     <div style={{
@@ -76,7 +78,7 @@ function Prestige({ isUnlocked, style }) {
             <Title>Prestige</Title>
             <ExchangeDispaly>
               <ResourceQuantity>
-                {PowdeHave}
+                {PowderHave}
               </ResourceQuantity>
               <ResourceImage
                 size="var(--_imageSize)"
@@ -93,7 +95,7 @@ function Prestige({ isUnlocked, style }) {
                 }}
               />
               <ResourceQuantity>
-                {`${ShardHave}(+${PowdeHave})`}
+                {`${ShardHave}(+${PowderHave})`}
               </ResourceQuantity>
               <ResourceImage
                 size="var(--_imageSize)"
@@ -104,7 +106,25 @@ function Prestige({ isUnlocked, style }) {
               />
             </ExchangeDispaly>
             <PrestigeButtonContainer>
-              <PrestigeButton>Prestige!</PrestigeButton>
+              <PrestigeButton
+                style={!canPrestige ? {opacity: 0.2, pointerEvents: 'none'} : undefined}
+                onClick={() => canPrestige && doPrestige(PowderHave)}
+              >
+                {canPrestige ?
+                  "Prestige!" :
+                  <>
+                    <span>{`Collect ${10-PowderHave}`}</span>
+                    <ResourceImage
+                      size="calc(var(--_imageSize) / 2)"
+                      position={{x: 0, y: 8}}
+                      style={{
+                        filter: "drop-shadow(var(--baseShadow))",
+                        margin: "0 5%"
+                      }}
+                    />
+                  </>
+                }
+              </PrestigeButton>
             </PrestigeButtonContainer>
           </>
         ) : 
@@ -116,4 +136,9 @@ function Prestige({ isUnlocked, style }) {
   );
 }
 
-export default Prestige;
+export default connect(
+  () => ({}),
+  {
+    doPrestige
+  }
+)(Prestige);

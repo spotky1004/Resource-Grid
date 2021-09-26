@@ -8,6 +8,7 @@ export const Resources = {
     description: "Generate tree",
     automates: ["Tree"],
     unlockAt: {},
+    defaultQuantity: 1,
     position: [0, 0]
   }),
   Tree: new Resource({
@@ -581,6 +582,7 @@ export const Resources = {
     },
     craftTime: 1000,
     unlockAt: {
+      "UpgradePotion": 1,
       "DivineShard": 1,
     },
     position: [5, 6]
@@ -808,6 +810,7 @@ export const Resources = {
     unlockAt: {
       "DivinePowder": 1,
     },
+    keepOnPrestige: true,
     position: [8, 1]
   }),
   ReplicantiBoost: new Resource({
