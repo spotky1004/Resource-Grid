@@ -813,6 +813,46 @@ export const Resources = {
     keepOnPrestige: true,
     position: [8, 1]
   }),
+  Empowerer: new Resource({
+    name: "Empowerer",
+    cost: (have) => ({
+      "DivineShard": 1+Math.floor(have**1.2)
+    }),
+    craftTime: 60,
+    unlockAt: {
+      "DivineShard": 1
+    },
+    keepOnPrestige: true,
+    position: [8, 2]
+  }),
+  FastForward: new Resource({
+    name: "FastForward",
+    cost: (have) => ({
+      "DivineShard": 10*(1+have**1.5/3),
+      "Cluster": 1+have
+    }),
+    craftTime: 600,
+    unlockAt: {
+      "Empowerer": 1
+    },
+    effectMultiply: (savefile) => {
+      let FastForward = savefile[Resources.FastForward.order].have
+      return 1+(FastForward)*(FastForward+1)/20;
+    },
+    keepOnPrestige: true,
+    position: [8, 3]
+  }),
+  Cluster: new Resource({
+    name: "Cluster",
+    cost: (have) => ({
+      [ResourceArr[Math.min(71, have+1)] ? ResourceArr[Math.min(71, have+1)].name : "DivineShard"]: 10
+    }),
+    craftTime: 10,
+    unlockAt: {
+      "Empowerer": 1
+    },
+    position: [8, 6]
+  }),
   ReplicantiBoost: new Resource({
     name: "ReplicantiBoost",
     cost: (have) => ({
@@ -929,6 +969,7 @@ export function getCooldown(name, savefile) {
     craftTime /= Math.max(1, savefile.resources[AutoConnected[order]].have);
     craftTime /= ResourceArr[AutoConnected[order]].effectMultiply(savefile.resources);
   }
+  craftTime /= Resources.FastForward.effectMultiply(savefile.resources);
 
   return craftTime;
 }
