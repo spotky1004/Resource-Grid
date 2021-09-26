@@ -584,6 +584,7 @@ export const Resources = {
     unlockAt: {
       "UpgradePotion": 1,
       "DivineShard": 1,
+      "Replicanti": 1e190
     },
     position: [5, 6]
   }),
@@ -845,12 +846,15 @@ export const Resources = {
   Cluster: new Resource({
     name: "Cluster",
     cost: (have) => ({
-      [ResourceArr[Math.min(71, have+1)] ? ResourceArr[Math.min(71, have+1)].name : "DivineShard"]: 10
+      "UpgradePotionII": have >= 63 ? Infinity : 0,
+      "Replicanti": 10**(have),
+      [ResourceArr[Math.min(71, have+1)] ? ResourceArr[Math.min(71, have+1)].name : "DivineShard"]: 8+have
     }),
     craftTime: 10,
     unlockAt: {
       "Empowerer": 1
     },
+    keepOnPrestige: true,
     position: [8, 6]
   }),
   ReplicantiBoost: new Resource({
