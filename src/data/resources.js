@@ -847,7 +847,7 @@ export const Resources = {
     name: "Cluster",
     cost: (have) => ({
       "UpgradePotionII": have >= 63 ? Infinity : 0,
-      "Replicanti": 10**(have),
+      "Replicanti": Math.floor(10**(have-2)),
       [ResourceArr[Math.min(71, have+1)] ? ResourceArr[Math.min(71, have+1)].name : "DivineShard"]: 8+have
     }),
     craftTime: 10,
