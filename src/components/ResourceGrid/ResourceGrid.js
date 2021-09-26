@@ -67,21 +67,21 @@ function ResourceGrid({ craftStart }) {
         >
           Toggle Auto
         </SelectModeButton>
-        <SelectModeButton
-          onClick={useCallback(() => {
+        {resourceSave[74].unlocked && (<SelectModeButton
+          onClick={() => {
             if (selectMode !== "Empower") {
               setSelectMode("Empower");
             } else {
               setSelectMode(null);
-            }
-          }, [selectMode])}
+            }}
+          }
           style={selectMode === "Empower" ? {
             backgroundColor: "var(--colAlt1)",
             color: "var(--colMain1)",
           } : {}}
         >
           Empower ({EmpowerLeft})
-        </SelectModeButton>
+        </SelectModeButton>)}
       </SelectModeButtons>
       <ResourceWarpper>
           {ResourceArr.map((Resource, index) => (
