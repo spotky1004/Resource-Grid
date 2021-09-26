@@ -168,6 +168,7 @@ function reducer(state = savefile.resources, action) {
           have: Resource.defaultQuantity,
           lastTime: null,
           progress: 0,
+          empower: 0,
           unlocked: false
         };
       }
