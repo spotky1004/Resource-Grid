@@ -123,7 +123,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
   const displayResource =
     save.unlocked &&
     (selectMode !== "AutoToggle" || autoConnected !== -1) &&
-    (selectMode !== "Empower" || Resource.canEmpower);
+    (selectMode !== "Empower" || (index !== 75 && Resource.canEmpower));
 
   return (
     <ResourceWarp
