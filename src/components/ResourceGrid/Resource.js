@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { craftStart, toggleAuto } from "../../modules/resources.js";
+import { craftStart, toggleAuto, resourceEmpower } from "../../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
 import notation from "../../util/notation.js";
 import { AutoConnected } from "../../data/resources.js";
@@ -112,7 +112,7 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleAuto }) {
+function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft }) {
   const [isHover, setHover] = useState(false);
 
   const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
@@ -120,22 +120,32 @@ function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleA
   const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
   const autoConnected = AutoConnected[index];
 
-  const displayResource = save.unlocked && (!autoToggleMode || autoConnected !== -1);
+  const displayResource =
+    save.unlocked &&
+    (selectMode !== "AutoToggle" || autoConnected !== -1) &&
+    (selectMode !== "Empower" || Resource.canEmpower);
 
   return (
     <ResourceWarp
       onClick={() => {
-        if (autoToggleMode) {
-          toggleAuto(index);
-        } else if (Resource && Object.keys(Resource.cost(save.have) ?? {}).length !== 0) {
-          craftStart(index);
+        switch (selectMode) {
+          case "AutoToggle":
+            toggleAuto(index);
+            break;
+          case "Empower":
+            if (empowerLeft > 0) resourceEmpower(index);
+            break;
+          default:
+            if (Resource && Object.keys(Resource.cost(save.have) ?? {}).length !== 0) {
+              craftStart(index);
+            }
         }
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       name={displayName}
       style={{
-        backgroundColor: (save.automationDisabled || (autoToggleMode && displayResource)) ?
+        backgroundColor: (save.automationDisabled || (selectMode === "AutoToggle" && displayResource)) ?
           (!save.automationDisabled ? "#1c5412" : "#541212" ) :
           undefined,
         opacity: displayResource ? undefined : 0.3,
@@ -165,6 +175,25 @@ function ResourceGridItem({ Resource, index, craftStart, autoToggleMode, toggleA
               <ResoruceProduction Resource={Resource} autoConnected={autoConnected}/>
             </>
           }
+          {
+            (Resource.canEmpower && (selectMode === "Empower" || save.empower >= 1)) &&
+            <ResourceImage
+              size="calc(var(--boxSize) / 2.6)"
+              position={{x: 2, y: 8}}
+              content={selectMode === "Empower" ? `x${(1+save.empower/2).toFixed(1)}` : save.empower}
+              style={{
+                position: "absolute",
+                transform: "translate(-50%, -50%)" + (selectMode === "Empower" ? " scale(1.2)" : ""),
+                filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)`,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                textShadow: "var(--baseShadowSmall)",
+                fontWeight: "bold",
+              }}
+            />
+          }
         </ResourceInfo>
       }
     </ResourceWarp>
@@ -176,5 +205,6 @@ export default connect(
   {
     craftStart,
     toggleAuto,
+    resourceEmpower
   }
 )(ResourceGridItem);

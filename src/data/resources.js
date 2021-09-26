@@ -970,6 +970,7 @@ export function getCooldown(name, savefile) {
     craftTime /= ResourceArr[AutoConnected[order]].effectMultiply(savefile.resources);
   }
   craftTime /= Resources.FastForward.effectMultiply(savefile.resources);
+  craftTime /= 1 + savefile.resources[order].empower/2;
 
   return craftTime;
 }

@@ -56,7 +56,7 @@ function Tick() {
         isAuto,
         Time,
         progressIncrement,
-        doingPrestige: savefile.prestige.doingPrestige
+        dontUpdate: savefile.prestige.doingPrestige
       }));
     }
   }

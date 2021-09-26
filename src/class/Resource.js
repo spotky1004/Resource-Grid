@@ -24,13 +24,15 @@ export default class Resource {
     this.craftTime = data.craftTime;
     this.craftMultiply = data.craftMultiply || 1;
     this._position = data.position;
-    this.order = 9*this._position[0] + this._position[1];
     this.randomGrantOnCraft = data.randomGrantOnCraft ?? [];
     this._effectMultiply = data.effectMultiply;
     this.noCostIfAutomate = data.noCostIfAutomate || false;
     this.defaultQuantity = data.defaultQuantity || 0;
     this.keepOnPrestige = data.keepOnPrestige || false;
     this.automates = data.automates;
+    
+    this.order = 9*this._position[0] + this._position[1];
+    this.canEmpower = this.craftTime !== undefined || this.automates !== undefined;
   }
 
   get position() {
@@ -41,11 +43,14 @@ export default class Resource {
   }
 
   effectMultiply(savefile) {
+    let effMult = 1;
     if (typeof this._effectMultiply === 'function') {
-      return this._effectMultiply(savefile);
-    } else {
-      return 1;
+      effMult *= this._effectMultiply(savefile);
     }
+
+    effMult *= 1 + savefile[this.order].empower/2;
+
+    return effMult;
   }
 
   cost(have, isAuto) {

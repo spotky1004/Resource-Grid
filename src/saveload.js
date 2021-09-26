@@ -6,6 +6,7 @@ export const DefaultSave = {
     lastTime: null,
     progress: 0,
     unlocked: false,
+    empower: 0,
     automationDisabled: false,
   })),
   aside: {

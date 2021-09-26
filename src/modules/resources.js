@@ -6,6 +6,7 @@ const CRAFT_START = 'resource/CRAFT_START';
 const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
 const TOGGLE_AUTO = 'resource/TOGGLE_AUTO';
+const RESOURCE_EMPOWER = 'resource/EMPOWER';
 const RESET_RESOURCE_DATA = 'resource/RESET_RESOURCE_DATA';
 
 export const craftStart = (order, isAuto) => ({
@@ -18,14 +19,14 @@ export const craftUpdate = ({
   isAuto,
   Time,
   progressIncrement,
-  doingPrestige
+  dontUpdate
 }) => ({
   type: CRAFT_UPDATE,
   order,
   isAuto,
   Time,
   progressIncrement,
-  doingPrestige
+  dontUpdate
 });
 export const resourceUnlock = order => ({
   type: RESOURCE_UNLOCK,
@@ -33,6 +34,10 @@ export const resourceUnlock = order => ({
 });
 export const toggleAuto = order => ({
   type: TOGGLE_AUTO,
+  order
+});
+export const resourceEmpower = order => ({
+  type: RESOURCE_EMPOWER,
   order
 });
 export const resetResourceData = order => ({
@@ -96,7 +101,7 @@ function reducer(state = savefile.resources, action) {
       
       return state;
     case CRAFT_UPDATE:
-      if (action.doingPrestige) return state;
+      if (action.dontUpdate) return state;
       state = [...state];
       
       state[order] = {
@@ -146,6 +151,14 @@ function reducer(state = savefile.resources, action) {
         ...state[order],
         automationDisabled: !state[order].automationDisabled
       };
+      return state;
+    case RESOURCE_EMPOWER:
+      if (!Resource.canEmpower || state[order].empower >= 5) return state;
+      state = [...state];
+      state[order] = {
+        ...state[order],
+        empower: state[order].empower+1
+      }
       return state;
     case RESET_RESOURCE_DATA:
       state = [...state];

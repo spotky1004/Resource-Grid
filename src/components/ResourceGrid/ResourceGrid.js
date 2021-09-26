@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import styled from "styled-components";
 import Rescource from "./Resource.js";
 import { ResourceArr } from "../../data/resources.js";
@@ -14,12 +15,18 @@ const ResourceWarpper = styled.div`
   grid-auto-columns: var(--cellSize);
   place-items: center;
 `;
-const AutoToggleButton = styled.div`
+const SelectModeButtons = styled.div`
   position: absolute;
   left: calc(var(--h) / 50);
   bottom: calc(var(--w) / 100);
 
+  z-index: 1;
+`;
+const SelectModeButton = styled.div`
   padding: calc(var(--h) / 100) calc(var(--w) / 200);
+  margin: 0 calc(var(--w) / 200);
+
+  display: inline-block;
   
   font-weight: bold;
   color: var(--colReverseWeak);
@@ -28,7 +35,6 @@ const AutoToggleButton = styled.div`
   background-color: var(--colMain3);
 
   cursor: pointer;
-  z-index: 1;
 
   transition: all 0.5s cubic-bezier(.12,.74,.14,.99);
 
@@ -39,29 +45,53 @@ const AutoToggleButton = styled.div`
 `;
 
 function ResourceGrid({ craftStart }) {
-  const [autoToggle, setAutoToggle] = useState(false);
+  const [selectMode, setSelectMode] = useState(null);
+  const resourceSave = useSelector(state => state.resources);
+  const EmpowerLeft = resourceSave[74].have - resourceSave.reduce((a, b) => a+b.empower, 0);
 
   return (
     <>
-      <AutoToggleButton
-        onClick={useCallback(() => {
-          setAutoToggle(!autoToggle);
-        }, [autoToggle])}
-        style={{
-          backgroundColor: autoToggle ? "var(--colAlt1)" : undefined,
-          color: autoToggle ? "var(--colMain1)" : undefined,
-        }}
-      >
-        Toggle Auto
-      </AutoToggleButton>
+      <SelectModeButtons>
+        <SelectModeButton
+          onClick={useCallback(() => {
+            if (selectMode !== "AutoToggle") {
+              setSelectMode("AutoToggle");
+            } else {
+              setSelectMode(null);
+            }
+          }, [selectMode])}
+          style={selectMode === "AutoToggle" ? {
+            backgroundColor: "var(--colAlt1)",
+            color: "var(--colMain1)",
+          } : {}}
+        >
+          Toggle Auto
+        </SelectModeButton>
+        <SelectModeButton
+          onClick={useCallback(() => {
+            if (selectMode !== "Empower") {
+              setSelectMode("Empower");
+            } else {
+              setSelectMode(null);
+            }
+          }, [selectMode])}
+          style={selectMode === "Empower" ? {
+            backgroundColor: "var(--colAlt1)",
+            color: "var(--colMain1)",
+          } : {}}
+        >
+          Empower ({EmpowerLeft})
+        </SelectModeButton>
+      </SelectModeButtons>
       <ResourceWarpper>
           {ResourceArr.map((Resource, index) => (
             <Rescource
               key={Resource !== null ? Resource.name : `empty_${index}`}
               Resource={Resource}
-              autoToggleMode={autoToggle}
+              selectMode={selectMode}
               index={index}
               craftStart={craftStart}
+              empowerLeft={EmpowerLeft}
             />
           ))}
       </ResourceWarpper>
