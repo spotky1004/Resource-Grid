@@ -65,7 +65,7 @@ const PrestigeButton = styled.span`
 function Prestige({ isUnlocked, style, doPrestige }) {
   const PowderHave = useSelector(state => state.resources[72].have);
   const ShardHave = useSelector(state => state.resources[73].have);
-  const canPrestige = PowderHave >= 25;
+  const canPrestige = PowderHave >= 50;
 
   return (
     <div style={{
@@ -113,7 +113,7 @@ function Prestige({ isUnlocked, style, doPrestige }) {
                 {canPrestige ?
                   "Prestige!" :
                   <>
-                    <span>{`Collect ${25-PowderHave}`}</span>
+                    <span>{`Collect ${50-PowderHave}`}</span>
                     <ResourceImage
                       size="calc(var(--_imageSize) / 2)"
                       position={{x: 0, y: 8}}
