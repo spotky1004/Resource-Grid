@@ -108,7 +108,7 @@ function Prestige({ isUnlocked, style, doPrestige }) {
             <PrestigeButtonContainer>
               <PrestigeButton
                 style={!canPrestige ? {opacity: 0.2, pointerEvents: 'none'} : undefined}
-                onClick={() => canPrestige && doPrestige(PowderHave)}
+                onClick={() => canPrestige && window.confirm("Do you really want to Prestige?") && doPrestige(PowderHave)}
               >
                 {canPrestige ?
                   "Prestige!" :
