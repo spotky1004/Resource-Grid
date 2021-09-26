@@ -838,7 +838,7 @@ export const Resources = {
     },
     effectMultiply: (savefile) => {
       let FastForward = savefile[Resources.FastForward.order].have
-      return 1+(FastForward)*(FastForward+1)/20;
+      return 1+(FastForward)*(FastForward+1)/10;
     },
     keepOnPrestige: true,
     position: [8, 3]
