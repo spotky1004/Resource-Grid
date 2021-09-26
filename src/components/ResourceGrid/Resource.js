@@ -184,7 +184,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
               style={{
                 position: "absolute",
                 transform: "translate(-50%, -50%)" + (selectMode === "Empower" ? " scale(1.2)" : ""),
-                filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)`,
+                filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)` + (save.empower === 0 ? " grayscale(1)" : ""),
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
