@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
 import Rescource from "./Resource.js";
-import { ResourceArr } from "../../data/resources.js";
+import { ResourceArr, getCooldown } from "../../data/resources.js";
 import { doRespec } from '../../modules/prestige.js';
 import timeNotation from '../../util/timeNotation.js';
 
@@ -51,11 +51,12 @@ const SelectModeButton = styled.div`
 
 function ResourceGrid() {
   const [selectMode, setSelectMode] = useState(null);
-  const resourceSave = useSelector(state => state.resources);
+  const savefile = useSelector(state => state);
+  const resourceSave = savefile.resources;
   const EmpowerLeft = resourceSave[74].have - resourceSave.reduce((a, b) => a+b.empower, 0);
 
   const Time = new Date().getTime();
-  const RespecTime = useSelector(state => state.prestige.empowererRespecTime);
+  const RespecTime = savefile.prestige.empowererRespecTime;
   const RespecCooldown = 10*60*1000 - (Time-RespecTime);
 
   const dispatch = useDispatch();
@@ -114,6 +115,7 @@ function ResourceGrid() {
               selectMode={selectMode}
               index={index}
               empowerLeft={EmpowerLeft}
+              cooldown={Resource !== null ? getCooldown(Resource.name, savefile) || Infinity : Infinity}
             />
           ))}
       </ResourceWarpper>

@@ -112,7 +112,7 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft }) {
+function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft, cooldown }) {
   const [isHover, setHover] = useState(false);
 
   const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
@@ -164,7 +164,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
             <ResourceQuantity>
               {notation(save.have)}
             </ResourceQuantity>
-            <ResourceProgress style={{height: `${save.progress * 100}%`}}/>
+            <ResourceProgress style={{ height: cooldown > 200 || save.automationDisabled ? `${save.progress * 100}%` : `${Math.random()*10+45}%` }} />
           </span>
           {
             isHover &&
