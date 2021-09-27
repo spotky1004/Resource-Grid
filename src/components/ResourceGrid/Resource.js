@@ -164,10 +164,10 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
             <ResourceQuantity>
               {notation(save.have)}
             </ResourceQuantity>
-            <ResourceProgress style={cooldown > 200 || save.automationDisabled ?
+            <ResourceProgress style={cooldown > 200 || save.automationDisabled || save.lastTime === null ?
               {height:  `${save.progress * 100}%` } :
               {
-                height: `${Math.random()*10+90}%`,
+                height: "100%",
                 backgroundColor: "#fcc4",
                 filter: `hue-rotate(${Math.floor(new Date()/30)%360}deg)`
               }
