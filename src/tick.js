@@ -17,7 +17,10 @@ function Tick() {
   const savefile = store.getState();
   const Time = new Date().getTime();
 
-  if (Time - lastSave > 5000) save(savefile);
+  if (Time - lastSave > 5000) {
+    lastSave = Time;
+    save(savefile);
+  }
 
   // Resources
   for (let i = 0; i < ResourceArr.length; i++) {
