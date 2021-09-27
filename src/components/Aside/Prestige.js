@@ -113,7 +113,7 @@ function Prestige({ isUnlocked, style, doPrestige }) {
                 {canPrestige ?
                   "Prestige!" :
                   <>
-                    <span>{`Collect ${50-PowderHave}`}</span>
+                    <span>{`${50-PowderHave} more `}</span>
                     <ResourceImage
                       size="calc(var(--_imageSize) / 2)"
                       position={{x: 0, y: 8}}
