@@ -18,6 +18,8 @@ export const DefaultSave = {
   },
   prestige: {
     doingPrestige: false,
+    doingRespec: false,
+    empowererRespecTime: 0,
     totalPrestigeResourceQuantity: 0,
     lastPrestigeResourceQuantity: 0
   }

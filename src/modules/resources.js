@@ -7,6 +7,7 @@ const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
 const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
 const TOGGLE_AUTO = 'resource/TOGGLE_AUTO';
 const RESOURCE_EMPOWER = 'resource/EMPOWER';
+const REMOVE_EMPOWERER  = 'resource/REMOVE_EMPOWERER';
 const RESET_RESOURCE_DATA = 'resource/RESET_RESOURCE_DATA';
 
 export const craftStart = (order, isAuto) => ({
@@ -40,6 +41,10 @@ export const resourceEmpower = order => ({
   type: RESOURCE_EMPOWER,
   order
 });
+export const removeEmpowerer = order => ({
+  type: REMOVE_EMPOWERER,
+  order
+})
 export const resetResourceData = order => ({
   type: RESET_RESOURCE_DATA,
   order
@@ -160,6 +165,13 @@ function reducer(state = savefile.resources, action) {
         empower: state[order].empower+1
       }
       return state;
+    case REMOVE_EMPOWERER:
+      state = [...state];
+      state[order] = {
+        ...state[order],
+        empower: 0
+      };
+      return state;
     case RESET_RESOURCE_DATA:
       state = [...state];
       if (!Resource.keepOnPrestige) {
@@ -168,7 +180,6 @@ function reducer(state = savefile.resources, action) {
           have: Resource.defaultQuantity,
           lastTime: null,
           progress: 0,
-          empower: 0,
           unlocked: false
         };
       }

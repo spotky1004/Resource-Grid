@@ -3,9 +3,9 @@ import store from "./store.js";
 import { DefaultSave } from "./saveload.js";
 import { save } from "./saveload.js";
 import { Resources, ResourceArr, getCooldown, canBuy, AutoConnected, isUnlocked } from "./data/resources.js";
-import { craftStart, craftUpdate, resourceUnlock, resetResourceData } from "./modules/resources.js";
+import { craftStart, craftUpdate, resourceUnlock, removeEmpowerer, resetResourceData } from "./modules/resources.js";
 import { unlockTab } from "./modules/aside.js";
-import { endPrestige } from "./modules/prestige.js";
+import { endPrestige, endRespec } from "./modules/prestige.js";
 
 const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 let lastSave = new Date().getTime();
@@ -84,6 +84,13 @@ function Tick() {
       store.dispatch(resetResourceData(i));
     }
     store.dispatch(endPrestige());
+  }
+  // Empowerer Respec
+  if (savefile.prestige.doingRespec) {
+    for (let i = 0; i < ResourceArr.length; i++) {
+      store.dispatch(removeEmpowerer(i));
+    }
+    store.dispatch(endRespec());
   }
 }
 

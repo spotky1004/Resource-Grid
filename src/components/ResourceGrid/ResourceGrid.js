@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
 import Rescource from "./Resource.js";
 import { ResourceArr } from "../../data/resources.js";
+import { doRespec } from '../../modules/prestige.js';
+import timeNotation from '../../util/timeNotation.js';
 
 const ResourceWarpper = styled.div`
   --cellSize: calc(var(--h) / 9);
@@ -26,10 +28,13 @@ const SelectModeButton = styled.div`
   padding: calc(var(--h) / 100) calc(var(--w) / 200);
   margin: 0 calc(var(--w) / 200);
 
+  min-width: 20%;
+
   display: inline-block;
   
   font-weight: bold;
   color: var(--colReverseWeak);
+  text-align: center;
 
   box-shadow: var(--baseShadow);
   background-color: var(--colMain3);
@@ -44,10 +49,16 @@ const SelectModeButton = styled.div`
   }
 `;
 
-function ResourceGrid({ craftStart }) {
+function ResourceGrid() {
   const [selectMode, setSelectMode] = useState(null);
   const resourceSave = useSelector(state => state.resources);
   const EmpowerLeft = resourceSave[74].have - resourceSave.reduce((a, b) => a+b.empower, 0);
+
+  const Time = new Date().getTime();
+  const RespecTime = useSelector(state => state.prestige.empowererRespecTime);
+  const RespecCooldown = 10*60*1000 - (Time-RespecTime);
+
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -67,21 +78,33 @@ function ResourceGrid({ craftStart }) {
         >
           Toggle Auto
         </SelectModeButton>
-        {resourceSave[74].unlocked && (<SelectModeButton
-          onClick={() => {
-            if (selectMode !== "Empower") {
-              setSelectMode("Empower");
-            } else {
-              setSelectMode(null);
-            }}
-          }
-          style={selectMode === "Empower" ? {
-            backgroundColor: "var(--colAlt1)",
-            color: "var(--colMain1)",
-          } : {}}
-        >
-          Empower ({EmpowerLeft})
-        </SelectModeButton>)}
+        {resourceSave[74].unlocked && (
+        <>
+          <SelectModeButton
+            onClick={() => {
+              if (selectMode !== "Empower") {
+                setSelectMode("Empower");
+              } else {
+                setSelectMode(null);
+              }}
+            }
+            style={selectMode === "Empower" ? {
+              backgroundColor: "var(--colAlt1)",
+              color: "var(--colMain1)",
+            } : {}}
+          >
+            Empower ({EmpowerLeft})
+          </SelectModeButton>
+          <SelectModeButton
+            onClick={() => dispatch(doRespec())}
+            style={RespecCooldown > 0 ? {
+              opacity: 0.4,
+              pointerEvents: 'none'
+            } : {}}
+          >
+            {RespecCooldown > 0 ? timeNotation(RespecCooldown) : "Respec"}
+          </SelectModeButton>
+        </>)}
       </SelectModeButtons>
       <ResourceWarpper>
           {ResourceArr.map((Resource, index) => (
@@ -90,7 +113,6 @@ function ResourceGrid({ craftStart }) {
               Resource={Resource}
               selectMode={selectMode}
               index={index}
-              craftStart={craftStart}
               empowerLeft={EmpowerLeft}
             />
           ))}
