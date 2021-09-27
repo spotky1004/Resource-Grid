@@ -164,7 +164,14 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
             <ResourceQuantity>
               {notation(save.have)}
             </ResourceQuantity>
-            <ResourceProgress style={{ height: cooldown > 200 || save.automationDisabled ? `${save.progress * 100}%` : `${Math.random()*10+45}%` }} />
+            <ResourceProgress style={cooldown > 1000 || save.automationDisabled ?
+              {height:  `${save.progress * 100}%` } :
+              {
+                height: `${Math.random()*10+90}%`,
+                backgroundColor: "#fcc4",
+                filter: `hue-rotate(${Math.floor(new Date()/30)%360}deg)`
+              }
+            } />
           </span>
           {
             isHover &&
