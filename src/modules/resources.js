@@ -116,15 +116,19 @@ function reducer(state = savefile.resources, action) {
       };
 
       if (state[order].progress >= 1) {
-        state[order].lastTime = null;
         let bulk = 1;
         if (isAuto) {
           bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
+          if (
+            bulk <= 10 ||
+            bulk !== Math.floor(state[order].progress)
+          ) state[order].lastTime = null;
           state[order].progress %= 1;
         } else {
           state[order].have += Resource.craftMultiply;
           state[order].progress = 0;
+          state[order].lastTime = null;
         }
 
         const EffectMultiply = Resource.effectMultiply(state);
