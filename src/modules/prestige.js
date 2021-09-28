@@ -27,11 +27,13 @@ function reducer(state = savefile.prestige, action) {
   switch (action.type) {
     case DO_PRESTIGE:
       savefile.prestige.doingPrestige = true;
+      savefile.prestige.tmpPrestigeResourceQuantity = action.prestigeResourceQuantity;
       savefile.prestige.lastPrestigeResourceQuantity = action.prestigeResourceQuantity;
       savefile.prestige.totalPrestigeResourceQuantity += action.prestigeResourceQuantity;
       return state;
     case END_PRESTIGE:
       savefile.prestige.doingPrestige = false;
+      savefile.prestige.tmpPrestigeResourceQuantity = 0;
       return state;
     case DO_RESPEC:
       if (Time-state.empowererRespecTime >= EMPOWERER_RESPEC_TIME) {

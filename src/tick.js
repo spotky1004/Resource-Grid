@@ -74,11 +74,14 @@ function Tick() {
   }
 
   // Prestige
-  if (savefile.prestige.doingPrestige) {
+  if (
+    savefile.prestige.doingPrestige &&
+    savefile.prestige.tmpPrestigeResourceQuantity >= 1
+  ) {
     store.dispatch(craftUpdate({
       order: Resources.DivineShard.order,
       progressIncrement: savefile.prestige.lastPrestigeResourceQuantity,
-      isAuto: 1
+      isAuto: true
     }))
     for (let i = 0; i < ResourceArr.length; i++) {
       store.dispatch(resetResourceData(i));

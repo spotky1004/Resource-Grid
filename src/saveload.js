@@ -21,7 +21,8 @@ export const DefaultSave = {
     doingRespec: false,
     empowererRespecTime: 0,
     totalPrestigeResourceQuantity: 0,
-    lastPrestigeResourceQuantity: 0
+    lastPrestigeResourceQuantity: 0,
+    tmpPrestigeResourceQuantity: 0
   }
 };
 DefaultSave.resources[0].have = 1;
