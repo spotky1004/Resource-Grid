@@ -161,9 +161,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
               position={Resource.position}
               style={{filter: "drop-shadow(var(--baseShadow))", margin: "calc(var(--margin) / 2)"}}
             />
-            <ResourceQuantity>
-              {notation(save.have)}
-            </ResourceQuantity>
+            <ResourceQuantity>{notation(save.have)}</ResourceQuantity>
             <ResourceProgress style={cooldown > 200 || save.automationDisabled ?
               {height:  `${save.progress * 100}%` } :
               {
@@ -192,6 +190,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
           content={selectMode === "Empower" ? `x${(1+save.empower/2).toFixed(1)}` : save.empower}
           style={{
             position: "absolute",
+            top: 0, left: 0,
             transform: "translate(-50%, -50%)" + (selectMode === "Empower" ? " scale(1.2)" : ""),
             filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)` + (save.empower === 0 ? " grayscale(1)" : ""),
             display: "flex",
