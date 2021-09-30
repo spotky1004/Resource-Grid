@@ -50,6 +50,16 @@ export const resetResourceData = order => ({
   order
 });
 
+
+function canBuyResource(state, cost) {
+  for (const resourceName in cost) {
+    const _cost = cost[resourceName];
+    const _order = Resources[resourceName].order;
+    if (state[_order].have < _cost) return false;
+  }
+
+  return true;
+}
 function buyResource(state, cost, bulkMax=0) {
   let bulk = bulkMax;
 
@@ -73,6 +83,8 @@ function buyResource(state, cost, bulkMax=0) {
   }
   return bulk;
 }
+
+
 
 function reducer(state = savefile.resources, action) {
   const Resource = ResourceArr[action.order];
@@ -120,10 +132,7 @@ function reducer(state = savefile.resources, action) {
         if (isAuto) {
           bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
-          if (
-            bulk <= 10 ||
-            bulk !== Math.floor(state[order].progress)
-          ) state[order].lastTime = null;
+          if (!canBuyResource(state, cost)) state[order].lastTime = null;
           state[order].progress %= 1;
         } else {
           state[order].have += Resource.craftMultiply;
