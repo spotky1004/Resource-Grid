@@ -16,6 +16,9 @@ export const DefaultSave = {
       Booster: false,
     }
   },
+  stats: {
+    startTime: new Date().getTime(),
+  },
   prestige: {
     doingPrestige: false,
     doingRespec: false,
