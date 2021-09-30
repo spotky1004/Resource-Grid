@@ -182,26 +182,26 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
               <ResoruceProduction Resource={Resource} autoConnected={autoConnected}/>
             </>
           }
-          {
-            (Resource.canEmpower && (selectMode === "Empower" || save.empower >= 1)) &&
-            <ResourceImage
-              size="calc(var(--boxSize) / 2.6)"
-              position={{x: 2, y: 8}}
-              content={selectMode === "Empower" ? `x${(1+save.empower/2).toFixed(1)}` : save.empower}
-              style={{
-                position: "absolute",
-                transform: "translate(-50%, -50%)" + (selectMode === "Empower" ? " scale(1.2)" : ""),
-                filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)` + (save.empower === 0 ? " grayscale(1)" : ""),
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                textShadow: "var(--baseShadowSmall)",
-                fontWeight: "bold",
-              }}
-            />
-          }
         </ResourceInfo>
+      }
+      {
+        (Resource && Resource.canEmpower && (selectMode === "Empower" || save.empower >= 1)) &&
+        <ResourceImage
+          size="calc(var(--boxSize) / 2.6)"
+          position={{x: 2, y: 8}}
+          content={selectMode === "Empower" ? `x${(1+save.empower/2).toFixed(1)}` : save.empower}
+          style={{
+            position: "absolute",
+            transform: "translate(-50%, -50%)" + (selectMode === "Empower" ? " scale(1.2)" : ""),
+            filter: `drop-shadow(var(--baseShadowSmall)) hue-rotate(-${Math.max(0, save.empower-1)*50}deg)` + (save.empower === 0 ? " grayscale(1)" : ""),
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textShadow: "var(--baseShadowSmall)",
+            fontWeight: "bold",
+          }}
+        />
       }
     </ResourceWarp>
   );
