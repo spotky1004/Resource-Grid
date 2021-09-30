@@ -105,7 +105,7 @@ function App() {
             pointerEvents: "none",
             opacity: 0.6,
             fontWeight: "bold"
-          }}>Dev Mode Activated (Speed x10)</span>
+          }}>Dev Mode Activated (Speed x30)</span>
         }
         <ResourceGrid />
         <Aside />

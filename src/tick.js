@@ -53,7 +53,7 @@ function Tick() {
     const lastTime = save.lastTime;
     if (lastTime !== null) {
       let craftTime = getCooldown(Resource.name, savefile);
-      let progressIncrement = (Time - lastTime)/craftTime * (devMode ? 10 : 1);
+      let progressIncrement = (Time - lastTime)/craftTime * (devMode ? 30 : 1);
       store.dispatch(craftUpdate({
         order: i,
         isAuto,
