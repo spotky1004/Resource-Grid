@@ -274,6 +274,7 @@ export const Resources = {
       [0.015, "AmethystStone"],
       [0.007, "RubyStone"],
       [0.003, "SapphireStone"],
+      [0.0000001, "Core"]
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
     effectMultiply: (savefile) => {
@@ -364,6 +365,13 @@ export const Resources = {
       "GoldOre": 1,
     },
     position: [3, 3]
+  }),
+  Core: new Resource({
+    name: "Core",
+    unlockAt: {
+      "Core": 1,
+    },
+    position: [3, 4]
   }),
   Emerald: new Resource({
     name: "Emerald",
@@ -544,16 +552,46 @@ export const Resources = {
   Steam: new Resource({
     name: "Steam",
     cost: {
-      "Water": 10,
-      "Lava": 5
+      "Water": 2,
+      "Lava": 1
     },
-    craftTime: 60,
-    craftMultiply: 15,
+    craftTime: 20,
+    craftMultiply: 3,
     unlockAt: {
       "Water": 1,
       "Lava": 1,
     },
     position: [5, 2]
+  }),
+  StramProducer: new Resource({
+    name: "StramProducer",
+    cost: (have) => ({
+      "Copper": 1_000*(have+1)**1.3,
+      "Water": 600*(have+1)**1.1,
+      "Lava": 30*(have+1)**1.1,
+      "Energy": 10**(6.6+Math.sqrt(have/10))
+    }),
+    craftTime: 400,
+    unlockAt: {
+      "Steam": 15,
+      "Energy": 1,
+    },
+    position: [5, 3]
+  }),
+  Crucible: new Resource({
+    name: "Crucible",
+    cost: (have) => ({
+      "Gold": 20_000*(have+1),
+      "Copper": 30_000*(have+1),
+      "Water": 10_000*(have+1),
+      "Volcano": 10+have*2,
+    }),
+    automates: ["UpgradePotion", "UpgradePotionII"],
+    craftTime: 800,
+    unlockAt: {
+      "UpgradePotionII": 1,
+    },
+    position: [5, 4]
   }),
   UpgradePotion: new Resource({
     name: "UpgradePotion",
@@ -574,17 +612,16 @@ export const Resources = {
     name: "UpgradePotionII",
     cost: {
       "UpgradePotion": 100,
-      "Fruit": 50_000,
-      "Sand": 10_000_000,
-      "Gold": 10_000,
+      "Core": 1,
+      "Fruit": 5_000,
+      "Sand": 2_500_000,
       "Lava": 5_000,
-      "DivineShard": 1
     },
     craftTime: 1000,
     unlockAt: {
       "UpgradePotion": 1,
       "DivineShard": 1,
-      "Replicanti": 1e190
+      "Core": 1
     },
     position: [5, 6]
   }),
@@ -766,28 +803,70 @@ export const Resources = {
 
   Forest: new Resource({
     name: "Forest",
+    cost: (have) => ({
+      "Cluster": 8,
+      "DivineShard": 50*(have+1),
+      "Tree": 1_000_000*(have+1),
+      "Vine": 1_000*(have+1),
+      "Mushroom": 500*(have+1),
+    }),
+    automates: [
+      "Explorer",
+      "Axe",
+      "Saw",
+      "CharcoalMiner",
+    ],
+    keepOnPrestige: true,
     position: [7, 0]
   }),
   Underground: new Resource({
     name: "Underground",
+    automates: [
+      "Pickaxe",
+      "GemstonePickaxe",
+      "Volcano"
+    ],
+    keepOnPrestige: true,
     position: [7, 1]
   }),
   Ocean: new Resource({
     name: "Ocean",
+    automates: [
+      "Orchard",
+      "Pump",
+      "StramProducer",
+      "Crucible"
+    ],
+    keepOnPrestige: true,
     position: [7, 2]
   }),
   City: new Resource({
     name: "City",
+    automates: [
+      "CityBuilder",
+      "Generator",
+      "MetalworkFactory",
+      "GemCutter"
+    ],
+    keepOnPrestige: true,
     position: [7, 3]
   }),
-  EarthEssence: new Resource({
-    name: "EarthEssence",
+  PlanetEssence: new Resource({
+    name: "PlanetEssence",
     unlockAt: {
       "Forest": 1,
       "Underground": 1,
       "Ocean": 1,
       "City": 1,
     },
+    automates: [
+      "Cluster",
+      "Forest",
+      "Underground",
+      "Ocean",
+      "City"
+    ],
+    keepOnPrestige: true,
     position: [7, 4]
   }),
 
@@ -843,6 +922,21 @@ export const Resources = {
     keepOnPrestige: true,
     position: [8, 3]
   }),
+  DivineFactory: new Resource({
+    name: "DivineFactory",
+    cost: (have) => ({
+      "DivineShard": 100*(have**2),
+      "Cluster": 10+have*2,
+      "MetalworkFactory": 50*(have+1),
+    }),
+    automates: ["DivinePowder"],
+    craftTime: 3000,
+    unlockAt: {
+      "FastForward": 3,
+    },
+    keepOnPrestige: true,
+    position: [8, 6]
+  }),
   Cluster: new Resource({
     name: "Cluster",
     cost: (have) => ({
@@ -878,14 +972,14 @@ export const Resources = {
     effectMultiply: (savefile) => {
       const replicanti = savefile[Resources.Replicanti.order].have;
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
-      const replicantiPow = 0.6 + 0.35*(1-1/(replicantiBoost/30+1));
+      const replicantiPow = 0.6 + 0.30*(1-1/(replicantiBoost/30+1));
       return 1.5**(replicantiBoost+1)*(replicanti+1)**replicantiPow/(replicanti+1);
     },
     unlockAt: {
       "Replicanti": 1,
     },
     automates: ["Replicanti"],
-    craftTime: 30,
+    craftTime: 20,
     position: [8, 8]
   }),
 };
