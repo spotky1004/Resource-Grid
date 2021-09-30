@@ -199,6 +199,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
             alignItems: "center",
             textShadow: "var(--baseShadowSmall)",
             fontWeight: "bold",
+            pointerEvents: "none"
           }}
         />
       }
