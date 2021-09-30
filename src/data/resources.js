@@ -972,7 +972,7 @@ export const Resources = {
     effectMultiply: (savefile) => {
       const replicanti = savefile[Resources.Replicanti.order].have;
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
-      const replicantiPow = 0.6 + 0.30*(1-1/(replicantiBoost/30+1));
+      const replicantiPow = 0.6 + 0.30*(1-1/(replicantiBoost/25+1));
       return 1.5**(replicantiBoost+1)*(replicanti+1)**replicantiPow/(replicanti+1);
     },
     unlockAt: {
