@@ -274,7 +274,7 @@ export const Resources = {
       [0.015, "AmethystStone"],
       [0.007, "RubyStone"],
       [0.003, "SapphireStone"],
-      [0.00000001, "Core"]
+      [0.000_000_001, "Core"]
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
     effectMultiply: (savefile) => {
@@ -473,8 +473,8 @@ export const Resources = {
     canEmpower: false,
     position: [4, 2]
   }),
-  MetalworkBoost: new Resource({
-    name: "MetalworkBoost",
+  MetalworkUpgrade: new Resource({
+    name: "MetalworkUpgrade",
     cost: (have) => ({
       "Energy": 3000*2**(have+1),
       "UpgradePotion": 1+(have**1.4)/2,
@@ -487,8 +487,8 @@ export const Resources = {
     canEmpower: false,
     position: [4, 3]
   }),
-  LiquidBoost: new Resource({
-    name: "LiquidBoost",
+  LiquidUpgrade: new Resource({
+    name: "LiquidUpgrade",
     cost: (have) => ({
       "Energy": 10**(6+have**1.1),
       "UpgradePotion": 15*(have+1),
@@ -498,10 +498,25 @@ export const Resources = {
     }),
     craftTime: 75,
     unlockAt: {
-      "MetalworkBoost": 1
+      "MetalworkUpgrade": 1
     },
     canEmpower: false,
     position: [4, 4]
+  }),
+  ReplicantiBoostII: new Resource({
+    name: "ReplicantiBoostII",
+    cost: (have) => ({
+      "Energy": 10**(12+have*2),
+      "Replicanti": 10**(33+have*6),
+      "UpgradePotionII": 1+Math.floor(have**1.2),
+      "Sapphire": 1000*((have+1)**1.3),
+    }),
+    craftTime: 90,
+    unlockAt: {
+      "UpgradePotionII": 1,
+    },
+    canEmpower: false,
+    position: [4, 5]
   }),
   Generator: new Resource({
     name: "Generator",
@@ -512,18 +527,18 @@ export const Resources = {
       "Citizen": 1+have,
     }),
     craftTime: 100,
-    effectMultiply: (savefile) => 4**savefile[Resources.GeneratorBoost.order].have,
+    effectMultiply: (savefile) => 4**savefile[Resources.GeneratorUpgrade.order].have,
     automates: ["Energy"],
     unlockAt: {
       "Citizen": 1
     },
     position: [4, 7]
   }),
-  GeneratorBoost: new Resource({
-    name: "GeneratorBoost",
+  GeneratorUpgrade: new Resource({
+    name: "GeneratorUpgrade",
     cost: (have) => ({
-      "Steam": 50*(have/2+1),
-      "Replicanti": 100**(have+2),
+      "Steam": 2**(5.2+have**0.85),
+      "Replicanti": 100**(have+2+Math.max(0, have-10)**0.7),
     }),
     craftTime: 60,
     unlockAt: {
@@ -560,7 +575,7 @@ export const Resources = {
       "Water": 2,
       "Lava": 1
     },
-    craftTime: 20,
+    craftTime: 10,
     craftMultiply: 3,
     unlockAt: {
       "Water": 1,
@@ -576,6 +591,7 @@ export const Resources = {
       "Lava": 2000*(have+1)**1.1,
       "Energy": 10**(6.6+Math.sqrt(have/10))
     }),
+    automates: ["Steam"],
     craftTime: 600,
     unlockAt: {
       "Steam": 15,
@@ -586,6 +602,7 @@ export const Resources = {
   Crucible: new Resource({
     name: "Crucible",
     cost: (have) => ({
+      "UpgradePotionII": 1,
       "Gold": 20_000*(have+1),
       "Copper": 30_000*(have+1),
       "Water": 10_000*(have+1),
@@ -619,7 +636,7 @@ export const Resources = {
       "UpgradePotion": 100,
       "Core": 1,
       "Fruit": 5_000,
-      "Sand": 2_500_000,
+      "Sand": 25_000_000,
       "Lava": 5_000,
       "Sapphire": 1_000,
     },
@@ -668,12 +685,13 @@ export const Resources = {
     name: "Saw",
     description: "Automates Plank",
     cost: (have) => ({
-      "Plank": 10 * (have+1)**2,
+      "Copper": 2.5 * (have+1)**1.2,
       "Iron": 3 * (have+1)**1.2
     }),
     craftTime: 60,
     automates: ["Plank"],
     unlockAt: {
+      "Copper": 1,
       "Iron": 1,
     },
     position: [6, 1]
@@ -692,7 +710,7 @@ export const Resources = {
     automates: ["Stone"],
     effectMultiply: (savefile) => {
       let mult = 1;
-      mult *= savefile[Resources.GemstonePickaxe.order].have + 1;
+      mult *= savefile[Resources.GemstonePickaxe.order].have/3 + 1;
       mult *= savefile[Resources.PickaxeUpgrade.order].have/3 + 1;
       return mult;
     },
@@ -733,7 +751,7 @@ export const Resources = {
     }),
     craftTime: 30,
     automates: ["Water"],
-    effectMultiply: (savefile) => savefile[Resources.LiquidBoost.order].have/3+1,
+    effectMultiply: (savefile) => savefile[Resources.LiquidUpgrade.order].have/3+1,
     unlockAt: {
       "Copper": 1,
     },
@@ -748,7 +766,7 @@ export const Resources = {
     }),
     craftTime: 35,
     automates: ["Lava"],
-    effectMultiply: (savefile) => savefile[Resources.LiquidBoost.order].have/3+1,
+    effectMultiply: (savefile) => savefile[Resources.LiquidUpgrade.order].have/3+1,
     unlockAt: {
       "Lava": 1,
     },
@@ -766,7 +784,7 @@ export const Resources = {
     }),
     craftTime: 150,
     automates: ["Iron", "Gold", "Copper"],
-    effectMultiply: (savefile) => savefile[Resources.MetalworkBoost.order].have/3+1,
+    effectMultiply: (savefile) => savefile[Resources.MetalworkUpgrade.order].have/3+1,
     unlockAt: {
       "Pump": 1,
       "Volcano": 1,
@@ -792,7 +810,7 @@ export const Resources = {
   GemCutter: new Resource({
     name: "GemCutter",
     cost: (have) => ({
-      "Energy": 200*(have+1)**1.2,
+      "Energy": 10**(3+(have*2)**0.85),
       "Iron": 1000*(have+1)**1.1,
       "Water": 300*(have+1)**1.1,
       "Lava": 100*(have+1)**1.1
@@ -807,12 +825,11 @@ export const Resources = {
     position: [6, 8]
   }),
 
-  Forest: new Resource({
-    name: "Forest",
+  Overworld: new Resource({
+    name: "Overworld",
     cost: (have) => ({
-      "Cluster": 8,
-      "DivineShard": 50*(have+1),
-      "Tree": 1_000_000*(have+1),
+      "DivineShard": 75*(have+1),
+      "Tree": 2_500_000*(have+1),
       "Vine": 1_000*(have+1),
       "Mushroom": 500*(have+1),
     }),
@@ -820,8 +837,11 @@ export const Resources = {
       "Explorer",
       "Axe",
       "Saw",
-      "CharcoalMiner",
+      "GemBoost",
     ],
+    unlockAt: {
+      "FastForward": 3
+    },
     keepOnPrestige: true,
     position: [7, 0]
   }),
@@ -830,8 +850,12 @@ export const Resources = {
     automates: [
       "Pickaxe",
       "GemstonePickaxe",
-      "Volcano"
+      "Volcano",
+      "PickaxeUpgrade"
     ],
+    unlockAt: {
+      "Overworld": 1,
+    },
     keepOnPrestige: true,
     position: [7, 1]
   }),
@@ -841,7 +865,8 @@ export const Resources = {
       "Orchard",
       "Pump",
       "StramProducer",
-      "Crucible"
+      "Crucible",
+      "LiquidUpgrade"
     ],
     keepOnPrestige: true,
     position: [7, 2]
@@ -852,7 +877,8 @@ export const Resources = {
       "CityBuilder",
       "Generator",
       "MetalworkFactory",
-      "GemCutter"
+      "GemCutter",
+      "MetalworkUpgrade"
     ],
     keepOnPrestige: true,
     position: [7, 3]
@@ -860,17 +886,15 @@ export const Resources = {
   PlanetEssence: new Resource({
     name: "PlanetEssence",
     unlockAt: {
-      "Forest": 1,
+      "Overworld": 1,
       "Underground": 1,
       "Ocean": 1,
       "City": 1,
     },
     automates: [
       "Cluster",
-      "Forest",
-      "Underground",
-      "Ocean",
-      "City"
+      "ReplicantiBoost",
+      "ReplicantiBoostII"
     ],
     keepOnPrestige: true,
     position: [7, 4]
@@ -879,7 +903,7 @@ export const Resources = {
   DivinePowder: new Resource({
     name: "DivinePowder",
     cost: (have) => ({
-      "Replicanti": 10**((have/8)**0.87+6),
+      "Replicanti": 10**((have/8)**0.87+6) > 1e50 ? 1e50*have**(2+Math.log(have/100)*3) : 10**((have/8)**0.87+6),
       "Energy": 10**(2+Math.log(have/3+1)**1.3),
       "Sapphire": 1+have**0.5,
       "UpgradePotion": Math.floor(have/100)
@@ -925,30 +949,47 @@ export const Resources = {
       let FastForward = savefile[Resources.FastForward.order].have
       return 1+(FastForward)*(FastForward+1)/10;
     },
+    canEmpower: false,
     keepOnPrestige: true,
     position: [8, 3]
+  }),
+  EmpowerCap: new Resource({
+    name: "EmpowerCap",
+    cost: (have) => ({
+      "DivineShard": 3**(Math.sqrt(have)+4.5) - 41,
+      "Cluster": 10+have*5,
+      "UpgradePotionII": (have+1)**(2+have/20),
+    }),
+    craftTime: 5000,
+    unlockAt: {
+      "FastForward": 1,
+      "UpgradePotionII": 1
+    },
+    canEmpower: false,
+    keepOnPrestige: true,
+    position: [8, 4]
   }),
   DivineFactory: new Resource({
     name: "DivineFactory",
     cost: (have) => ({
       "DivineShard": 100*(have**2),
-      "Cluster": 10+have*2,
-      "MetalworkFactory": 50*(have+1),
+      "Cluster": 40,
+      "MetalworkFactory": 25*(have+1),
     }),
     automates: ["DivinePowder"],
-    craftTime: 3000,
+    craftTime: 6000,
     unlockAt: {
-      "FastForward": 3,
+      "FastForward": 3
     },
     keepOnPrestige: true,
-    position: [8, 6]
+    position: [8, 5]
   }),
   Cluster: new Resource({
     name: "Cluster",
     cost: (have) => ({
       "UpgradePotionII": have >= 63 ? Infinity : 0,
       "Replicanti": Math.floor(10**(have-2)),
-      [ResourceArr[Math.min(71, have+1)] ? ResourceArr[Math.min(71, have+1)].name : "DivineShard"]: 8+have
+      [ResourceArr[(have+1)%71] ? ResourceArr[(have+1)%71].name : "DivineShard"]: 8+have,
     }),
     craftTime: 10,
     unlockAt: {
@@ -979,8 +1020,10 @@ export const Resources = {
     effectMultiply: (savefile) => {
       const replicanti = savefile[Resources.Replicanti.order].have;
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
+      const replicantiBoostII = savefile[Resources.ReplicantiBoostII.order].have;
+      const replicantiMult = (3**replicantiBoostII) * (1.5**(Math.min(17, replicantiBoost+1) + Math.max(0, replicantiBoost-17)**0.75));
       const replicantiPow = 0.6 + 0.30*(1-1/(replicantiBoost/25+1));
-      return 1.5**(replicantiBoost+1)*(replicanti+1)**replicantiPow/(replicanti+1);
+      return replicantiMult*(replicanti+1)**replicantiPow/(replicanti+1);
     },
     unlockAt: {
       "Replicanti": 1,
