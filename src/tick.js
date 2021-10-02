@@ -51,7 +51,7 @@ function Tick() {
 
     // Check craft end
     const lastTime = save.lastTime;
-    if (lastTime !== null) {
+    if (lastTime !== null && Resource.craftTime !== undefined) {
       let craftTime = getCooldown(Resource.name, savefile);
       let progressIncrement = (Time - lastTime)/craftTime * (devMode ? 30 : 1);
       store.dispatch(craftUpdate({
