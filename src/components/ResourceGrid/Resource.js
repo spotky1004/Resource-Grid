@@ -115,8 +115,6 @@ const ResourceQuantity = styled.div`
 function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft, cooldown }) {
   const [isHover, setHover] = useState(false);
 
-  // console.log("update");
-
   const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
   const save = useSelector(state => state.resources[index]);
   const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
