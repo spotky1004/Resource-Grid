@@ -456,6 +456,7 @@ export const Resources = {
       "Energy": 1,
       "Pickaxe": 1,
     },
+    canEmpower: false,
     position: [4, 1]
   }),
   GemBoost: new Resource({
@@ -469,6 +470,7 @@ export const Resources = {
       "Energy": 1,
       "ShinyStone": 1,
     },
+    canEmpower: false,
     position: [4, 2]
   }),
   MetalworkBoost: new Resource({
@@ -482,6 +484,7 @@ export const Resources = {
     unlockAt: {
       "UpgradePotion": 1
     },
+    canEmpower: false,
     position: [4, 3]
   }),
   LiquidBoost: new Resource({
@@ -497,6 +500,7 @@ export const Resources = {
     unlockAt: {
       "MetalworkBoost": 1
     },
+    canEmpower: false,
     position: [4, 4]
   }),
   Generator: new Resource({
@@ -525,6 +529,7 @@ export const Resources = {
     unlockAt: {
       "ReplicantiBoost": 1
     },
+    canEmpower: false,
     position: [4, 8]
   }),
 
