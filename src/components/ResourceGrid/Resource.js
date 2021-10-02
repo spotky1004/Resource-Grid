@@ -166,8 +166,8 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
               {height:  `${save.progress * 100}%` } :
               {
                 height: "100%",
-                backgroundColor: "#fcc4",
-                filter: `hue-rotate(${Math.floor(new Date()/30)%360}deg)`
+                // backgroundColor: "#fcc4",
+                // filter: `hue-rotate(${Math.floor(new Date()/30)%360}deg)`
               }
             } />
           </span>
