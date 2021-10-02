@@ -125,7 +125,7 @@ function reducer(state = savefile.resources, action) {
       state[order] = {
         ...state[order],
         lastTime: action.Time,
-        progress: state[order].progress + action.progressIncrement,
+        progress: (state[order].progress || 0) + (action.progressIncrement || 0),
       };
 
       if (state[order].progress >= 1) {
@@ -135,11 +135,12 @@ function reducer(state = savefile.resources, action) {
           state[order].have += bulk*Resource.craftMultiply;
           if (!canBuyResource(state, cost)) {
             state[order].lastTime = null;
+            state[order].progress = 0;
           } else {
             cost = Resource.cost(have, isAuto);
             buyResource(state, cost, 1);
+            state[order].progress %= 1;
           }
-          state[order].progress %= 1;
         } else {
           state[order].have += Resource.craftMultiply;
           state[order].progress = 0;
