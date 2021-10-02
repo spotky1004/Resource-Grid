@@ -67,7 +67,7 @@ function ResourceRandom({ Resource, save }) {
                 position={Resource.position}
               /> : <span>?&nbsp;</span>}
               <span>{(chance < 1 ?
-                (chance*100).toFixed(2).padStart(6, "0")+"%" :
+                notation(chance*100, 3, true).padStart(6, "\u00A0")+"%" :
                 "\u00A0x" + notation(chance)
               )}</span>
             </ChanceItem>
