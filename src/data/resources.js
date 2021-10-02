@@ -961,6 +961,7 @@ export const Resources = {
     unlockAt: {
       "Replicanti": 1,
     },
+    canEmpower: false,
     position: [8, 7]
   }),
   Replicanti: new Resource({

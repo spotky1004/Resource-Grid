@@ -13,6 +13,7 @@ export default class Resource {
    * @property {boolean} [noCostIfAutomate] - yes
    * @property {number} [defaultQuantity] - default
    * @property {boolean} [keepOnPrestige] - Keep this resource on prestige
+   * @property {boolean} [canEmpower] - Override canEmpower
    * @property {string[]} [automates] - Automatically craft/generate resource
    */
   /** @param {ResourceConstructor} data */
@@ -32,7 +33,7 @@ export default class Resource {
     this.automates = data.automates;
     
     this.order = 9*this._position[0] + this._position[1];
-    this.canEmpower = this.craftTime !== undefined || this.automates !== undefined;
+    this.canEmpower = this.canEmpower || this.craftTime !== undefined || this.automates !== undefined;
   }
 
   get position() {
