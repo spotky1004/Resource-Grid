@@ -92,7 +92,8 @@ function reducer(state = savefile.resources, action) {
   const order = action.order;
   const have = state[order].have;
   const isAuto = !state[order].automationDisabled && action.isAuto;
-  const cost = Resource.cost(have, isAuto);
+
+  let cost = Resource.cost(have, isAuto);
 
   switch (action.type) {
     case CRAFT_START:
@@ -132,7 +133,12 @@ function reducer(state = savefile.resources, action) {
         if (isAuto) {
           bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
-          if (!canBuyResource(state, cost)) state[order].lastTime = null;
+          if (!canBuyResource(state, cost)) {
+            state[order].lastTime = null;
+          } else {
+            cost = Resource.cost(have, isAuto);
+            buyResource(state, cost, 1);
+          }
           state[order].progress %= 1;
         } else {
           state[order].have += Resource.craftMultiply;
