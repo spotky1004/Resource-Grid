@@ -274,7 +274,7 @@ export const Resources = {
       [0.015, "AmethystStone"],
       [0.007, "RubyStone"],
       [0.003, "SapphireStone"],
-      [0.0000001, "Core"]
+      [0.00000001, "Core"]
     ],
     description: "Chance to grant some gem on craft.\nChance is based on Gemstone Pickaxe",
     effectMultiply: (savefile) => {
@@ -571,12 +571,12 @@ export const Resources = {
   StramProducer: new Resource({
     name: "StramProducer",
     cost: (have) => ({
-      "Copper": 1_000*(have+1)**1.3,
-      "Water": 600*(have+1)**1.1,
-      "Lava": 30*(have+1)**1.1,
+      "Copper": 10_000*(have+1)**1.3,
+      "Water": 4000*(have+1)**1.1,
+      "Lava": 2000*(have+1)**1.1,
       "Energy": 10**(6.6+Math.sqrt(have/10))
     }),
-    craftTime: 400,
+    craftTime: 600,
     unlockAt: {
       "Steam": 15,
       "Energy": 1,
