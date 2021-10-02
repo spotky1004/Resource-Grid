@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { connect, useSelector } from "react-redux";
 import { craftStart, toggleAuto, resourceEmpower } from "../../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
@@ -115,6 +115,8 @@ const ResourceQuantity = styled.div`
 function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft, cooldown }) {
   const [isHover, setHover] = useState(false);
 
+  // console.log("update");
+
   const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
   const save = useSelector(state => state.resources[index]);
   const cost = Resource ? Object.entries(Resource.cost(save.have) ?? {}) : [];
@@ -214,4 +216,4 @@ export default connect(
     toggleAuto,
     resourceEmpower
   }
-)(ResourceGridItem);
+)(React.memo(ResourceGridItem));
