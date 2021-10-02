@@ -80,7 +80,7 @@ function Tick() {
   ) {
     store.dispatch(craftUpdate({
       order: Resources.DivineShard.order,
-      progressIncrement: savefile.prestige.lastPrestigeResourceQuantity,
+      progressIncrement: savefile.prestige.tmpPrestigeResourceQuantity,
       isAuto: true
     }))
     for (let i = 0; i < ResourceArr.length; i++) {
