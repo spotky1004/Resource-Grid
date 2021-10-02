@@ -621,6 +621,7 @@ export const Resources = {
       "Fruit": 5_000,
       "Sand": 2_500_000,
       "Lava": 5_000,
+      "Sapphire": 1_000,
     },
     craftTime: 1000,
     unlockAt: {
