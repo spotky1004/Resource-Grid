@@ -123,9 +123,9 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
   const autoConnected = AutoConnected[index];
 
   const displayResource =
-    save.unlocked &&
-    (selectMode !== "AutoToggle" || autoConnected !== -1) &&
-    (selectMode !== "Empower" || (index !== 75 && Resource.canEmpower));
+  save.unlocked &&
+  (selectMode !== "AutoToggle" || autoConnected !== -1) &&
+  (selectMode !== "Empower" || (save.unlocked && Resource.canEmpower));
 
   return (
     <ResourceWarp
@@ -181,7 +181,7 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
         </ResourceInfo>
       }
       {
-        (Resource && Resource.canEmpower && (selectMode === "Empower" || save.empower >= 1)) &&
+        (Resource && Resource.canEmpower && ((selectMode === "Empower" && save.unlocked) || save.empower >= 1)) &&
         <ResourceImage
           size="calc(var(--boxSize) / 2.6)"
           position={{x: 2, y: 8}}
