@@ -3,55 +3,52 @@ import notation from "../../util/notation.js";
 import { Resources } from '../../data/resources';
 import ResourceImage from "./ResourceImage.js";
 
-const RescouceCostTable = styled.div`
-  --costCellWidth: calc(var(--cellWidth) / 2);
-  --costCellHeight: calc(var(--cellHeight) / 3);
+const RescouceCostList = styled.div`
+  --itemHeight: calc(var(--cellHeight) / 6);
 
-  display: grid;
-  grid-template-columns: repeat(2, minmax(calc(var(--cellWidth) / 2), 1fr));
-  grid-auto-rows: var(--costCellHeight);
-  grid-auto-columns: var(--costCellWidth);
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+
+  & > div:nth-child(1) {
+    border-radius: 0 var(--borderRadius) 0 0;
+  }
+  & > div:nth-child(2n-1) {
+    background-color: var(--colOverlay);
+  }
 `;
+const RescouceCostItem = styled.div`
+  width: var(--cellWidth);
+
+  display: flex;
+  align-items: center;
+`;
+const ResourceCostText = styled.span`
+  font-weight: bold;
+`;
+
 
 function ResourceCost({ cost }) {
   return (
-    <RescouceCostTable>
+    <RescouceCostList>
       {
         cost.map(([costResourceName, costQuantity], index) => {
           const Resource = Resources[costResourceName];
 
           return (
-            <div key={index}>
+            <RescouceCostItem key={index}>
               <ResourceImage
-                size="min(var(--costCellWidth), var(--costCellHeight))"
+                size="min(var(--itemHeight), var(--itemHeight))"
                 position={Resource.position}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                
-                  color: "var(--colReverse)",
-                  fontSize: "0.8em",
-                  fontWeight: 900,
-                  textShadow:
-                    `calc(var(--imageSize) / 30) calc(var(--imageSize) / 30) 0 var(--colMain1),
-                    calc(var(--imageSize) / -30) calc(var(--imageSize) / -30) 0 var(--colMain1),
-                    calc(var(--imageSize) / 30) calc(var(--imageSize) / -30) 0 var(--colMain1),
-                    calc(var(--imageSize) / -30) calc(var(--imageSize) / 30) 0 var(--colMain1)`,
-                  textAlign: "right",
-                
-                  border: "calc(var(--imageSize) / 15) solid var(--colMain2)",
-                  borderRadius: "calc(min(var(--costCellWidth), var(--costCellHeight)) / 2)",
                   filter: "drop-shadow(var(--baseShadowSmall))"
                 }}
-                content={notation(costQuantity)}
               />
-            </div>
+              <ResourceCostText>{notation(costQuantity)}</ResourceCostText>
+            </RescouceCostItem>
           )
         })
       }
-    </RescouceCostTable>
+    </RescouceCostList>
   )
 }
 

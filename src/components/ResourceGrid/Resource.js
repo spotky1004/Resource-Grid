@@ -54,13 +54,13 @@ const ResourceWarp = styled.div`
   &:hover::before {
     content: attr(name);
 
-    padding: 1% 5%;
+    padding: 1% 5% 0 5%;
     
     min-width: 60%;
     height: 15%;
 
     position: absolute;
-    top: -15%;
+    top: -16%;
     left: 5%;
 
     color: var(--colMainReverse);
@@ -69,7 +69,7 @@ const ResourceWarp = styled.div`
     text-align: center;
 
     background-color: var(--colMain4);
-    border-radius: calc(var(--cellSize) / 30);
+    border-radius: 0 calc(var(--cellSize) / 30) 0 calc(var(--cellSize) / 30);
 
     animation: ${namespaceAppear} 0.4s cubic-bezier(.12,.81,.31,.95);
     
@@ -164,14 +164,10 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
               style={{filter: "drop-shadow(var(--baseShadow))", margin: "calc(var(--margin) / 2)"}}
             />
             <ResourceQuantity>{notation(save.have)}</ResourceQuantity>
-            <ResourceProgress style={cooldown > 200 || save.automationDisabled ?
-              {height:  `${save.progress * 100}%` } :
-              {
-                height: "100%",
-                // backgroundColor: "#fcc4",
-                // filter: `hue-rotate(${Math.floor(new Date()/30)%360}deg)`
-              }
-            } />
+            <ResourceProgress style={{height: cooldown > 200 || save.automationDisabled ?
+              `${save.progress * 100}%` :
+              "100%"
+            }} />
           </span>
           {
             isHover &&
