@@ -50,7 +50,7 @@ const ChanceItem = styled.div`
 
 function ResourceRandom({ Resource, save }) {
   const EffectMultiply = Resource ? Resource.effectMultiply(save) : 1;
-  const RandomTable = Resource.randomGrantOnCraft.map(e => [Math.min(1, e[0]*EffectMultiply), e[1]]);
+  const RandomTable = Resource.randomGrantOnCraft.map(e => [e[0]*EffectMultiply, e[1]]);
 
   return (RandomTable.length !== 0 || EffectMultiply !== 1 ?
     <ResourceRandomTable>
@@ -66,7 +66,10 @@ function ResourceRandom({ Resource, save }) {
                 size="var(--itemHeight)"
                 position={Resource.position}
               /> : <span>?&nbsp;</span>}
-              <span>{(chance*100).toFixed(2).padStart(6, "0")}%</span>
+              <span>{(chance < 1 ?
+                (chance*100).toFixed(2).padStart(6, "0")+"%" :
+                "\u00A0x" + notation(chance)
+              )}</span>
             </ChanceItem>
           );
         })}
