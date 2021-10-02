@@ -33,7 +33,7 @@ export default class Resource {
     this.automates = data.automates;
     
     this.order = 9*this._position[0] + this._position[1];
-    this.canEmpower = this.canEmpower || this.craftTime !== undefined || this.automates !== undefined;
+    this.canEmpower = data.canEmpower ?? (this.craftTime !== undefined || this.automates !== undefined);
   }
 
   get position() {
