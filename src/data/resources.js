@@ -865,12 +865,21 @@ export const Resources = {
     ],
     unlockAt: {
       "Overworld": 1,
+      "Core": 1
     },
     keepOnPrestige: true,
     position: [7, 1]
   }),
   Ocean: new Resource({
     name: "Ocean",
+    cost: (have) => ({
+      "DivineShard": 450*(have+1),
+      "Water": 1e6*(have+1),
+      "Sand": 1e9*(have+1),
+      "Steam": 100_000*(have+1),
+      "UpgradePotionII": 8*(have+1),
+    }),
+    craftTime: 4500,
     automates: [
       "Orchard",
       "Pump",
@@ -878,11 +887,22 @@ export const Resources = {
       "Crucible",
       "LiquidUpgrade"
     ],
+    unlockAt: {
+      "Underground": 1
+    },
     keepOnPrestige: true,
     position: [7, 2]
   }),
   City: new Resource({
     name: "City",
+    cost: (have) => ({
+      "DivineShard": 1800*(have+1),
+      "Brick": 100e6*(have+1),
+      "Citizen": 150_000*(have+1),
+      "Generator": 250*(have+1),
+      "MetalworkFactory": 50*(have+1),
+    }),
+    craftTime: 6000,
     automates: [
       "CityBuilder",
       "Generator",
