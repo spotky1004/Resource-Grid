@@ -178,7 +178,7 @@ function reducer(state = savefile.resources, action) {
       };
       return state;
     case RESOURCE_EMPOWER:
-      if (!Resource.canEmpower || state[order].empower >= 5) return state;
+      if (!Resource.canEmpower || state[order].empower >= 5+state[Resources.EmpowerCap.order].have) return state;
       state = [...state];
       state[order] = {
         ...state[order],
