@@ -840,6 +840,7 @@ export const Resources = {
       "CharcoalMiner",
       "GemBoost",
     ],
+    craftTime: 1500,
     unlockAt: {
       "FastForward": 3
     },
@@ -848,6 +849,14 @@ export const Resources = {
   }),
   Underground: new Resource({
     name: "Underground",
+    cost: (have) => ({
+      "DivineShard": 150*(have+1),
+      "Stone": 15e6*(have+1),
+      "Core": 3*(have+1),
+      "Volcano": 100*(have+1),
+      "Sapphire": 15_000*(have+1)
+    }),
+    craftTime: 3000,
     automates: [
       "Pickaxe",
       "GemstonePickaxe",
