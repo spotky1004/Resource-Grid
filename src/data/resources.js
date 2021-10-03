@@ -910,6 +910,9 @@ export const Resources = {
       "GemCutter",
       "MetalworkUpgrade"
     ],
+    unlockAt: {
+      "Ocean": 1
+    },
     keepOnPrestige: true,
     position: [7, 3]
   }),
@@ -1022,7 +1025,7 @@ export const Resources = {
     cost: (have) => ({
       "UpgradePotionII": have >= 63 ? Infinity : 0,
       "Replicanti": Math.floor(10**(have-2)),
-      [ResourceArr[(have+1)%71] ? ResourceArr[(have+1)%71].name : "DivineShard"]: 8+have,
+      [ResourceArr[(have+1)%71] ? ResourceArr[(have+1)%71].name : "DivineShard"]: 1+have,
     }),
     craftTime: 10,
     unlockAt: {
