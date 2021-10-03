@@ -837,6 +837,7 @@ export const Resources = {
       "Explorer",
       "Axe",
       "Saw",
+      "CharcoalMiner",
       "GemBoost",
     ],
     unlockAt: {
@@ -913,6 +914,7 @@ export const Resources = {
       "Replicanti": 1,
       "Energy": 1,
     },
+    canEmpower: false,
     position: [8, 0]
   }),
   DivineShard: new Resource({
@@ -933,6 +935,7 @@ export const Resources = {
       "DivineShard": 1
     },
     keepOnPrestige: true,
+    canEmpower: false,
     position: [8, 2]
   }),
   FastForward: new Resource({
@@ -972,7 +975,7 @@ export const Resources = {
   DivineFactory: new Resource({
     name: "DivineFactory",
     cost: (have) => ({
-      "DivineShard": 100*(have**2),
+      "DivineShard": 100*((have+1)**2),
       "Cluster": 40,
       "MetalworkFactory": 25*(have+1),
     }),
@@ -982,6 +985,7 @@ export const Resources = {
       "FastForward": 3
     },
     keepOnPrestige: true,
+    canEmpower: false,
     position: [8, 5]
   }),
   Cluster: new Resource({
@@ -996,6 +1000,7 @@ export const Resources = {
       "Empowerer": 1
     },
     keepOnPrestige: true,
+    canEmpower: false,
     position: [8, 6]
   }),
   ReplicantiBoost: new Resource({
