@@ -66,11 +66,11 @@ function ResourceRandom({ Resource, save }) {
                 size="var(--itemHeight)"
                 position={Resource.position}
               /> : <span>?&nbsp;</span>}
-              <span>{(chance < 1e-3 ?
+              <span>{(chance < 1e-5 ?
                 notation(chance, 3, true).padStart(6, "\u00A0") :
                 chance < 1 ?
                 notation(chance*100, 3, true).padStart(6, "\u00A0")+"%" :
-                "\u00A0x" + notation(chance)
+                "\u00A0x" + notation(chance, 3, true)
               )}</span>
             </ChanceItem>
           );
