@@ -1024,7 +1024,7 @@ export const Resources = {
       "Replicanti": Math.floor(10**(have-2 + Math.max(0, have-30)**0.6)),
       [ResourceArr[(have+1)%63] ? ResourceArr[(have+1)%63].name : "DivineShard"]: 1+have,
     }),
-    craftTime: 10,
+    craftTime: 100,
     unlockAt: {
       "Empowerer": 1
     },
