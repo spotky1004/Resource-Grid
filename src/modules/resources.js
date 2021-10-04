@@ -133,7 +133,7 @@ function reducer(state = savefile.resources, action) {
       if (state[order].progress >= 1) {
         let bulk = 1;
         if (isAuto) {
-          bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
+          if (Resource.canBulkBuy) bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
           state[order].have += bulk*Resource.craftMultiply;
           if (!canBuyResource(state, cost)) {
             state[order].lastTime = null;
@@ -160,7 +160,7 @@ function reducer(state = savefile.resources, action) {
             state[Resources[toGrant].order] = {
               ...state[Resources[toGrant].order],
               have: state[Resources[toGrant].order].have + grantCount
-            }
+            };
           }
         }
       }

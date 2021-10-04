@@ -15,6 +15,7 @@ export default class Resource {
    * @property {boolean} [keepOnPrestige] - Keep this resource on prestige
    * @property {string[]} [automates] - Automatically craft/generate resource
    * @property {boolean} [noConsume] - If true, won't consume this resource on buy
+   * @property {boolean} [canBulkBuy] - Override canBulkBuy
    * @property {boolean} [canEmpower] - Override canEmpower
    */
   /** @param {ResourceConstructor} data */
@@ -35,6 +36,7 @@ export default class Resource {
     this.noConsume = data.noConsume || false;
     
     this.order = 9*this._position[0] + this._position[1];
+    this.canBulkBuy = data.canBulkBuy ?? typeof this._cost !== 'function';
     this.canEmpower = data.canEmpower ?? (this.craftTime !== undefined || this.automates !== undefined);
   }
 
