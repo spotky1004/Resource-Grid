@@ -118,7 +118,7 @@ export const Resources = {
     cost: {
       "Iron": 150,
       "Energy": 50,
-      "Glass": 100,
+      "Glass": 30,
       "Fruit": 1,
     },
     craftTime: 30,
@@ -145,7 +145,7 @@ export const Resources = {
     name: "TreasureMap",
     cost: {
       "ShinyStone": 250,
-      "Plank": 1000,
+      "Plank": 500,
       "Water": 50
     },
     randomGrantOnCraft: [
@@ -537,8 +537,8 @@ export const Resources = {
   GeneratorUpgrade: new Resource({
     name: "GeneratorUpgrade",
     cost: (have) => ({
-      "Steam": 2**(5.2+have**0.85),
-      "Replicanti": 100**(have+2+Math.max(0, have-10)**0.7),
+      "Steam": Math.min(200_000, 2**(5.2+have**0.75)) + Math.max(0, have-30)*5_000,
+      "Replicanti": 100**(have+2+Math.max(0, have-10)**0.7+Math.max(0, have-25)),
     }),
     craftTime: 60,
     unlockAt: {
@@ -567,6 +567,7 @@ export const Resources = {
       "Charcoal": 1,
     },
     craftTime: 150,
+    canBulkBuy: true,
     position: [5, 1]
   }),
   Steam: new Resource({
@@ -854,7 +855,7 @@ export const Resources = {
       "Stone": 15e6*(have+1),
       "Core": 3*(have+1),
       "Volcano": 100*(have+1),
-      "Sapphire": 15_000*(have+1)
+      "Sapphire": 5_000*(have+1)
     }),
     craftTime: 3000,
     automates: [
@@ -876,7 +877,7 @@ export const Resources = {
       "DivineShard": 450*(have+1),
       "Water": 1e6*(have+1),
       "Sand": 1e9*(have+1),
-      "Steam": 100_000*(have+1),
+      "Steam": 50_000*(have+1),
       "UpgradePotionII": 8*(have+1),
     }),
     craftTime: 4500,
@@ -897,10 +898,10 @@ export const Resources = {
     name: "City",
     cost: (have) => ({
       "DivineShard": 1800*(have+1),
-      "Brick": 100e6*(have+1),
+      "Brick": 10e6*(have+1),
       "Citizen": 150_000*(have+1),
-      "Generator": 250*(have+1),
-      "MetalworkFactory": 50*(have+1),
+      "House": 50_000*(have+1),
+      "Generator": 150*(have+1),
     }),
     craftTime: 6000,
     automates: [
@@ -919,13 +920,9 @@ export const Resources = {
   PlanetEssence: new Resource({
     name: "PlanetEssence",
     unlockAt: {
-      "Overworld": 1,
-      "Underground": 1,
-      "Ocean": 1,
       "City": 1,
     },
     automates: [
-      "Cluster",
       "ReplicantiBoost",
       "ReplicantiBoostII"
     ],
@@ -937,9 +934,9 @@ export const Resources = {
     name: "DivinePowder",
     cost: (have) => ({
       "Replicanti": 10**((have/8)**0.87+6) > 1e50 ? 1e50*have**(2+Math.log(have/100)*3) : 10**((have/8)**0.87+6),
-      "Energy": 10**(2+Math.log(have/3+1)**1.3),
+      "Energy": 10**(2+Math.log(have/3+1)**(1.3+have/10000)),
       "Sapphire": 1+have**0.5,
-      "UpgradePotion": Math.floor(have/100)
+      "UpgradePotion": Math.floor(have/100)**0.7
     }),
     craftTime: 3,
     unlockAt: {
@@ -973,7 +970,7 @@ export const Resources = {
   FastForward: new Resource({
     name: "FastForward",
     cost: (have) => ({
-      "DivineShard": 10*(1+have**1.5/3),
+      "DivineShard": 10*(1+have**1.5/3)*(1 + Math.max(0, have-10)/2),
       "Cluster": 1+have
     }),
     craftTime: 600,
@@ -992,7 +989,7 @@ export const Resources = {
     name: "EmpowerCap",
     cost: (have) => ({
       "DivineShard": 3**(Math.sqrt(have)+4.5) - 41,
-      "Cluster": 10+have*5,
+      "Cluster": 10*(have+1),
       "UpgradePotionII": (have+1)**(2+have/20),
     }),
     craftTime: 5000,
@@ -1008,7 +1005,7 @@ export const Resources = {
     name: "DivineFactory",
     cost: (have) => ({
       "DivineShard": 100*((have+1)**2),
-      "Cluster": 40,
+      "Cluster": 37+3*have,
       "MetalworkFactory": 25*(have+1),
     }),
     automates: ["DivinePowder"],
@@ -1023,15 +1020,15 @@ export const Resources = {
   Cluster: new Resource({
     name: "Cluster",
     cost: (have) => ({
-      "UpgradePotionII": have >= 63 ? Infinity : 0,
-      "Replicanti": Math.floor(10**(have-2)),
-      [ResourceArr[(have+1)%71] ? ResourceArr[(have+1)%71].name : "DivineShard"]: 1+have,
+      "Replicanti": Math.floor(10**(have-2 + Math.max(0, have-30)**0.6)),
+      [ResourceArr[(have+1)%63] ? ResourceArr[(have+1)%63].name : "DivineShard"]: 1+have,
     }),
     craftTime: 10,
     unlockAt: {
       "Empowerer": 1
     },
     keepOnPrestige: true,
+    noConsume: true,
     canEmpower: false,
     position: [8, 6]
   }),
@@ -1039,7 +1036,7 @@ export const Resources = {
     name: "ReplicantiBoost",
     cost: (have) => ({
       "Replicanti": 10**(have+2),
-      "Energy": 10**(1.6+have**0.7)
+      "Energy": 10**(1.6+have**0.7+Math.max(0, have-80)/4)
     }),
     craftTime: 100,
     unlockAt: {
@@ -1058,7 +1055,7 @@ export const Resources = {
       const replicanti = savefile[Resources.Replicanti.order].have;
       const replicantiBoost = savefile[Resources.ReplicantiBoost.order].have;
       const replicantiBoostII = savefile[Resources.ReplicantiBoostII.order].have;
-      const replicantiMult = (3**replicantiBoostII) * (1.5**(Math.min(17, replicantiBoost+1) + Math.max(0, replicantiBoost-17)**0.75));
+      const replicantiMult = (3**replicantiBoostII) * (1.5**(Math.min(17, replicantiBoost+1) + Math.max(0, replicantiBoost-17)**0.85));
       const replicantiPow = 0.6 + 0.30*(1-1/(replicantiBoost/25+1));
       return replicantiMult*(replicanti+1)**replicantiPow/(replicanti+1);
     },
