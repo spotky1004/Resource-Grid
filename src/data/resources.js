@@ -521,10 +521,10 @@ export const Resources = {
   Generator: new Resource({
     name: "Generator",
     cost: (have) => ({
-      "Iron": 30*(have+1),
+      "Iron": 30*(have+1)**0.6,
       "Lava": 1+have,
-      "Steam": have*3,
-      "Citizen": 1+have,
+      "Steam": 3*have**0.6,
+      "Citizen": 1+have**0.6,
     }),
     craftTime: 100,
     effectMultiply: (savefile) => 4**savefile[Resources.GeneratorUpgrade.order].have,
@@ -880,7 +880,7 @@ export const Resources = {
       "Steam": 50_000*(have+1),
       "UpgradePotionII": 8*(have+1),
     }),
-    craftTime: 4500,
+    craftTime: 9000,
     automates: [
       "Orchard",
       "Pump",
@@ -898,12 +898,12 @@ export const Resources = {
     name: "City",
     cost: (have) => ({
       "DivineShard": 1800*(have+1),
-      "Brick": 10e6*(have+1),
-      "Citizen": 150_000*(have+1),
-      "House": 50_000*(have+1),
+      "Brick": 1e6*(have+1),
+      "Citizen": 15_000*(have+1),
+      "House": 5_000*(have+1),
       "Generator": 150*(have+1),
     }),
-    craftTime: 6000,
+    craftTime: 12000,
     automates: [
       "CityBuilder",
       "Generator",
@@ -935,8 +935,9 @@ export const Resources = {
     cost: (have) => ({
       "Replicanti": 10**((have/8)**0.87+6) > 1e50 ? 1e50*have**(2+Math.log(have/100)*3) : 10**((have/8)**0.87+6),
       "Energy": 10**(2+Math.log(have/3+1)**(1.3+have/10000)),
-      "Sapphire": 1+have**0.5,
-      "UpgradePotion": Math.floor(have/100)**0.7
+      "Sapphire": 1+have**0.3,
+      "UpgradePotion": Math.floor(have/100)**0.7,
+      "UpgradePotionII": (have%1000 === 0 && have !== 0) * Math.floor(have/1000)**0.7
     }),
     craftTime: 3,
     unlockAt: {
