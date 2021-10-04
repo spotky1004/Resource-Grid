@@ -1,6 +1,6 @@
 let notation1 = ["", "K", "M", "B", "T", "q", "Q", "s", "S", "O", "N"];
 let notation2 = ["", "U", "D", "T", "q", "Q", "s", "S", "O", "N"];
-let notation3 = ["", "D", "V", "T", "q", "Q", "s", "S", "O", "N"];
+let notation3 = ["", "D", "V", "Tg", "qu", "Qi", "sx", "Sp", "Oc", "No"];
 export default function notation(x, precision=3, focusDecimal=false) {
   let numberPartLength = precision;
   let extra = "";
