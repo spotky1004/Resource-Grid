@@ -69,7 +69,7 @@ const ResourceWarp = styled.div`
     text-align: center;
 
     background-color: var(--colMain4);
-    border-radius: 0 calc(var(--cellSize) / 30) 0 calc(var(--cellSize) / 30);
+    border-radius: calc(var(--cellSize) / 30) calc(var(--cellSize) / 30) 0 0;
 
     animation: ${namespaceAppear} 0.4s cubic-bezier(.12,.81,.31,.95);
     
