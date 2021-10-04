@@ -584,8 +584,8 @@ export const Resources = {
     },
     position: [5, 2]
   }),
-  StramProducer: new Resource({
-    name: "StramProducer",
+  SteamProducer: new Resource({
+    name: "SteamProducer",
     cost: (have) => ({
       "Copper": 10_000*(have+1)**1.3,
       "Water": 4000*(have+1)**1.1,
@@ -884,7 +884,7 @@ export const Resources = {
     automates: [
       "Orchard",
       "Pump",
-      "StramProducer",
+      "SteamProducer",
       "Crucible",
       "LiquidUpgrade"
     ],
