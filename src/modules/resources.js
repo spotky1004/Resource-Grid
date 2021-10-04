@@ -74,6 +74,8 @@ function buyResource(state, cost, bulkMax=0) {
 
   // Subtract resource
   for (const resourceName in cost) {
+    const _Resource = Resources[resourceName];
+    if (_Resource.noConsume) continue;
     const _cost = cost[resourceName];
     const _order = Resources[resourceName].order;
     state[_order] = {
