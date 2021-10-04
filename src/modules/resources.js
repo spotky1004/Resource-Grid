@@ -132,8 +132,13 @@ function reducer(state = savefile.resources, action) {
 
       if (state[order].progress >= 1) {
         let bulk = 1;
+        const maxBulk = Math.floor(state[order].progress)-1;
         if (isAuto) {
-          if (Resource.canBulkBuy) bulk += buyResource(state, cost, Math.floor(state[order].progress)-1);
+          if (Resource.canBulkBuy) {
+            bulk += buyResource(state, cost, maxBulk);
+          } else if (maxBulk >= 10) {
+            bulk += buyResource(state, cost, Math.floor(maxBulk/10));
+          }
           state[order].have += bulk*Resource.craftMultiply;
           if (!canBuyResource(state, cost)) {
             state[order].lastTime = null;
