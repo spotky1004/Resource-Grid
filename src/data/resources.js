@@ -644,7 +644,6 @@ export const Resources = {
     craftTime: 1000,
     unlockAt: {
       "UpgradePotion": 1,
-      "DivineShard": 1,
       "Core": 1
     },
     position: [5, 6]
