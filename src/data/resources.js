@@ -919,9 +919,9 @@ export const Resources = {
   }),
   PlanetEssence: new Resource({
     name: "PlanetEssence",
-    unlockAt: {
-      "City": 1,
-    },
+    // unlockAt: {
+    //   "City": 1,
+    // },
     automates: [
       "ReplicantiBoost",
       "ReplicantiBoostII"
