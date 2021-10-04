@@ -16,7 +16,7 @@ export default function notation(x, precision=3, focusDecimal=false) {
 
   let OOM = Math.floor(Math.log10(Math.max(1, Math.abs(x))));
   let suffixLevel = Math.floor(OOM/3);
-  let suffixPart = (suffixLevel < 11 ? notation1[suffixLevel] : notation2[suffixLevel%10] + notation3[Math.floor(suffixLevel/10)]);
+  let suffixPart = (suffixLevel < 11 ? notation1[suffixLevel] : notation2[(suffixLevel-1)%10] + notation3[Math.floor((suffixLevel-1)/10)]);
   numberPartLength -= suffixPart.length;
   let numberPart = (x/10**(suffixLevel*3)).toFixed(Math.max(0, numberPartLength-OOM%3));
   if (!focusDecimal && x < 1000 && Number.isInteger(x)) numberPart = x;
