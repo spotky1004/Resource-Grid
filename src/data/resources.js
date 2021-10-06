@@ -590,7 +590,7 @@ export const Resources = {
       "Copper": 10_000*(have+1)**1.3,
       "Water": 4000*(have+1)**1.1,
       "Lava": 2000*(have+1)**1.1,
-      "Energy": 10**(6.6+Math.sqrt(have/10))
+      "Energy": 10**(3.6+Math.sqrt(have/10))
     }),
     automates: ["Steam"],
     craftTime: 600,
