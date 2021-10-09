@@ -2,6 +2,7 @@ import "./font/font.css";
 import styled, { createGlobalStyle } from 'styled-components';
 import ResourceGrid from "./components/ResourceGrid/ResourceGrid.js"; 
 import Aside from "./components/Aside/Aside.js";
+import Menu from './components/Menu.js';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -27,6 +28,24 @@ const GlobalStyle = createGlobalStyle`
     color: var(--colReverse);
 
     background-color: var(--colMain1);
+
+    /** Size */
+    @media only screen and (orientation: portrait) {
+    --baseSize: 90vw;
+    }
+    @media only screen and (orientation: landscape) {
+      --baseSize: min(83vw, 160vh);
+    }
+    --w: var(--baseSize);
+    --h: calc(var(--baseSize) * 9 / 16);
+    font-size: calc(var(--h) / 70);
+    @media only screen and (min-width: 1700px) and (min-height: 1000px) {
+      --w: 1600px;
+      --h: 900px;
+      font-size: calc(var(--h) / 70);
+    }
+    --baseShadow: calc(var(--h) / 250) calc(var(--h) / 250) 0 var(--colStrong);
+    --baseShadowSmall: calc(var(--h) / 500) calc(var(--h) / 500) 0 var(--colStrong);
   }
   body#theme-dark, body:not(#theme-light){
     --colStrong: #000000;
@@ -60,9 +79,6 @@ const MainContainer = styled.div`
   --asideFlexGrow: 7;
   --totalFlexGrow: calc(var(--resourceGridFlexGrow) + var(--asideFlexGrow));
 
-  --baseShadow: calc(var(--h) / 250) calc(var(--h) / 250) 0 var(--colStrong);
-  --baseShadowSmall: calc(var(--h) / 500) calc(var(--h) / 500) 0 var(--colStrong);
-
   display: flex;
 
   width: var(--w);
@@ -73,21 +89,6 @@ const MainContainer = styled.div`
   transition: 
     background-image 0.5s linear,
     background-color 0.3s ease-out;
-
-  @media only screen and (orientation: portrait) {
-    --baseSize: 90vw;
-  }
-  @media only screen and (orientation: landscape) {
-    --baseSize: min(83vw, 160vh);
-  }
-  --w: var(--baseSize);
-  --h: calc(var(--baseSize) * 9 / 16);
-  font-size: calc(var(--h) / 70);
-  @media only screen and (min-width: 1700px) and (min-height: 1000px) {
-    --w: 1600px;
-    --h: 900px;
-    font-size: calc(var(--h) / 70);
-  }
 `;
 
 function App() {
@@ -110,6 +111,7 @@ function App() {
         <ResourceGrid />
         <Aside />
       </MainContainer>
+      <Menu />
     </div>
   );
 }
