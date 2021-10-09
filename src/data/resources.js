@@ -143,11 +143,11 @@ export const Resources = {
   }),
   TreasureMap: new Resource({
     name: "TreasureMap",
-    cost: {
-      "ShinyStone": 250,
-      "Plank": 500,
-      "Water": 50
-    },
+    cost: (have) => ({
+      "ShinyStone": 250-225*(1-1/(have**0.6/100+1)),
+      "Plank": 500-450*(1-1/(have**0.6/100+1)),
+      "Water": 50-45*(1-1/(have**0.6/100+1))
+    }),
     randomGrantOnCraft: [
       [0.75, "TreasureMap"]
     ],
