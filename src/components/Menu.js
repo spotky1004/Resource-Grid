@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faClipboard, faFileExport, faHistory, faExclamationTriangle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 import { exportSave, importSave } from '../saveload.js';
 
 const MenuContainer = styled.div`
@@ -170,6 +171,11 @@ const MENU_LIST = [
     title: "Recover",
     icon: faHistory,
     func: () => alert("TBA!")
+  },
+  {
+    title: "Discord",
+    icon: faDiscord,
+    func: () => window.open("https://discord.gg/wkdVQxT", "_blank")
   }
 ];
 
