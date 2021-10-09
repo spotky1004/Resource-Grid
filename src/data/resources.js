@@ -476,7 +476,7 @@ export const Resources = {
   MetalworkUpgrade: new Resource({
     name: "MetalworkUpgrade",
     cost: (have) => ({
-      "Energy": 3000*2**(have+1),
+      "Energy": 3000*2**(have**0.92+1),
       "UpgradePotion": 1+(have**1.4)/2,
       "Iron": 300*(have/3+1)**1.2
     }),
@@ -490,7 +490,7 @@ export const Resources = {
   LiquidUpgrade: new Resource({
     name: "LiquidUpgrade",
     cost: (have) => ({
-      "Energy": 10**(6+have**1.1),
+      "Energy": 10**(6+have**0.55+have/10),
       "UpgradePotion": 15*(have+1),
       "Ruby": 15*(have+1),
       "Water": 1000*(have+1)**1.2,
@@ -810,7 +810,7 @@ export const Resources = {
   GemCutter: new Resource({
     name: "GemCutter",
     cost: (have) => ({
-      "Energy": 10**(3+(have*2)**0.85),
+      "Energy": 10**(3+(have*2)**0.55) > 1e20 ? 1e20*(2**((have-86)**0.5)) : 10**(3+(have*2)**0.55),
       "Iron": 1000*(have+1)**1.1,
       "Water": 300*(have+1)**1.1,
       "Lava": 100*(have+1)**1.1
