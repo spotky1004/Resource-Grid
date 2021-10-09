@@ -136,8 +136,14 @@ function reducer(state = savefile.resources, action) {
         if (isAuto) {
           if (Resource.canBulkBuy) {
             bulk += buyResource(state, cost, maxBulk);
-          } else if (maxBulk >= 10) {
-            bulk += buyResource(state, cost, Math.floor(maxBulk/10));
+          } else {
+            for (let i = 0; i < Math.min(50, maxBulk); i++) {
+              if (buyResource(state, cost, 1)) {
+                bulk++;
+              } else {
+                break;
+              }
+            }
           }
           state[order].have += bulk*Resource.craftMultiply;
           if (!canBuyResource(state, cost)) {
