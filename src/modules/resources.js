@@ -1,55 +1,54 @@
 // import produce from 'immer';
-import { savefile } from '../saveload';
-import { Resources, ResourceArr } from '../data/resources';
+import { load } from "../saveload";
+import { Resources, ResourceArr } from "../data/resources";
 
-const CRAFT_START = 'resource/CRAFT_START';
-const CRAFT_UPDATE = 'resource/CRAFT_UPDATE';
-const RESOURCE_UNLOCK = 'resource/RESOURCE_UNLOCK';
-const TOGGLE_AUTO = 'resource/TOGGLE_AUTO';
-const RESOURCE_EMPOWER = 'resource/EMPOWER';
-const REMOVE_EMPOWERER  = 'resource/REMOVE_EMPOWERER';
-const RESET_RESOURCE_DATA = 'resource/RESET_RESOURCE_DATA';
+const CRAFT_START = "resource/CRAFT_START";
+const CRAFT_UPDATE = "resource/CRAFT_UPDATE";
+const RESOURCE_UNLOCK = "resource/RESOURCE_UNLOCK";
+const TOGGLE_AUTO = "resource/TOGGLE_AUTO";
+const RESOURCE_EMPOWER = "resource/EMPOWER";
+const REMOVE_EMPOWERER = "resource/REMOVE_EMPOWERER";
+const RESET_RESOURCE_DATA = "resource/RESET_RESOURCE_DATA";
 
 export const craftStart = (order, isAuto) => ({
   type: CRAFT_START,
   order,
-  isAuto
+  isAuto,
 });
 export const craftUpdate = ({
   order,
   isAuto,
   Time,
   progressIncrement,
-  dontUpdate
+  dontUpdate,
 }) => ({
   type: CRAFT_UPDATE,
   order,
   isAuto,
   Time,
   progressIncrement,
-  dontUpdate
+  dontUpdate,
 });
-export const resourceUnlock = order => ({
+export const resourceUnlock = (order) => ({
   type: RESOURCE_UNLOCK,
-  order
+  order,
 });
-export const toggleAuto = order => ({
+export const toggleAuto = (order) => ({
   type: TOGGLE_AUTO,
-  order
+  order,
 });
-export const resourceEmpower = order => ({
+export const resourceEmpower = (order) => ({
   type: RESOURCE_EMPOWER,
-  order
+  order,
 });
-export const removeEmpowerer = order => ({
+export const removeEmpowerer = (order) => ({
   type: REMOVE_EMPOWERER,
-  order
-})
-export const resetResourceData = order => ({
-  type: RESET_RESOURCE_DATA,
-  order
+  order,
 });
-
+export const resetResourceData = (order) => ({
+  type: RESET_RESOURCE_DATA,
+  order,
+});
 
 function canBuyResource(state, cost) {
   for (const resourceName in cost) {
@@ -60,14 +59,14 @@ function canBuyResource(state, cost) {
 
   return true;
 }
-function buyResource(state, cost, bulkMax=0) {
+function buyResource(state, cost, bulkMax = 0) {
   let bulk = bulkMax;
 
   // Check can buy & Bulk count
   for (const resourceName in cost) {
     const _cost = cost[resourceName];
     const _order = Resources[resourceName].order;
-    bulk = Math.min(bulk, state[_order].have/_cost);
+    bulk = Math.min(bulk, state[_order].have / _cost);
   }
   bulk = Math.floor(bulk);
   if (bulk <= 0) return false;
@@ -80,15 +79,13 @@ function buyResource(state, cost, bulkMax=0) {
     const _order = Resources[resourceName].order;
     state[_order] = {
       ...state[_order],
-      have: state[_order].have - _cost*bulk
+      have: state[_order].have - _cost * bulk,
     };
   }
   return bulk;
 }
 
-
-
-function reducer(state = savefile.resources, action) {
+function reducer(state = load().resources, action) {
   const Resource = ResourceArr[action.order];
   if (!Resource) return state;
   const order = action.order;
@@ -107,8 +104,8 @@ function reducer(state = savefile.resources, action) {
         if (state[order].progress !== 0) {
           state[order] = {
             ...state[order],
-            progress: 0
-          }
+            progress: 0,
+          };
         }
         return state;
       }
@@ -118,21 +115,22 @@ function reducer(state = savefile.resources, action) {
         lastTime: new Date().getTime(),
         progress: 0,
       };
-      
+
       return state;
     case CRAFT_UPDATE:
       if (action.dontUpdate) return state;
       state = [...state];
-      
+
       state[order] = {
         ...state[order],
         lastTime: action.Time,
-        progress: (state[order].progress || 0) + (action.progressIncrement || 0),
+        progress:
+          (state[order].progress || 0) + (action.progressIncrement || 0),
       };
 
       if (state[order].progress >= 1) {
         let bulk = 1;
-        const maxBulk = Math.floor(state[order].progress)-1;
+        const maxBulk = Math.floor(state[order].progress) - 1;
         if (isAuto) {
           if (Resource.canBulkBuy) {
             bulk += buyResource(state, cost, maxBulk);
@@ -145,7 +143,7 @@ function reducer(state = savefile.resources, action) {
               }
             }
           }
-          state[order].have += bulk*Resource.craftMultiply;
+          state[order].have += bulk * Resource.craftMultiply;
           if (!canBuyResource(state, cost)) {
             state[order].lastTime = null;
             state[order].progress = 0;
@@ -164,13 +162,16 @@ function reducer(state = savefile.resources, action) {
         // randomGrantOnCraft
         for (let i = 0; i < Resource.randomGrantOnCraft.length; i++) {
           const [chance, toGrant] = Resource.randomGrantOnCraft[i];
-          const realChance = chance*EffectMultiply;
-          const grantChance = 1-((1-Math.min(1, realChance))**bulk);
-          const grantCount = bulk*realChance > 5 || grantChance >= 0.99 ? Math.round(bulk*realChance) : +(Math.random() < grantChance);
+          const realChance = chance * EffectMultiply;
+          const grantChance = 1 - (1 - Math.min(1, realChance)) ** bulk;
+          const grantCount =
+            bulk * realChance > 5 || grantChance >= 0.99
+              ? Math.round(bulk * realChance)
+              : +(Math.random() < grantChance);
           if (grantCount >= 1) {
             state[Resources[toGrant].order] = {
               ...state[Resources[toGrant].order],
-              have: state[Resources[toGrant].order].have + grantCount
+              have: state[Resources[toGrant].order].have + grantCount,
             };
           }
         }
@@ -180,29 +181,33 @@ function reducer(state = savefile.resources, action) {
       state = [...state];
       state[order] = {
         ...state[order],
-        unlocked: true
+        unlocked: true,
       };
       return state;
     case TOGGLE_AUTO:
       state = [...state];
       state[order] = {
         ...state[order],
-        automationDisabled: !state[order].automationDisabled
+        automationDisabled: !state[order].automationDisabled,
       };
       return state;
     case RESOURCE_EMPOWER:
-      if (!Resource.canEmpower || state[order].empower >= 5+state[Resources.EmpowerCap.order].have) return state;
+      if (
+        !Resource.canEmpower ||
+        state[order].empower >= 5 + state[Resources.EmpowerCap.order].have
+      )
+        return state;
       state = [...state];
       state[order] = {
         ...state[order],
-        empower: state[order].empower+1
-      }
+        empower: state[order].empower + 1,
+      };
       return state;
     case REMOVE_EMPOWERER:
       state = [...state];
       state[order] = {
         ...state[order],
-        empower: 0
+        empower: 0,
       };
       return state;
     case RESET_RESOURCE_DATA:
@@ -213,7 +218,7 @@ function reducer(state = savefile.resources, action) {
           have: Resource.defaultQuantity,
           lastTime: null,
           progress: 0,
-          unlocked: false
+          unlocked: false,
         };
       }
       return state;

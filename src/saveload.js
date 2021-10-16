@@ -5,10 +5,10 @@ export const recoverSaveKeys = {
   past1D: saveKey + "_1d",
   lastPrestige: saveKey + "_lastPrestige",
   lastRecover: saveKey + "_lastRecover",
-}
+};
 
 export const DefaultSave = {
-  resources: Array.from({ length: 81 }, _ => ({
+  resources: Array.from({ length: 81 }, (_) => ({
     have: 0,
     lastTime: null,
     progress: 0,
@@ -21,7 +21,7 @@ export const DefaultSave = {
       Prestige: false,
       NewGame: false,
       Booster: false,
-    }
+    },
   },
   stats: {
     startTime: new Date().getTime(),
@@ -32,30 +32,18 @@ export const DefaultSave = {
     empowererRespecTime: 0,
     totalPrestigeResourceQuantity: 0,
     lastPrestigeResourceQuantity: 0,
-    tmpPrestigeResourceQuantity: 0
-  }
+    tmpPrestigeResourceQuantity: 0,
+  },
 };
 DefaultSave.resources[0].have = 1;
 
-export function save(savefile, key=saveKey) {
+export function save(savefile, key = saveKey) {
   localStorage.setItem(key, JSON.stringify(savefile));
 }
 
 /** @returns {DefaultSave} */
-export function load(key=saveKey) {
+export function load(key = saveKey) {
   return mergeObject(JSON.parse(localStorage.getItem(key)) ?? {}, DefaultSave);
-}
-export const savefile = load();
-
-export function exportSave() {
-  return window.btoa(JSON.stringify(savefile));
-}
-export function importSave(encryptedSavefile) {
-  try {
-    const toSave = JSON.parse(window.atob(encryptedSavefile));
-    save(toSave, saveKey);
-    window.location.reload();
-  } catch (e) {}
 }
 
 function mergeObject(target, source) {
