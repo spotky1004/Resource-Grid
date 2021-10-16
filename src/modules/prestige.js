@@ -32,8 +32,8 @@ function reducer(state = load().prestige, action) {
       state.totalPrestigeResourceQuantity += action.prestigeResourceQuantity;
       return state;
     case END_PRESTIGE:
-      state.prestige.doingPrestige = false;
-      state.prestige.tmpPrestigeResourceQuantity = 0;
+      state.doingPrestige = false;
+      state.tmpPrestigeResourceQuantity = 0;
       return state;
     case DO_RESPEC:
       if (Time - state.empowererRespecTime >= EMPOWERER_RESPEC_TIME) {
