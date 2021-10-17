@@ -1,42 +1,42 @@
-import { savefile } from '../saveload';
+import { load } from "../saveload";
 
-const DO_PRESTIGE = 'prestige/DO_PRESTIGE';
-const END_PRESTIGE = 'prestige/END_PRESTIGE';
-const DO_RESPEC = 'prestige/RESPEC_EMPOWERER';
-const END_RESPEC = 'prestige/END_RESPEC';
+const DO_PRESTIGE = "prestige/DO_PRESTIGE";
+const END_PRESTIGE = "prestige/END_PRESTIGE";
+const DO_RESPEC = "prestige/RESPEC_EMPOWERER";
+const END_RESPEC = "prestige/END_RESPEC";
 
 export const doPrestige = (prestigeResourceQuantity) => ({
   type: DO_PRESTIGE,
-  prestigeResourceQuantity
+  prestigeResourceQuantity,
 });
 export const endPrestige = () => ({
-  type: END_PRESTIGE
+  type: END_PRESTIGE,
 });
 export const doRespec = () => ({
-  type: DO_RESPEC
+  type: DO_RESPEC,
 });
 export const endRespec = () => ({
-  type: END_RESPEC
+  type: END_RESPEC,
 });
 
-const EMPOWERER_RESPEC_TIME = 10*60*1000; // 10 minutes
+const EMPOWERER_RESPEC_TIME = 10 * 60 * 1000; // 10 minutes
 
-function reducer(state = savefile.prestige, action) {
+function reducer(state = load().prestige, action) {
   const Time = new Date().getTime();
 
   switch (action.type) {
     case DO_PRESTIGE:
-      savefile.prestige.doingPrestige = true;
-      savefile.prestige.tmpPrestigeResourceQuantity = action.prestigeResourceQuantity;
-      savefile.prestige.lastPrestigeResourceQuantity = action.prestigeResourceQuantity;
-      savefile.prestige.totalPrestigeResourceQuantity += action.prestigeResourceQuantity;
+      state.doingPrestige = true;
+      state.tmpPrestigeResourceQuantity = action.prestigeResourceQuantity;
+      state.lastPrestigeResourceQuantity = action.prestigeResourceQuantity;
+      state.totalPrestigeResourceQuantity += action.prestigeResourceQuantity;
       return state;
     case END_PRESTIGE:
-      savefile.prestige.doingPrestige = false;
-      savefile.prestige.tmpPrestigeResourceQuantity = 0;
+      state.doingPrestige = false;
+      state.tmpPrestigeResourceQuantity = 0;
       return state;
     case DO_RESPEC:
-      if (Time-state.empowererRespecTime >= EMPOWERER_RESPEC_TIME) {
+      if (Time - state.empowererRespecTime >= EMPOWERER_RESPEC_TIME) {
         state.doingRespec = true;
         state.empowererRespecTime = Time;
       }

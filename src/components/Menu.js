@@ -1,15 +1,21 @@
-import { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faClipboard, faFileExport, faHistory, faExclamationTriangle, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faDiscord } from '@fortawesome/free-brands-svg-icons';
-import { exportSave, importSave } from '../saveload.js';
+import { useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faClipboard,
+  faFileExport,
+  faHistory,
+} from "@fortawesome/free-solid-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import store from "../store";
+import { importSave } from "../modules/dataManager";
 
 const MenuContainer = styled.div`
   position: absolute;
   right: calc(var(--w) / 100 * 3);
   bottom: calc(var(--h) / 100 * 3);
-  
+
   text-align: right;
 
   z-index: 2;
@@ -24,9 +30,8 @@ const MenuOpen = styled.div`
 
   cursor: pointer;
 
-  transition:
-    transform 0.5s cubic-bezier(0,.75,.21,1),
-    background-color 0.3s cubic-bezier(0,.75,.21,1);
+  transition: transform 0.5s cubic-bezier(0, 0.75, 0.21, 1),
+    background-color 0.3s cubic-bezier(0, 0.75, 0.21, 1);
 
   &:hover {
     transform: scale(1.1);
@@ -35,9 +40,8 @@ const MenuOpen = styled.div`
     transform: scale(1);
     background-color: var(--colAlt1);
 
-    transition:
-      transform 0.5s cubic-bezier(0,.75,.21,1),
-      background-color 0s cubic-bezier(0,.75,.21,1);
+    transition: transform 0.5s cubic-bezier(0, 0.75, 0.21, 1),
+      background-color 0s cubic-bezier(0, 0.75, 0.21, 1);
   }
 `;
 const MenuList = styled.div`
@@ -87,13 +91,12 @@ const MenuItem = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
-  animation: ${MenuItemAppear} 0.4s cubic-bezier(.11,.94,.37,.99);
+  animation: ${MenuItemAppear} 0.4s cubic-bezier(0.11, 0.94, 0.37, 0.99);
   cursor: pointer;
-  transition:
-    width 0.4s cubic-bezier(.11,.94,.37,.99),
-    background-size 0.4s cubic-bezier(.11,.94,.37,.99),
-    transform 0.4s cubic-bezier(.11,.94,.37,.99),
-    color 0.4s cubic-bezier(.11,.94,.37,.99);
+  transition: width 0.4s cubic-bezier(0.11, 0.94, 0.37, 0.99),
+    background-size 0.4s cubic-bezier(0.11, 0.94, 0.37, 0.99),
+    transform 0.4s cubic-bezier(0.11, 0.94, 0.37, 0.99),
+    color 0.4s cubic-bezier(0.11, 0.94, 0.37, 0.99);
 
   &:hover {
     --gradientCol: var(--colAlt1);
@@ -160,23 +163,30 @@ const MENU_LIST = [
   {
     title: "Export",
     icon: faFileExport,
-    func: () => navigator.clipboard.writeText(exportSave()) && window.alert("Exported to clipboard!")
+    func: () =>
+      navigator.clipboard.writeText(
+        window.btoa(JSON.stringify(store.getState()))
+      ) && window.alert("Exported to clipboard!"),
   },
   {
     title: "Import",
     icon: faClipboard,
-    func: () => importSave(window.prompt("Import Save"))
+    func: () => {
+      const encryptedSavefile = window.prompt("Import Save");
+      const toSave = JSON.parse(window.atob(encryptedSavefile));
+      store.dispatch(importSave(toSave));
+    },
   },
   {
     title: "Recover",
     icon: faHistory,
-    func: () => alert("TBA!")
+    func: () => alert("TBA!"),
   },
   {
     title: "Discord",
     icon: faDiscord,
-    func: () => window.open("https://discord.gg/wkdVQxT", "_blank")
-  }
+    func: () => window.open("https://discord.gg/wkdVQxT", "_blank"),
+  },
 ];
 
 function Menu() {
@@ -188,32 +198,30 @@ function Menu() {
       <MenuContainer>
         {menuToggle && (
           <MenuList>
-          {
-            MENU_LIST.map((item, idx) => (
+            {MENU_LIST.map((item, idx) => (
               <MenuItem
                 key={item.title}
                 data-animation-offset={idx}
                 onClick={() => item.func()}
                 style={{
-                  animationDuration: (200*(idx+1)) + "ms"
+                  animationDuration: 200 * (idx + 1) + "ms",
                 }}
               >
-                <FontAwesomeIcon 
+                <FontAwesomeIcon
                   icon={item.icon}
                   style={{
-                    width: "var(--itemHeight)", 
-                    height: "var(--itemHeight)"
+                    width: "var(--itemHeight)",
+                    height: "var(--itemHeight)",
                   }}
                 />
                 <MentItemTitile>{item.title}</MentItemTitile>
               </MenuItem>
-            ))
-          }
+            ))}
           </MenuList>
         )}
         <MenuOpen
           onClick={() => setMenuToggle(!menuToggle)}
-          style={menuToggle ? {backgroundColor: "var(--colAlt1)"} : {}}
+          style={menuToggle ? { backgroundColor: "var(--colAlt1)" } : {}}
         >
           <FontAwesomeIcon
             icon={faBars}
@@ -222,7 +230,7 @@ function Menu() {
               height: "calc(var(--baseSize) / 25)",
 
               color: "var(--colReverse)",
-              transform: "scale(0.4)"
+              transform: "scale(0.4)",
             }}
           />
         </MenuOpen>
@@ -237,7 +245,7 @@ function Menu() {
         </OverlayBg>
       )} */}
     </>
-  )
+  );
 }
 
 export default Menu;

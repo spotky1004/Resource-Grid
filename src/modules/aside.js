@@ -1,19 +1,19 @@
-import { savefile } from '../saveload';
+import { load } from "../saveload";
 
-const UNLOCK_TAB = 'aside/UNLOCK_TAB';
+const UNLOCK_TAB = "aside/UNLOCK_TAB";
 
 export const unlockTab = (toUnlock) => ({
   type: UNLOCK_TAB,
-  toUnlock
-})
+  toUnlock,
+});
 
-function reducer(state = savefile.aside, action) {
+function reducer(state = load().aside, action) {
   switch (action.type) {
     case UNLOCK_TAB:
       state.unlockStatus = {
         ...state.unlockStatus,
-        [action.toUnlock]: true
-      }
+        [action.toUnlock]: true,
+      };
       return state;
     default:
       return state;
