@@ -168,9 +168,13 @@ const MENU_LIST = [
       let successState = false;
 
       if (window.isSecureContext) {
-        navigator.clipboard.writeText(toExport);
-        successState = true;
-      } else {
+        try {
+          navigator.clipboard.writeText(toExport);
+          successState = true;
+        } catch (e) {}
+      }
+      
+      if (!successState) {
         // from (https://stackoverflow.com/a/60292243/13817471)
         var textArea = document.createElement("textarea");
         textArea.value = toExport;
@@ -181,8 +185,7 @@ const MENU_LIST = [
         try {
           document.execCommand('copy');
           successState = true;
-        } catch (err) {
-        }
+        } catch (e) {}
         document.body.removeChild(textArea);
       }
 
