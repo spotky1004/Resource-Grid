@@ -163,10 +163,35 @@ const MENU_LIST = [
   {
     title: "Export",
     icon: faFileExport,
-    func: () =>
-      navigator.clipboard.writeText(
-        window.btoa(JSON.stringify(store.getState()))
-      ) && window.alert("Exported to clipboard!"),
+    func: () => {
+      let toExport = window.btoa(JSON.stringify(store.getState()));
+      let successState = false;
+
+      if (window.isSecureContext) {
+        navigator.clipboard.writeText(toExport);
+        successState = true;
+      } else {
+        // from (https://stackoverflow.com/a/60292243/13817471)
+        var textArea = document.createElement("textarea");
+        textArea.value = toExport;
+        textArea.style.position = "fixed";  //avoid scrolling to bottom
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          successState = true;
+        } catch (err) {
+        }
+        document.body.removeChild(textArea);
+      }
+
+      if (successState) {
+        window.alert("Exported to clipboard!");
+      } else {
+        window.prompt("Copy failed, here's a text box to manual copy: ", toExport);
+      }
+    }
   },
   {
     title: "Import",
@@ -175,6 +200,31 @@ const MENU_LIST = [
       const encryptedSavefile = window.prompt("Import Save");
       const toSave = JSON.parse(window.atob(encryptedSavefile));
       store.dispatch(importSave(toSave));
+
+      // from [https://stackoverflow.com/a/65996386/13817471]
+      function copyToClipboard(textToCopy) {
+        // navigator clipboard api needs a secure context (https)
+        if (navigator.clipboard && window.isSecureContext) {
+            // navigator clipboard api method'
+            return navigator.clipboard.writeText(textToCopy);
+        } else {
+            // text area method
+            let textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            // make the textarea out of viewport
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            return new Promise((res, rej) => {
+                // here the magic happens
+                document.execCommand('copy') ? res() : rej();
+                textArea.remove();
+            });
+        }
+      }
     },
   },
   {
