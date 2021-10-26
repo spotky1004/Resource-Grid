@@ -136,6 +136,7 @@ function reducer(state = load().resources, action) {
             bulk += buyResource(state, cost, maxBulk);
           } else {
             for (let i = 0; i < Math.min(50, maxBulk); i++) {
+              cost = Resource.cost(have+i, isAuto);
               if (buyResource(state, cost, 1)) {
                 bulk++;
               } else {
