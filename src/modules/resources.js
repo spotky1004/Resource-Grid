@@ -9,6 +9,7 @@ const TOGGLE_AUTO = "resource/TOGGLE_AUTO";
 const RESOURCE_EMPOWER = "resource/EMPOWER";
 const REMOVE_EMPOWERER = "resource/REMOVE_EMPOWERER";
 const RESET_RESOURCE_DATA = "resource/RESET_RESOURCE_DATA";
+const STOP_MANUAL_AUTOMATION = "resource/STOP_MANUAL_AUTOMATION";
 
 export const craftStart = (order, isAuto) => ({
   type: CRAFT_START,
@@ -47,6 +48,10 @@ export const removeEmpowerer = (order) => ({
 });
 export const resetResourceData = (order) => ({
   type: RESET_RESOURCE_DATA,
+  order,
+});
+export const stopManualAutomation = (order) => ({
+  type: STOP_MANUAL_AUTOMATION,
   order,
 });
 
@@ -90,10 +95,11 @@ function reducer(state = load().resources, action) {
   if (!Resource) return state;
   const order = action.order;
   const have = state[order].have;
+  const automationManual = state[order].automationManual;
   const isAuto = !state[order].automationDisabled && action.isAuto;
 
   let cost = Resource.cost(have, isAuto);
-
+  
   switch (action.type) {
     case CRAFT_START:
       state = [...state];
@@ -114,6 +120,7 @@ function reducer(state = load().resources, action) {
         ...state[order],
         lastTime: new Date().getTime(),
         progress: 0,
+        automationManual: true,
       };
 
       return state;
@@ -131,7 +138,7 @@ function reducer(state = load().resources, action) {
       if (state[order].progress >= 1) {
         let bulk = 1;
         const maxBulk = Math.floor(state[order].progress) - 1;
-        if (isAuto) {
+        if (isAuto ||  automationManual) {
           if (Resource.canBulkBuy) {
             bulk += buyResource(state, cost, maxBulk);
           } else {
@@ -221,6 +228,17 @@ function reducer(state = load().resources, action) {
           progress: 0,
           unlocked: false,
         };
+      }
+      return state;
+    case STOP_MANUAL_AUTOMATION:
+      state = [...state];
+      for (var i=0; i< state.length;i++)
+      {
+        if (state[i].automationManual)
+          state[i]={
+            ...state[i],
+            automationManual: false,
+            };
       }
       return state;
     default:
