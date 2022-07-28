@@ -127,7 +127,7 @@ function ResourceGridItem({ Resource, index, craftStart, stopManualAutomation, s
 
   return (
     <ResourceWarp
-      onMouseDown={() => {
+      onClick={() => {
         switch (selectMode) {
           case "AutoToggle":
             toggleAuto(index);
@@ -141,7 +141,19 @@ function ResourceGridItem({ Resource, index, craftStart, stopManualAutomation, s
             }
         }
       }}
-      onMouseUp={()=>stopManualAutomation(index)}
+      onMouseDown={() => {
+        switch (selectMode) {
+          case "AutoToggle":
+            break;
+          case "Empower":
+            break;
+          default:
+            if (Resource && Object.keys(Resource.cost(save.have) ?? {}).length !== 0) {
+              craftStart(index);
+            }
+        }
+      }}
+      onMouseUp={() => stopManualAutomation(index)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => {
         setHover(false);
