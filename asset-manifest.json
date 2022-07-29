@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Resource-Grid/static/css/main.2646eeb4.chunk.css",
-    "main.js": "/Resource-Grid/static/js/main.3d6a6764.chunk.js",
-    "main.js.map": "/Resource-Grid/static/js/main.3d6a6764.chunk.js.map",
+    "main.js": "/Resource-Grid/static/js/main.d478c134.chunk.js",
+    "main.js.map": "/Resource-Grid/static/js/main.d478c134.chunk.js.map",
     "runtime-main.js": "/Resource-Grid/static/js/runtime-main.ab7f9d1d.js",
     "runtime-main.js.map": "/Resource-Grid/static/js/runtime-main.ab7f9d1d.js.map",
     "static/js/2.8d103f6d.chunk.js": "/Resource-Grid/static/js/2.8d103f6d.chunk.js",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.ab7f9d1d.js",
     "static/js/2.8d103f6d.chunk.js",
     "static/css/main.2646eeb4.chunk.css",
-    "static/js/main.3d6a6764.chunk.js"
+    "static/js/main.d478c134.chunk.js"
   ]
 }
