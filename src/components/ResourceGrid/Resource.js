@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { craftStart, toggleAuto, resourceEmpower } from "../../modules/resources.js";
+import { craftStart, toggleAuto, resourceEmpower, stopManualAutomation } from "../../modules/resources.js";
 import styled, { keyframes } from 'styled-components';
 import notation from "../../util/notation.js";
 import { AutoConnected } from "../../data/resources.js";
@@ -112,7 +112,7 @@ const ResourceQuantity = styled.div`
  * @param {object} obj
  * @param {Resource} obj.data 
  */
-function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto, resourceEmpower, empowerLeft, cooldown }) {
+function ResourceGridItem({ Resource, index, craftStart, stopManualAutomation, selectMode, toggleAuto, resourceEmpower, empowerLeft, cooldown}) {
   const [isHover, setHover] = useState(false);
 
   const displayName = Resource ? Resource.name.replace(/(.)([A-Z])/g, `$1 $2`) : "";
@@ -141,8 +141,23 @@ function ResourceGridItem({ Resource, index, craftStart, selectMode, toggleAuto,
             }
         }
       }}
+      onMouseDown={() => {
+        switch (selectMode) {
+          case "AutoToggle":
+            break;
+          case "Empower":
+            break;
+          default:
+            if (Resource && Object.keys(Resource.cost(save.have) ?? {}).length !== 0) {
+              craftStart(index);
+            }
+        }
+      }}
+      onMouseUp={() => stopManualAutomation(index)}
       onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseLeave={() => {
+        setHover(false);
+        stopManualAutomation(index)}}
       name={displayName}
       style={{
         backgroundColor: (save.unlocked && (save.automationDisabled || (selectMode === "AutoToggle" && displayResource))) ?
@@ -208,6 +223,7 @@ export default connect(
   {
     craftStart,
     toggleAuto,
-    resourceEmpower
+    resourceEmpower,
+    stopManualAutomation
   }
 )(React.memo(ResourceGridItem));

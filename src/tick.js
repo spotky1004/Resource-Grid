@@ -66,6 +66,10 @@ function Tick() {
       }
     }
 
+    // Continue to buy resources if click-and-held
+    if  (savefile.resources[order].automationManual && canBuy(Resource.name, savefile) !== 0)
+      store.dispatch(craftStart(order, false));
+  
     // Check craft end
     const lastTime = save.lastTime;
     if (lastTime !== null && Resource.craftTime !== undefined) {

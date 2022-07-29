@@ -15,6 +15,7 @@ export const DefaultSave = {
     unlocked: false,
     empower: 0,
     automationDisabled: false,
+    automationManual: false
   })),
   aside: {
     unlockStatus: {
